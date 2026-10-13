@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="sim-tier" content="core">
+<title>Buffer Action — Adding a Strong Base · Simulation (self-directed learning · teacher edition)</title>
+<meta name="description" content="Add the same NaOH to pure water and to an acetic acid buffer and compare the pH changes, calculated from an exact charge balance. Find the point where the buffer capacity is used up.">
+<meta name="curriculum-univ" content="General Chemistry · additional aspects of aqueous equilibria / buffer solutions / buffer action and buffer capacity">
+<meta name="curriculum-2022" content="General Chemistry">
+<meta name="school-level" content="University general chemistry">
+<meta name="engine-class" content="E2-equation-driven">
+<meta name="misconception-id" content="MC-buf-01: adding a strong base to a buffer raises the pH as much as in water / MC-buf-02: the pH of a buffer never changes / MC-buf-03: buffer capacity has no limit">
+<style>
+  :root{--ink:#0B0F17;--ink-700:#1A2030;--ink-600:#222a3d;--ink-400:#8C98B3;
+    --paper:#F4F1EA;--paper-2:#E8E3D6;--accent:#A7BCEC;--accent-2:#E8C275;
+    --warn:#E36B5B;--good:#7FB98A;
+    --font-serif:Georgia,'Times New Roman',serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard',sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--paper);font-family:var(--font-sans);min-height:100vh;word-break:keep-all;overflow-wrap:break-word}
+  body{padding:40px 28px 80px;line-height:1.6}
+  .wrap{max-width:1120px;margin:0 auto}
+  header{border-bottom:1px solid var(--ink-700);padding-bottom:26px;margin-bottom:24px}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:5px;color:var(--accent);text-transform:uppercase}
+  h1{font-family:var(--font-serif);font-weight:600;letter-spacing:-1.2px;font-size:44px;margin-top:14px;line-height:1.08}
+  h1 em{color:var(--accent-2);font-style:normal}
+  .lede{font-family:var(--font-serif);font-size:18px;color:var(--ink-400);margin-top:16px;max-width:760px}
+  .card{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:20px;margin-top:20px}
+  .kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .kicker .num{background:#2a3350;color:var(--accent-2);border-radius:6px;padding:2px 8px}
+  .lo-goals{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+  .lo-goals .g{display:flex;gap:10px;font-size:15px;color:var(--paper-2)}
+  .lo-goals .chk{width:18px;height:18px;border:1.5px solid var(--ink-400);border-radius:5px;flex:0 0 auto;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink)}
+  .lo-goals .g.done .chk{background:var(--good);border-color:var(--good)} .lo-goals .g.done .chk::after{content:"✓"}
+  .progress{height:12px;border-radius:7px;background:#10162260;border:1px solid #2a3144;overflow:hidden}
+  .progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5E6B85,var(--accent-2));transition:width .4s}
+  .progress-lab{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px;text-align:right}
+  .stage{display:grid;grid-template-columns:0.8fr 1.2fr;gap:20px;margin-top:8px}
+  .box{background:var(--ink-700);border:1px solid #2a3144;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}
+  .box h2{font-family:var(--font-serif);font-size:20px;color:var(--accent-2)}
+  canvas{width:100%;height:auto;display:block;background:#0d1320;border:1px solid #2a3144;border-radius:10px}
+  .ph-read{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .ph-read b{color:var(--paper);font-size:20px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+  .choice{font-size:14px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:10px 16px;cursor:pointer}
+  .choice:hover{border-color:var(--accent)} .choice.sel{background:#2a3350;border-color:var(--accent-2)}
+  .conf-row{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-bottom:12px}
+  .conf-row input{flex:1;accent-color:var(--accent-2)}
+  .gate-msg{font-size:14px;margin-top:8px;min-height:1.4em} .gate-msg.refute{color:var(--warn)} .gate-msg.hit{color:var(--good)}
+  .verdict{margin-top:20px;padding:20px 22px;border-radius:14px;border:1px solid #2a3144;background:#0d1320;transition:filter .3s}
+  .verdict.locked{display:none}
+  .vwrap{position:relative} .lockbadge{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;color:var(--accent)}
+  .verdict.locked + .lockbadge{display:flex}
+  .verdict .big{font-family:var(--font-serif);font-size:30px;color:var(--accent-2)}
+  .verdict p{font-family:var(--font-serif);font-size:16px;color:var(--paper-2);margin-top:10px;min-height:2.4em} .verdict p b{color:var(--accent-2)}
+  .panel{margin-top:20px;background:linear-gradient(180deg,#0d1320,#0B0F17);border:1px solid #2a3144;border-radius:16px;padding:22px}
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+  .ctrl label{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:8px}
+  .ctrl .val{color:var(--paper);font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--accent-2);cursor:pointer}
+  .ctrl .ends{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:4px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button,.toggle{font-family:var(--font-mono);font-size:12px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:9px 14px;cursor:pointer}
+  button:hover,.toggle:hover{border-color:var(--accent)} .toggle.on{background:#2a3350;border-color:var(--accent-2)}
+  .notes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+  .note{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:22px}
+  .note h3{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .note p{font-size:14px;color:var(--paper-2)} .note .eq{font-family:var(--font-serif);font-style:italic;font-size:18px;text-align:center;margin:14px 0 6px;padding:12px;background:#0d1320;border-radius:10px;border:1px solid #2a3144}
+  .q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed #2a3144} .q:last-child{border-bottom:none;margin-bottom:0}
+  .q .qtext{font-size:15px;margin-bottom:10px} .q .qtext .qn{color:var(--accent-2);font-family:var(--font-mono);margin-right:8px}
+  .fb{font-size:13px;margin-top:8px;min-height:1.2em} .fb.ok{color:var(--good)} .fb.no{color:var(--warn)} .fb.hint{color:var(--accent)}
+  .num-in{font-family:var(--font-mono);background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:8px 10px;width:120px}
+  .mission{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px} .mission b{color:var(--accent-2)}
+  details.hintbox summary{font-family:var(--font-mono);font-size:12px;color:var(--accent);cursor:pointer} details.hintbox p{font-size:13px;color:var(--ink-400);margin-top:6px}
+  .reflect textarea{width:100%;min-height:64px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical}
+  .self-check{display:flex;flex-direction:column;gap:8px;margin:12px 0} .self-check label{display:flex;gap:10px;font-size:14px;color:var(--paper-2);cursor:pointer} .self-check input{margin-top:4px;accent-color:var(--good)}
+  .stamp{display:none;margin-top:14px;text-align:center;font-family:var(--font-serif);font-size:22px;color:var(--good);border:2px dashed var(--good);border-radius:12px;padding:14px} .stamp.on{display:block}
+  .teacher{margin-top:24px;border-top:2px solid #2a3144;padding-top:6px}
+  details.tguide summary{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);cursor:pointer;padding:12px 0}
+  .tguide-body{background:var(--ink-700);border:1px solid #2a3144;border-radius:12px;padding:20px;font-size:14px;color:var(--paper-2)} .tguide-body h4{font-family:var(--font-mono);font-size:12px;color:var(--accent);margin:14px 0 6px} .tguide-body ul{margin-left:18px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0} .badge{font-family:var(--font-mono);font-size:12px;background:#0d1320;border:1px solid #2a3144;border-radius:20px;padding:5px 12px;color:var(--paper-2)} .badge.verify{color:var(--good);border-color:var(--good)}
+  .teacher-bar{display:none;background:#2a3350;border:1px solid var(--accent);border-radius:12px;padding:14px;margin-top:18px} .teacher-bar.on{display:block} .teacher-bar .tb-title{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);margin-bottom:10px}
+  footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--ink-700);font-family:var(--font-mono);font-size:12px;color:var(--ink-400);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px} footer b{color:var(--paper-2);font-weight:500}
+  @media(max-width:780px){h1{font-size:32px}.stage{grid-template-columns:1fr}.notes{grid-template-columns:1fr}}
+  @media print{body{background:#fff;color:#000}.no-print{display:none!important}}
+  body.worksheet .no-print{display:none} body.worksheet{background:#fff;color:#111} body.worksheet .ws-only{display:block}
+  .ws-only{display:none} .ws{border:1px solid #999;border-radius:8px;padding:16px;margin-top:14px;color:#111} .ws .line{border-bottom:1px solid #bbb;height:28px;margin:8px 0}
+
+
+
+.stage3{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px}
+.stage3 .wide{grid-column:1 / -1}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+.cmp b{color:var(--paper);font-size:18px}
+.summary li{font-size:14px;color:var(--paper-2);margin-left:18px}
+.limit{border:1px dashed var(--ink-400);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--ink-400);margin-top:14px}
+@media(max-width:780px){.stage3{grid-template-columns:1fr}.cmp{grid-template-columns:1fr}}
+@media print{.ws-only{display:block!important}.stage3,.panel,.vwrap{display:none!important}
+  .note,.card,.tguide-body,.limit{background:#fff!important;color:#000!important;border-color:#666!important}
+  footer{color:#000}}
+body.worksheet .stage3{display:none}
+body.worksheet .note,body.worksheet .limit{background:#fff;color:#111;border-color:#999}
+body.worksheet .note p,body.worksheet .note .eq{color:#111;background:#fff}
+body.worksheet footer,body.worksheet footer b{color:#111}
+html:has(body.worksheet){background:#fff}
+body.worksheet header,body.worksheet header *,body.worksheet .note h3,body.worksheet .limit{color:#111}
+body.worksheet .note .eq{border-color:#999}
+@media print{html{background:#fff!important}
+  .ws,.ws *,header,header *,.note,.note *,.limit{color:#000!important}
+  .note .eq{background:#fff!important;border-color:#666!important}}
+.ws svg{width:100%;max-width:640px;height:auto;display:block;margin:10px auto}
+.ws .box2{display:inline-block;min-width:70px;border:1.5px solid #111;height:24px;vertical-align:middle;margin:0 4px}
+
+
+body:not(.mode-teacher) .teacher-only{display:none!important}
+
+body:not(.predicted) .post-pred{display:none!important}
+body.predicted .pre-pred{display:none!important}
+body.worksheet #lgcPanel{display:none!important}
+
+
+html:has(body.worksheet){background:#fff!important}
+body.worksheet *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#111!important;border-color:#888!important;box-shadow:none!important;text-shadow:none!important}
+body.worksheet canvas{filter:grayscale(1) contrast(1.1)}
+@media print{html{background:#fff!important}
+ body *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#000!important;border-color:#666!important;box-shadow:none!important;text-shadow:none!important}
+ canvas{filter:grayscale(1)}}
+
+
+body:not(.predicted) .post-pred{display:none!important}
+body.predicted .pp-wait{display:none!important}
+.pp-wait{font-size:13px;border:1px dashed #556;border-radius:10px;padding:10px 12px}
+.verdict.locked{display:none!important}
+.verdict.locked + .lockbadge{position:static!important;display:block!important;padding:14px 16px;border:1px dashed #556;border-radius:12px;text-align:center;background:transparent}
+
+.lockbadge{display:none}
+body.predicted .lockbadge,body.predicted .verdict + .lockbadge{display:none!important}
+.sum3 ol{margin:4px 0 0 20px;font-size:14px;line-height:1.75}
+.ws-key{margin-top:12px;border-top:1px dashed #777;padding-top:8px;font-size:13px}
+body.worksheet .stage,body.worksheet canvas,body.worksheet .notes,body.worksheet .panel,body.worksheet .vwrap,body.worksheet .teacher-bar,body.worksheet #lgcPanel,body.worksheet .limit,body.worksheet .no-print{display:none!important}
+body.worksheet .ws,body.worksheet .ws-only{display:block!important}
+body.worksheet .ws svg *{fill:none!important;stroke:#000!important}
+body.worksheet .ws svg text{fill:#000!important;stroke:none!important}
+@media print{
+ .stage,canvas,.notes,.panel,.vwrap,.teacher-bar,#lgcPanel,.limit,.no-print,#predCard,.lockbadge{display:none!important}
+ .ws,.ws-only{display:block!important}
+ body:not(.mode-teacher) .teacher-only{display:none!important}
+ .ws svg *{fill:none!important;stroke:#000!important}
+ .ws svg text{fill:#000!important;stroke:none!important}
+}
+span.pp-wait{border:0;padding:0}
+</style>
+<style id="r4fix">  input[type=range]{min-height:24px}.ws svg{width:100%!important;height:auto}.sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}a{color:var(--accent)}a:visited{color:var(--accent-2)}#lgcPanel .lgc-sub,#lgcPanel .lgc-out{opacity:1!important}@media print{a,a:visited{color:#000}}</style>
+<script id="gc-announce">
+(G=>{
+const D=G.document,T=()=>Date.now();
+const st={el:null,delay:400,gap:5000,win:1000,mode:'debounce',gate:null,pre:'',summary:null,timer:null,at:null,pend:null,last:null,lastW:-1e9,ui:-1e9,count:0};
+function ensure(id){if(st.el&&st.el.isConnected!==false)return st.el;let el=D&&D.getElementById(id||'statusLive');
+  if(!el&&D){el=D.createElement('div');el.id=id||'statusLive';(D.body||D.documentElement).appendChild(el);
+    el.setAttribute('style','position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0');}
+  if(el){el.setAttribute('role','status');el.setAttribute('aria-live','polite');el.setAttribute('aria-atomic','true');}
+  st.el=el;return el;}
+function write(t){if(typeof t==='function')t=t();t=String(t==null?'':t).replace(/\s+/g,' ').trim();if(!t||t===st.last)return false;
+  const el=ensure();if(!el)return false;el.textContent=t;st.last=t;st.lastW=T();st.count++;return true;}
+const open=()=>!st.gate||!!st.gate();
+function input(){st.ui=T();}
+if(D&&D.addEventListener)['input','change','click','keydown','pointerdown'].forEach(e=>D.addEventListener(e,input,true));
+function flush(){st.at=null;const w=st.lastW+st.gap-T();if(w>0){st.at=setTimeout(flush,w);return;}const t=st.pend;st.pend=null;if(t!=null&&open())write(t);}
+function auto(t){const n=T();if(st.ui>st.lastW&&n-st.ui<=3000&&n-st.lastW>=1000){clearTimeout(st.at);st.at=null;st.pend=null;return write(t);}
+  st.pend=t;if(st.at)return true;if(n-st.lastW>=st.gap){st.pend=null;return write(t);}st.at=setTimeout(flush,st.lastW+st.gap-n);return true;}
+function route(t,o){if(o&&o.now){clearTimeout(st.timer);return write(t);}
+  if(T()-st.ui<=st.win){clearTimeout(st.timer);st.timer=setTimeout(()=>{st.timer=null;if(open())write(t);},st.delay);return true;}return auto(t);}
+function attach(o){o=o||{};for(const k of ['delay','gap','win','mode','gate','pre','summary'])if(o[k]!=null)st[k]=o[k];
+  ensure(o.id);if(!open()&&st.pre)write(st.pre);return GCAnnounce;}
+function say(text,o){o=o||{};if(st.mode==='block'&&!o.force)return false;if(!open())return st.pre?write(st.pre):false;return route(text,o);}
+function update(){if(!st.summary)return false;return say(()=>st.summary());}
+function blockEnd(text,o){if(!open())return false;return route(text,o);}
+function reset(){clearTimeout(st.timer);clearTimeout(st.at);st.at=null;st.pend=null;st.last=null;if(st.el)st.el.textContent='';if(!open()&&st.pre)write(st.pre);}
+const GCAnnounce={version:2,attach,say,update,blockEnd,reset,input,get last(){return st.last;},get count(){return st.count;},get mode(){return st.mode;}};
+G.GCAnnounce=GCAnnounce;
+})(typeof window!=='undefined'?window:globalThis);
+</script>
+</head>
+<body>
+<script>
+window.R2={
+  unlock:function(){document.body.classList.add('predicted');
+    document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.remove('locked');v.removeAttribute('aria-hidden');v.removeAttribute('inert');v.inert=false;});},
+  relock:function(){document.body.classList.remove('predicted');
+    document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.add('locked');v.setAttribute('aria-hidden','true');v.setAttribute('inert','');});},
+  on:function(){return document.body.classList.contains('predicted');}
+};
+(function(){var was=false;
+  window.addEventListener('beforeprint',function(){was=document.body.classList.contains('worksheet');document.body.classList.add('worksheet');});
+  window.addEventListener('afterprint',function(){if(!was)document.body.classList.remove('worksheet');});})();
+(function(){
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('.choice,.toggle').forEach(function(el){
+      if(el.hasAttribute('tabindex')||el.tagName==='A'||el.tagName==='BUTTON')return;
+      el.setAttribute('tabindex','0');if(!el.hasAttribute('role'))el.setAttribute('role','button');
+      el.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();el.click();}});});});})();
+(function(){
+  document.addEventListener('DOMContentLoaded',function(){
+    var b=document.getElementById('predSubmit'),pc=document.getElementById('predChoices');
+    if(b)b.addEventListener('click',function(){var S=window.__sim&&window.__sim.ST;if(!S||!S.predicted||R2._pl)return;R2._pl=1;
+      var sel=pc&&pc.querySelector('.choice.sel,[data-v].sel');var v=(S.prediction!=null)?S.prediction:(sel?sel.dataset.v:null);
+      try{Object.defineProperty(S,'prediction',{value:v,writable:false,configurable:false,enumerable:true});}catch(e){}
+      b.disabled=true;b.textContent='Prediction locked (cannot change)';
+      if(pc){pc.querySelectorAll('.choice,[data-v]').forEach(function(c){c.setAttribute('aria-disabled','true');c.style.pointerEvents='none';if(c.dataset.v!==v)c.style.borderStyle='dashed';});
+        pc.addEventListener('click',function(e){e.stopImmediatePropagation();e.preventDefault();},true);
+        pc.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.stopImmediatePropagation();e.preventDefault();}},true);}});
+    document.querySelectorAll('.toggle[aria-pressed]').forEach(function(el){
+      new MutationObserver(function(){var on=el.classList.contains('on')?'true':'false';if(el.getAttribute('aria-pressed')!==on)el.setAttribute('aria-pressed',on);}).observe(el,{attributes:true,attributeFilter:['class']});});});})();
+</script>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">General Chemistry · Aqueous Equilibria · BUFFER ACTION</div>
+  <h1>Buffer action — <em>same NaOH, different pH change</em></h1>
+  <p class="lede">Add 5.0 mL of 4.0 M NaOH to 1 L of <b>pure water</b> and to 1 L of an <b>acetic acid buffer solution</b>, side by side.
+    The pH of both beakers is calculated by <em>solving the charge-balance equation exactly</em>. Dilute the buffer components or add more base,
+    and find for yourself the moment when the <b>buffer capacity</b> breaks down.</p>
+</header>
+
+<div class="card no-print">
+  <div class="kicker"><span class="num">Learning objectives</span> After this activity you can …</div>
+  <div class="lo-goals">
+    <div class="g" id="lo1"><span class="chk"></span><span>explain, from the reactions of the components, the <b>difference in pH change</b> when the same OH⁻ is added to a buffer and to water.</span></div>
+    <div class="g" id="lo2"><span class="chk"></span><span>calculate the pH of a buffer after adding a strong base in two steps: <b>stoichiometry → equilibrium</b>.</span></div>
+    <div class="g" id="lo3"><span class="chk"></span><span>show by experiment how the amount of buffer components relates to the <b>buffer capacity</b>.</span></div>
+  </div>
+  <ul class="summary" style="margin:6px 0 12px">
+    <li class="pre-pred"><b>Key summary 1 and 3</b> — shown after you submit your prediction.</li>
+    <li class="post-pred"><b>Key summary 1</b> — A strong base (OH⁻) reacts completely with the weak acid HA of the buffer and turns it into A⁻.</li>
+    <li class="pre-pred"><b>Key summary 2</b> — shown after you submit your prediction.</li>
+    <li class="post-pred"><b>Key summary 2</b> — The pH depends only on the log of the ratio [A⁻]/[HA], so the pH change is small (4.74 → 4.80).</li>
+    <li class="post-pred"><b>Key summary 3</b> — When HA runs out, the leftover OH⁻ sets the pH directly, just as in water (the buffer breaks down).</li>
+  </ul>
+  <p style="font-size:13px;color:var(--ink-400)">Estimated time 15–20 min · Prerequisites: pH and pOH, Ka of a weak acid, amounts in neutralization reactions (limiting reactant)</p>
+  <div class="progress" style="margin-top:10px"><span id="prog"></span></div>
+  <div class="progress-lab" id="progLab">Progress 0% · Predict → Observe → Check → Complete</div>
+  <div class="btns no-print" style="margin-top:12px;align-items:center">
+    <span class="lvl-lab" style="font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--ink-400)">Level</span>
+    <a class="toggle" id="lvlBasic" data-lvl="basic" href="?level=basic">Basic</a>
+    <a class="toggle" id="lvlStandard" data-lvl="standard" href="?level=standard">Standard</a>
+    <a class="toggle" id="lvlAdvanced" data-lvl="advanced" href="?level=advanced">Advanced</a>
+  </div>
+</div>
+
+<div class="stage3">
+  <div class="box">
+    <h2>Two beakers compared</h2>
+    <canvas id="cvBeaker" width="460" height="300" role="img" aria-label="pH of the buffer beaker (left) compared with the pure water beaker (right)"></canvas>
+    <div class="cmp">
+      <div>Buffer pH <b id="phBuf">—</b><br>ΔpH <span id="dBuf">—</span></div>
+      <div>Pure water pH <b id="phWat">—</b><br>ΔpH <span id="dWat">—</span></div>
+    </div>
+  </div>
+  <div class="box">
+    <h2>Amounts of components (bars)</h2>
+    <canvas id="cvBars" width="460" height="300" role="img" aria-label="Bar chart of moles of HA, A⁻ and excess OH⁻ or H⁺ before and after the addition"></canvas>
+    <div class="ph-read"><span>Stoichiometry step (mol after reaction)</span><span id="stoichLab">—</span></div>
+  </div>
+  <div class="box wide">
+    <h2>pH vs volume added (solid: buffer · dashed: water)</h2>
+    <canvas id="cvCurve" width="940" height="280" role="img" aria-label="pH curves of the buffer and of water against the volume of reagent added"></canvas>
+    <div class="ph-read"><span>Point where a buffer component is used up (vertical dotted line)</span><span id="capLab">—</span></div>
+  </div>
+</div>
+
+<div class="card no-print" id="entryCard">
+  <div class="kicker"><span class="num">Entry check</span> Before you start — prerequisites and key terms</div>
+  <p style="font-size:15px;margin-bottom:6px">What happens when OH⁻ from a strong base meets the weak acid CH₃COOH?</p>
+  <div class="choices" id="entryChoices" role="group" aria-label="Entry check">
+    <span class="choice" data-v="full">They react almost completely to form CH₃COO⁻ and H₂O</span>
+    <span class="choice" data-v="none">It is a weak acid, so they do not react</span>
+    <span class="choice" data-v="half">Only half reacts, then it stops at equilibrium</span></div>
+  <div class="fb" id="fbEntry" aria-live="polite"></div>
+  <details class="hintbox" id="entryGloss"><summary>Key terms</summary>
+    <p><b>Buffer solution</b>: a solution that contains a weak acid and its conjugate base (or a weak base and its conjugate acid) in similar amounts, so its pH changes little when a small amount of strong acid or strong base is added. ·
+    <b>Conjugate acid–base pair</b>: HA/A⁻, which differ by one H⁺ (here CH₃COOH/CH₃COO⁻). ·
+    <b>Henderson–Hasselbalch equation</b>: pH = pKa + log([A⁻]/[HA]). ·
+    <b>Buffer capacity</b>: the amount of strong acid or strong base a buffer can take up before its pH changes greatly. ·
+    <b>Charge balance</b>: total positive charge = total negative charge in the solution.</p></details>
+</div>
+
+<div class="card no-print" id="predCard">
+  <div class="kicker"><span class="num">Predict</span> Think first, before you observe</div>
+  <p style="font-size:15px;margin-bottom:6px">You add <b>5.0 mL</b> of 4.0 M NaOH to 1 L of pure water (pH 7.00) and to 1 L of a 0.300 M CH₃COOH/0.300 M CH₃COO⁻ buffer (pH 4.74). How large is the <b>rise in pH</b>?</p>
+  <div class="choices" id="predChoices" role="group" aria-label="Prediction">
+    <span class="choice" data-v="same">Both rise by a similar, large amount</span>
+    <span class="choice" data-v="small">The buffer rises much less</span>
+    <span class="choice" data-v="bigger">The buffer rises more</span>
+    <span class="choice" data-v="zero">The pH of the buffer does not change at all</span>
+  </div>
+  <div class="conf-row"><span>Confidence</span><input type="range" id="conf" min="0" max="100" value="50" aria-label="Confidence"><span id="confLab">Medium</span></div>
+  <button id="predSubmit">Lock in prediction</button>
+  <div class="gate-msg" id="gateMsg" aria-live="polite"></div>
+</div>
+
+<div class="vwrap no-print">
+  <div class="verdict locked" id="verdict" data-lock aria-hidden="true" inert>
+    <div class="big" id="dBig">ΔpH = ?</div>
+    <p id="vMsg">The result is shown after you submit your prediction.</p>
+  </div>
+  <div class="lockbadge">The explanation opens after you lock in a prediction</div>
+</div>
+
+<div class="panel no-print">
+  <div class="controls">
+    <div class="ctrl"><label for="vadd">Volume of 4.0 M reagent added <span class="val" id="vaddLab">0.0 mL</span></label>
+      <input type="range" id="vadd" min="0" max="200" value="0"><div class="ends"><span>0 mL</span><span>100 mL</span></div></div>
+    <div class="ctrl"><label>Reagent added <span class="val" id="regLab">NaOH</span></label>
+      <div class="btns" role="group" aria-label="Reagent added"><span class="toggle on" id="tBase" aria-pressed="true">strong base NaOH</span><span class="toggle" id="tAcid" aria-pressed="false">strong acid HCl</span></div></div>
+    <div class="ctrl"><label for="conc">Concentration of each buffer component <span class="val" id="concLab">0.300 M</span></label>
+      <input type="range" id="conc" min="1" max="100" value="60"><div class="ends"><span>0.005 M (dilute)</span><span>0.500 M (concentrated)</span></div></div>
+    <div class="ctrl"><label>Actions</label>
+      <div class="btns"><button id="go5">Standard condition 5.0 mL</button><button id="reset">Reset</button></div></div>
+  </div>
+</div>
+
+<div class="notes">
+  <div class="note pre-pred"><h3>Explanation notes (open after prediction)</h3>
+    <p>The two-step calculation (stoichiometry → equilibrium) and the explanation of the pH changes in water and in the buffer open after you submit your prediction. For now, think about what the added OH⁻ meets in each beaker.</p></div>
+  <div class="note post-pred"><h3>Two-step calculation</h3>
+    <p><b>① Stoichiometry</b>: OH⁻ reacts completely with HA (K = 1/K<sub>b</sub> ≈ 10⁹, practically complete). 0.020 mol OH⁻ → HA 0.300→0.280 mol, A⁻ 0.300→0.320 mol.
+      <b>② Equilibrium</b>: use the remaining HA/A⁻ to find the pH. The volume (1.005 L) cancels in the ratio.</p>
+    <div class="eq">pH = 4.74 + log(0.320 / 0.280) = 4.80</div></div>
+  <div class="note post-pred"><h3>Why water changes so much · buffer breakdown</h3>
+    <p>Water has no HA to take up the OH⁻, so [OH⁻] = 0.020/1.005 = 0.0199 M → pOH 1.70 → <b>pH 12.30</b>.
+      A buffer also jumps in pH once its HA is <b>completely used up</b>: the leftover OH⁻ then sets the pH (buffer capacity exceeded).
+      Soils resist pH change in a similar way: a soil with a larger buffer capacity needs more lime to change its pH.</p>
+    <div class="eq">[Na⁺] + [H⁺] = [A⁻] + [OH⁻] (+ [Cl⁻])</div></div>
+</div>
+<div class="limit">Limits of this model — activity coefficients ignored (ideal solution), 25 °C · K<sub>w</sub> = 1.0×10⁻¹⁴, K<sub>a</sub>(CH₃COOH) = 1.8×10⁻⁵, volumes are additive, CO₂ uptake from air ignored.
+  The starting pH 7.00 of "pure water" is an ideal value; real distilled water is about 5.6 because of CO₂. The pH on screen is a numerical solution of the charge balance, without approximation (x is not neglected).</div>
+
+<div class="card no-print post-pred" id="checkCard">
+  <div class="kicker"><span class="num">Check</span> Formative check — pass all items to complete</div>
+  <div class="q" id="q1">
+    <div class="qtext"><span class="qn">Q1</span>What mainly happens to the OH⁻ added to the buffer?</div>
+    <div class="choices" role="group" aria-label="Q1">
+      <span class="choice" data-q="1" data-v="a">It reacts with CH₃COO⁻ and disappears</span>
+      <span class="choice" data-q="1" data-v="b">It reacts with CH₃COOH to form CH₃COO⁻ and H₂O</span>
+      <span class="choice" data-q="1" data-v="c">It does not react and stays in the solution</span>
+      <span class="choice" data-q="1" data-v="d">It combines with Na⁺ and precipitates</span></div>
+    <details class="hintbox"><summary>Hint</summary><p>OH⁻ is a base. A base reacts with something that can give it an H⁺.</p></details>
+    <div class="fb" id="fb1"></div>
+  </div>
+  <div class="q" id="q2">
+    <div class="qtext"><span class="qn">Q2 · Task</span>Keep NaOH at <b>5.0 mL</b> (±0.5) and <b>lower only the buffer concentration</b> until the buffer ΔpH is <b id="mTarget">1.0</b> or more. Then press [Check]. (buffer capacity breakdown)</div>
+    <div class="mission">Current buffer ΔpH: <b id="missionD">—</b> · concentration <b id="missionC">0.300 M</b></div>
+    <button id="missionBtn" style="margin-top:8px">Check</button>
+    <div class="fb" id="fb2"></div>
+  </div>
+  <div class="q" id="q3">
+    <div class="qtext"><span class="qn">Q3 · Calculate</span><span id="q3text">—</span></div>
+    <input class="num-in" id="q3in" inputmode="decimal" placeholder="e.g. 4.90" aria-label="Q3 answer"><button id="q3btn">Check</button>
+    <details class="hintbox"><summary>Hint</summary><p id="q3hint">① mol of OH⁻ added = 4.0 × V(L). ② HA decreases by that amount and A⁻ increases. ③ pH = 4.74 + log(n<sub>A⁻</sub>/n<sub>HA</sub>).</p></details>
+    <div class="fb" id="fb3"></div>
+  </div>
+  <div class="q" id="qc">
+    <div class="qtext"><span class="qn">Q4 · Fill in the blank</span>Fill in the blank: the largest amount of strong acid or strong base that a buffer can take up without a large pH change is called the buffer [＿＿].</div>
+    <input class="num-in" id="qcin" placeholder="one word" style="width:180px" aria-label="Q4 blank answer"><button id="qcbtn">Check</button>
+    <details class="hintbox"><summary>Hint</summary><p>The word means "how much a container can hold".</p></details>
+    <div class="fb" id="fbc"></div>
+  </div>
+  <div class="q" id="qho">
+    <div class="qtext"><span class="qn">Q5 · Apply (advanced, not required for completion)</span>For 1.000 L of the 0.300 M/0.300 M acetic acid buffer, what is the smallest volume (mL) of 4.0 M NaOH needed to use up <b>all</b> the CH₃COOH?</div>
+    <input class="num-in" id="qhoin" inputmode="decimal" placeholder="mL" aria-label="Q5 answer"><button id="qhobtn">Check</button>
+    <div class="fb" id="fbho"></div>
+  </div>
+</div>
+
+<div class="card reflect no-print post-pred" id="reflectCard">
+  <div class="kicker"><span class="num">Reflect</span> Reflect — metacognition · completion</div>
+  <p style="font-size:14px;color:var(--ink-400);margin-bottom:10px">My prediction result: <b id="predResult" style="color:var(--paper)">Not predicted yet</b></p>
+  <p style="font-size:14px;margin-bottom:6px">In one sentence: why does the buffer change its pH much less than water, with the same NaOH?</p>
+  <textarea id="selfExplain" aria-label="Self-explanation" placeholder="e.g. The buffer contains a lot of the weak acid HA, which uses up OH⁻, so …"></textarea>
+  <div class="btns" style="margin-top:8px"><button id="reflectBtn">Submit explanation</button></div><div class="fb" id="fbReflect"></div>
+  <div class="self-check">
+    <label><input type="checkbox" class="sc"> I can explain which component reacts with the added OH⁻</label>
+    <label><input type="checkbox" class="sc"> I can calculate the pH in two steps: stoichiometry → equilibrium</label>
+    <label><input type="checkbox" class="sc"> I know that buffer capacity depends on the concentration of the components</label>
+  </div>
+  <div class="card" style="margin-top:14px;background:#0d1320">
+    <div class="kicker"><span class="num">Apply</span> Use the idea in a new context (not required for completion)</div>
+    <p style="font-size:14px;color:var(--paper-2)">Transfer task: blood keeps its pH at about 7.4 with the H₂CO₃/HCO₃⁻ buffer system. During hard exercise, lactic acid (H⁺) floods in.
+      Which component takes up the H⁺, and what happens when HCO₃⁻ runs out (acidosis)? Explain, linking it to the strong acid HCl mode of this simulation.</p>
+    <textarea id="transferText" aria-label="Transfer task answer" placeholder="e.g. H⁺ reacts with HCO₃⁻ to form H₂CO₃, and …" style="width:100%;min-height:56px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical;margin-top:8px"></textarea>
+    <div class="btns" style="margin-top:8px"><button id="transferBtn">Submit transfer task</button></div>
+    <div class="fb" id="fbTransfer"></div>
+  </div>
+  <p style="font-size:13px;color:var(--ink-400);margin-top:12px">Next up: acid–base titrations — the buffer region and pH = pKa at the half-equivalence point, then solubility equilibria (Ksp).</p>
+  <div class="stamp" id="stamp">COMPLETE · Completed — all checks passed.</div>
+</div>
+
+<div class="ws ws-only">
+  <h3>Worksheet — Buffer action: same NaOH, different pH change</h3>
+  <p>Name ________  Class ________  Date ________</p>
+  <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Black-and-white line diagram: buffer and water beakers, and HA and A⁻ bars">
+    <defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#000" stroke-width="1.2"/></pattern></defs>
+    <g fill="none" stroke="#000" stroke-width="1.6" font-family="sans-serif" font-size="12">
+      <path data-static="beaker" d="M30 60 L30 170 Q30 180 40 180 L120 180 Q130 180 130 170 L130 60"/><line x1="30" y1="95" x2="130" y2="95" stroke-dasharray="4 3"/>
+      <text x="80" y="200" text-anchor="middle" fill="#000" stroke="none">(a) buffer 1.000 L</text>
+      <text x="80" y="135" text-anchor="middle" fill="#000" stroke="none">pH 4.74 → [  ]</text>
+      <path data-static="beaker" d="M180 60 L180 170 Q180 180 190 180 L270 180 Q280 180 280 170 L280 60"/><line x1="180" y1="95" x2="280" y2="95" stroke-dasharray="4 3"/>
+      <text x="230" y="200" text-anchor="middle" fill="#000" stroke="none">(b) pure water 1.000 L</text>
+      <text x="230" y="135" text-anchor="middle" fill="#000" stroke="none">pH 7.00 → [  ]</text>
+      <path d="M80 20 L80 50"/><path d="M74 44 L80 52 L86 44"/><path d="M230 20 L230 50"/><path d="M224 44 L230 52 L236 44"/>
+      <text x="155" y="16" text-anchor="middle" fill="#000" stroke="none">4.0 M NaOH 5.0 mL (to each)</text>
+      <line x1="330" y1="180" x2="620" y2="180"/>
+      <rect x="350" y="80" width="30" height="100"/><rect x="385" y="80" width="30" height="100" fill="url(#hatch)"/>
+      <rect x="470" y="87" width="30" height="93"/><rect x="505" y="73" width="30" height="107" fill="url(#hatch)"/>
+      <text x="383" y="200" text-anchor="middle" fill="#000" stroke="none">before</text>
+      <text x="503" y="200" text-anchor="middle" fill="#000" stroke="none">after adding OH⁻</text>
+      <text x="560" y="110" fill="#000" stroke="none">open bar = HA</text><text x="560" y="128" fill="#000" stroke="none">hatched = A⁻</text>
+      <path d="M440 130 L462 130"/><path d="M456 125 L463 130 L456 135"/>
+    </g>
+  </svg>
+  <p><b>1. Predict</b> — Which beaker has the smaller rise in pH? Why?</p><div class="line"></div>
+  <p><b>2. Stoichiometry</b> — Reaction: CH₃COOH + OH⁻ → CH₃COO⁻ + H₂O. After the reaction, n(HA) = <span class="box2"></span> mol, n(A⁻) = <span class="box2"></span> mol</p>
+  <p><b>3. Equilibrium</b> — buffer pH = 4.74 + log( <span class="box2"></span> / <span class="box2"></span> ) = <span class="box2"></span> · water pH = <span class="box2"></span></p>
+  <p><b>4. Fill in the blank</b> — When a strong base is added, the [<span class="box2"></span>] component of the buffer uses up the OH⁻. The limit of what it can take up is called the buffer [<span class="box2"></span>].</p>
+  <p><b>5. Conclusion</b> — If the buffer concentration is lowered to 0.020 M, what happens with the same NaOH?</p><div class="line"></div><div class="line"></div>
+  <div class="teacher-only" style="border-top:1px dashed #666;margin-top:14px;padding-top:8px">
+    <p><b>Answer key (end of teacher printout)</b> — 1. the buffer (HA uses up the OH⁻) · 2. 0.280 / 0.320 · 3. 0.320/0.280 → 4.80, water 12.30 · 4. weak acid (HA) / capacity · 5. all 0.020 mol of HA is used up, and the pH jumps to about 8.7 (buffer breakdown).</p>
+  </div>
+</div>
+
+<div class="teacher no-print">
+  <details class="tguide teacher-only"><summary>Teacher notes — open the lesson plan</summary>
+    <div class="tguide-body">
+      <h4>Lesson plan · 5E phase and time</h4><ul><li><b>Explore and Explain</b>, 15–20 min. Whole-class demonstration (<code>?mode=teacher</code>) or individual work.</li></ul>
+      <h4>Demonstration in 3 steps</h4><ul><li>① Standard condition (0.300 M, NaOH 5.0 mL): buffer ΔpH 0.06 vs water ΔpH 5.30.</li><li>② In the bar chart, HA↓ and A⁻↑ — "Where did the OH⁻ go?"</li><li>③ Lower the concentration to 0.020 M, or add 75 mL of NaOH or more, to show the buffer breakdown.</li></ul>
+      <h4>Three key questions</h4><ul><li>"The amount of OH⁻ is the same. Why does only one beaker reach pH 12?"</li><li>"Why did the buffer pH change at all, even by 0.06?"</li><li>"Can a buffer be used forever? What sets the limit?"</li></ul>
+      <h4>Common misconceptions</h4><ul><li>MC-buf-01: "it rises as much as water" → use the bars to show that OH⁻ is used up by HA.</li><li>MC-buf-02: "it does not change at all" → the ratio 0.320/0.280 is not 1, so the pH rises by 0.06.</li><li>MC-buf-03: "capacity is unlimited" → HA 0.300 mol = NaOH 75 mL is the limit.</li></ul>
+      <h4>Answer key (teacher only)</h4><ul id="ansKey"><li>—</li></ul>
+      <h4>Basis and sources</h4><ul><li>Buffer 4.74→4.80, water 7.00→12.30.</li>
+        <li>K<sub>a</sub>(CH₃COOH) = 1.8×10⁻⁵ (common reference value). The Henderson–Hasselbalch approximation (pKa 4.74) and the exact charge-balance solution of this simulation agree to two decimal places (4.745→4.803).</li>
+        <li>Verification: multi-point comparison with an external Python charge-balance solver (scipy brentq) — error &lt; 0.001 pH.</li></ul>
+      <h4>Prerequisites</h4><ul><li>pH and pOH, Ka, limiting-reactant calculations, the common-ion effect.</li></ul>
+    </div>
+  </details>
+  <div class="badges"><span class="badge">University general chemistry · buffer solutions</span><span class="badge">Engine E2 equation-driven (exact charge balance)</span><span class="badge verify">Verified: checked against an external solver (2026-10-01)</span></div>
+  <div class="btns"><button id="btnTeacher" class="teacher-only">Open/close teacher bar</button><button id="btnWorksheet">Print worksheet (preview)</button></div>
+  <div class="teacher-bar teacher-only" id="teacherBar">
+    <div class="tb-title">Teacher mode — class controls</div>
+    <div class="btns"><button id="tReveal">Unlock answers/explanations</button>
+      <button data-preset="text">Example: standard condition (5.0 mL)</button><button data-preset="collapse">Example: dilute buffer breaks down (0.020 M)</button><button data-preset="over">Example: excess NaOH 80 mL</button><button data-preset="acid">Example: HCl 5.0 mL</button></div>
+  </div>
+</div>
+
+<footer>
+  <div><b>General Chemistry</b> · Buffer action · self-directed learning and teacher edition · exact charge-balance calculation (quantitatively verified)</div>
+  <div><b>KBS Lab</b> · General Chemistry Simulations · works offline · no personal data collected · report errors: bkim@gnu.ac.kr</div>
+</footer>
+</div>
+
+<script>
+"use strict";
+(function(){
+  const $=id=>document.getElementById(id);
+  const LV=(new URLSearchParams(location.search)).get('level')||'standard';
+  const LEVELS={
+    basic:    {label:'Basic', hints:true,  q3:{C:0.300,mL:5.0},  tol:0.05, missionTarget:1.0, bank:'options: capacity / range / effect'},
+    standard: {label:'Standard', hints:true,  q3:{C:0.300,mL:10.0}, tol:0.03, missionTarget:2.0, bank:'one word'},
+    advanced: {label:'Advanced', hints:false, q3:{C:0.100,mL:10.0}, tol:0.02, missionTarget:3.0, bank:'type it exactly'}
+  };
+  const CFG=LEVELS[LV]||LEVELS.standard;
+  function applyLevel(){
+    var q=new URLSearchParams(location.search);
+    function href(lv){q.set('level',lv);return '?'+q.toString();}
+    ['Basic','Standard','Advanced'].forEach(function(C){var lv=C.toLowerCase();var a=$('lvl'+C);if(a){a.href=href(lv);a.classList.toggle('on',lv===(LEVELS[LV]?LV:'standard'));}});
+    if(!CFG.hints){document.querySelectorAll('details.hintbox').forEach(function(d){if(d.id!=='entryGloss')d.style.display='none';});}
+    $('qcin').placeholder=CFG.bank;
+    $('mTarget').textContent=CFG.missionTarget.toFixed(1);
+    $('q3text').innerHTML='You add <b>'+CFG.q3.mL.toFixed(1)+' mL</b> of 4.0 M NaOH to 1.000 L of a buffer that is <b>'+CFG.q3.C.toFixed(3)+' M</b> in both CH₃COOH and CH₃COO⁻. What is the pH after the reaction? (two decimal places, Ka = 1.8×10⁻⁵)';
+  }
+
+  const Ka=1.8e-5, Kw=1.0e-14, V0=1.000, CR=4.0;
+  const M={reagent:'base', mL:0, C:0.300};
+  function solveH(CT,Na,Cl){
+    const f=h=>Na+h-CT*Ka/(Ka+h)-Kw/h-Cl;
+    let lo=-16,hi=1;
+    for(let i=0;i<100;i++){const mid=(lo+hi)/2;if(f(Math.pow(10,mid))>0)hi=mid;else lo=mid;}
+    return Math.pow(10,(lo+hi)/2);}
+  function comp(buffer,reagent,mL,C){
+    const Vt=V0+mL/1000, n=CR*mL/1000;
+    const CT=buffer?2*C*V0/Vt:0;
+    const Na=((buffer?C*V0:0)+(reagent==='base'?n:0))/Vt;
+    const Cl=(reagent==='acid'?n:0)/Vt;
+    return {CT,Na,Cl,Vt,n};}
+  function pHof(buffer,reagent,mL,C){const s=comp(buffer,reagent,mL,C);
+    const p=-Math.log10(solveH(s.CT,s.Na,s.Cl));return Math.max(-1,Math.min(15,p));}
+  const pHbuffer=(reagent,mL,C)=>pHof(true,reagent,mL,C);
+  const pHwater=(reagent,mL)=>pHof(false,reagent,mL,0);
+  function stoich(reagent,mL,C){const n=CR*mL/1000;let HA=C*V0,A=C*V0,exB=0,exA=0;
+    if(reagent==='base'){const r=Math.min(n,HA);HA-=r;A+=r;exB=n-r;}
+    else{const r=Math.min(n,A);A-=r;HA+=r;exA=n-r;}
+    return {HA,A,exB,exA,n};}
+  const capML=(reagent,C)=>C*V0/CR*1000;
+
+  function pHcolor(p){
+    const stops=[[1,[214,69,65]],[4,[232,150,60]],[6,[230,210,90]],[7,[127,185,138]],[9,[90,150,200]],[12,[110,80,170]],[14,[80,50,120]]];
+    p=Math.max(1,Math.min(14,p));for(let i=0;i<stops.length-1;i++){const a=stops[i],b=stops[i+1];if(p<=b[0]){const t=(p-a[0])/(b[0]-a[0]);
+      return 'rgb('+a[1].map((v,k)=>Math.round(v+(b[1][k]-v)*t)).join(',')+')';}}return 'rgb(80,50,120)';}
+  function beaker(ctx,x,label,p0,p,dp){
+    ctx.strokeStyle='#8a94aa';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x,70);ctx.lineTo(x,250);ctx.quadraticCurveTo(x,262,x+12,262);
+    ctx.lineTo(x+148,262);ctx.quadraticCurveTo(x+160,262,x+160,250);ctx.lineTo(x+160,70);ctx.stroke();
+    ctx.fillStyle=pHcolor(p);ctx.globalAlpha=0.75;ctx.fillRect(x+3,120,154,139);ctx.globalAlpha=1;
+    ctx.fillStyle='#0B0F17';ctx.font='bold 22px ui-monospace,Menlo,monospace';ctx.textAlign='center';ctx.fillText('pH '+p.toFixed(2),x+80,185);
+    ctx.font='13px ui-monospace,Menlo,monospace';ctx.fillText((dp>=0?'Δ +':'Δ ')+dp.toFixed(2),x+80,210);
+    ctx.fillStyle='#F4F1EA';ctx.font='13px -apple-system,sans-serif';ctx.fillText(label,x+80,284);
+    ctx.fillStyle='#8C98B3';ctx.font='11px ui-monospace,Menlo,monospace';ctx.fillText('starting pH '+p0.toFixed(2),x+80,112);
+    ctx.strokeStyle='#A7BCEC';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x+80,14);ctx.lineTo(x+80,58);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x+73,50);ctx.lineTo(x+80,60);ctx.lineTo(x+87,50);ctx.stroke();
+    ctx.textAlign='left';}
+  function drawBeakers(){const c=$('cvBeaker'),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
+    if(!ST.predicted&&M.mL>0){ctx.fillStyle='#E8C275';ctx.font='14px -apple-system,sans-serif';ctx.textAlign='center';ctx.fillText('The pH of both beakers is shown after prediction',230,150);ctx.textAlign='left';return;}
+    const b0=pHbuffer(M.reagent,0,M.C),b=pHbuffer(M.reagent,M.mL,M.C),w0=pHwater(M.reagent,0),w=pHwater(M.reagent,M.mL);
+    beaker(ctx,40,'(a) buffer '+M.C.toFixed(3)+' M',b0,b,b-b0);beaker(ctx,260,'(b) pure water',w0,w,w-w0);
+    ctx.fillStyle='#A7BCEC';ctx.font='12px ui-monospace,Menlo,monospace';ctx.textAlign='center';
+    ctx.fillText('4.0 M '+(M.reagent==='base'?'NaOH':'HCl')+' '+M.mL.toFixed(1)+' mL to each',230,12);ctx.textAlign='left';}
+  function drawBars(){const c=$('cvBars'),ctx=c.getContext('2d');const W=c.width,H=c.height;ctx.clearRect(0,0,W,H);
+    const s0=stoich(M.reagent,0,M.C),s=stoich(M.reagent,M.mL,M.C);
+    const top=Math.max(0.05,2*M.C,s.HA,s.A,s.exB+0,s.exA)*1.05;const base=H-40,hgt=base-30;
+    const y=v=>base-v/top*hgt;
+    ctx.strokeStyle='#2a3144';ctx.beginPath();ctx.moveTo(30,base);ctx.lineTo(W-10,base);ctx.stroke();
+    function bar(x,v,col,lab,hatch){const yy=y(v);ctx.fillStyle=col;ctx.fillRect(x,yy,42,base-yy);
+      if(hatch){ctx.save();ctx.beginPath();ctx.rect(x,yy,42,base-yy);ctx.clip();ctx.strokeStyle='rgba(11,15,23,.55)';ctx.lineWidth=1.5;
+        const hh=base-yy;for(let k=-hh;k<42;k+=7){ctx.beginPath();ctx.moveTo(x+k,base);ctx.lineTo(x+k+hh,yy);ctx.stroke();}ctx.restore();}
+      ctx.fillStyle='#F4F1EA';ctx.font='12px ui-monospace,Menlo,monospace';ctx.textAlign='center';
+      ctx.fillText(lab,x+21,base+16);ctx.fillStyle='#E8E3D6';ctx.fillText(v.toFixed(3),x+21,Math.max(14,yy-6));ctx.textAlign='left';}
+    bar(50,s0.HA,'#E8C275','HA',false);bar(98,s0.A,'#A7BCEC','A⁻',true);
+    bar(230,s.HA,'#E8C275','HA',false);bar(278,s.A,'#A7BCEC','A⁻',true);
+    const ex=M.reagent==='base'?s.exB:s.exA;
+    if(ex>1e-9)bar(340,ex,'#E36B5B',M.reagent==='base'?'excess OH⁻':'excess H⁺',false);
+    ctx.fillStyle='#8C98B3';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='center';
+    ctx.fillText('before',95,H-6);ctx.fillText('after',290,H-6);ctx.fillText('mol (per 1.000 L)',W/2,16);
+    ctx.strokeStyle='#A7BCEC';ctx.beginPath();ctx.moveTo(160,base-hgt/2);ctx.lineTo(205,base-hgt/2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(198,base-hgt/2-6);ctx.lineTo(206,base-hgt/2);ctx.lineTo(198,base-hgt/2+6);ctx.stroke();ctx.textAlign='left';
+    $('stoichLab').textContent='HA '+s.HA.toFixed(3)+' · A⁻ '+s.A.toFixed(3)+(ex>1e-9?' · excess '+ex.toFixed(3)+' (buffer component used up)':'');}
+  function drawCurve(){const c=$('cvCurve'),ctx=c.getContext('2d');const W=c.width,H=c.height;ctx.clearRect(0,0,W,H);
+    const padL=40,padB=28,padT=10,padR=14,VM=100;
+    const x=v=>padL+(v/VM)*(W-padL-padR),y=p=>padT+(1-p/14)*(H-padT-padB);
+    ctx.strokeStyle='#1c2535';ctx.lineWidth=1;ctx.fillStyle='#8C98B3';ctx.font='11px ui-monospace,Menlo,monospace';
+    for(let p=0;p<=14;p+=2){ctx.beginPath();ctx.moveTo(padL,y(p));ctx.lineTo(W-padR,y(p));ctx.stroke();ctx.fillText(p,8,y(p)+4);}
+    for(let v=0;v<=VM;v+=10)ctx.fillText(v+' mL',x(v)-12,H-8);
+    if(!ST.predicted){ctx.fillStyle='#E8C275';ctx.font='13px -apple-system,sans-serif';ctx.fillText('The pH curves are shown after prediction',x(35),y(8));$('capLab').textContent='shown after prediction';return;}
+    const cap=capML(M.reagent,M.C);if(cap<=VM){ctx.setLineDash([3,4]);ctx.strokeStyle='#E36B5B';ctx.beginPath();ctx.moveTo(x(cap),padT);ctx.lineTo(x(cap),H-padB);ctx.stroke();ctx.setLineDash([]);}
+    ctx.setLineDash([7,5]);ctx.strokeStyle='#A7BCEC';ctx.lineWidth=2;ctx.beginPath();
+    for(let v=0;v<=VM;v+=0.5){const px=x(v),py=y(Math.max(0,Math.min(14,pHwater(M.reagent,v))));if(v===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.stroke();ctx.setLineDash([]);
+    ctx.strokeStyle='#E8C275';ctx.lineWidth=2.5;ctx.beginPath();
+    for(let v=0;v<=VM;v+=0.25){const px=x(v),py=y(Math.max(0,Math.min(14,pHbuffer(M.reagent,v,M.C))));if(v===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.stroke();
+    const pb=pHbuffer(M.reagent,M.mL,M.C),pw=pHwater(M.reagent,M.mL);
+    ctx.fillStyle='#E8C275';ctx.beginPath();ctx.arc(x(M.mL),y(Math.max(0,Math.min(14,pb))),6,0,7);ctx.fill();
+    ctx.fillStyle='#A7BCEC';ctx.beginPath();ctx.rect(x(M.mL)-5,y(Math.max(0,Math.min(14,pw)))-5,10,10);ctx.fill();
+    ctx.fillStyle='#E8E3D6';ctx.font='12px -apple-system,sans-serif';ctx.fillText('● buffer (solid)   ■ water (dashed)',padL+10,padT+16);
+    $('capLab').textContent=(M.reagent==='base'?'HA':'A⁻')+' used up at '+cap.toFixed(1)+' mL'+(cap>VM?' (outside the graph range)':'');}
+
+  const ST={predicted:false,observed:false,passed:false,prediction:null,checks:{entry:false,q1:false,q2:false,q3:false,cloze:false,reflect:false}};
+  function pct(){let p=0;if(ST.predicted)p+=25;if(ST.observed)p+=25;
+    p+=Math.round(Object.values(ST.checks).filter(Boolean).length/Object.keys(ST.checks).length*40);if(ST.passed)p+=10;return Math.min(100,p);}
+  function updateProgress(){const p=pct();$('prog').style.width=p+'%';$('progLab').textContent='Progress '+p+'% · Predict → Observe → Check → Complete';
+    $('lo1').classList.toggle('done',ST.checks.q1);$('lo2').classList.toggle('done',ST.checks.q3);$('lo3').classList.toggle('done',ST.checks.q2);
+    if(ST.passed)$('stamp').classList.add('on');}
+  function dpH(){return pHbuffer(M.reagent,M.mL,M.C)-pHbuffer(M.reagent,0,M.C);}
+  function update(){
+    const b0=pHbuffer(M.reagent,0,M.C),b=pHbuffer(M.reagent,M.mL,M.C),w=pHwater(M.reagent,M.mL),w0=pHwater(M.reagent,0);
+    const db=b-b0,dw=w-w0;
+    window.__sim.metric=Number.isFinite(db)?{type:'dpH_buffer',value:db,unit:'pH',pHbuffer:b,pHwater:w,dpHwater:dw}:null;
+    $('phBuf').textContent=b.toFixed(2);$('phWat').textContent=w.toFixed(2);
+    $('dBuf').textContent=(db>=0?'+':'')+db.toFixed(2);$('dWat').textContent=(dw>=0?'+':'')+dw.toFixed(2);
+    $('missionD').textContent=(db>=0?'+':'')+db.toFixed(2);$('missionC').textContent=M.C.toFixed(3)+' M';
+    $('dBig').textContent='ΔpH buffer '+(db>=0?'+':'')+db.toFixed(2)+'  vs  water '+(dw>=0?'+':'')+dw.toFixed(2);
+    const cap=capML(M.reagent,M.C);let msg;
+    if(M.mL<0.05)msg='Nothing has been added yet. Use the slider to add the reagent.';
+    else if(M.mL>=cap-1e-9)msg='<b>Buffer capacity exceeded</b> — all the '+(M.reagent==='base'?'HA':'A⁻')+' is used up, so the leftover '+(M.reagent==='base'?'OH⁻':'H⁺')+' sets the pH. Now the buffer changes as much as water.';
+    else msg='<b>Buffer action</b> — the added '+(M.reagent==='base'?'OH⁻ reacts with HA to form A⁻':'H⁺ reacts with A⁻ to form HA')+', so only the ratio [A⁻]/[HA] changes a little. Water has nothing to take up the added ion, so its ΔpH is '+Math.abs(dw).toFixed(2)+'.';
+    $('vMsg').innerHTML=msg;
+    if(!ST.predicted){if(M.mL>0)['phBuf','phWat','dBuf','dWat','missionD','capLab'].forEach(function(id){$(id).textContent='shown after prediction';});$('dBig').textContent='ΔpH = ?';$('vMsg').textContent='The result is shown after you submit your prediction.';}
+    if(ST.predicted&&!ST.observed&&M.reagent==='base'&&M.mL>=4.95){ST.observed=true;updateProgress();}
+    drawBeakers();drawBars();drawCurve();if(window.GCAnnounce)GCAnnounce.update();}
+
+  function setML(v){M.mL=v;$('vadd').value=Math.round(v*2);$('vaddLab').textContent=v.toFixed(1)+' mL';}
+  function setC(c){M.C=c;$('conc').value=Math.round(c/0.005);$('concLab').textContent=c.toFixed(3)+' M';}
+  $('vadd').addEventListener('input',e=>{setML((+e.target.value)/2);update();});
+  $('conc').addEventListener('input',e=>{setC((+e.target.value)*0.005);update();});
+  function setReagent(r){M.reagent=r;$('tBase').classList.toggle('on',r==='base');$('tAcid').classList.toggle('on',r==='acid');
+    $('regLab').textContent=r==='base'?'NaOH':'HCl';update();}
+  $('tBase').addEventListener('click',()=>setReagent('base'));
+  $('tAcid').addEventListener('click',()=>setReagent('acid'));
+  $('go5').addEventListener('click',()=>{setML(5.0);update();});
+  $('reset').addEventListener('click',()=>{setML(0);setC(0.300);setReagent('base');});
+
+  $('conf').addEventListener('input',e=>{const v=+e.target.value;$('confLab').textContent=v<33?'Low':v<66?'Medium':'High';});
+  let predSel=null;
+  $('predChoices').addEventListener('click',e=>{const c=e.target.closest('.choice');if(!c)return;
+    [...$('predChoices').children].forEach(x=>x.classList.remove('sel'));c.classList.add('sel');predSel=c.dataset.v;});
+  const PRED_FB={
+    small:['Good prediction. Raise the NaOH to 5.0 mL and compare the two beakers yourself.','hit','Correct (the buffer changes less)'],
+    same:['This is a common misconception (MC-buf-01). The buffer contains HA, which takes up OH⁻ — check in the bar chart where the OH⁻ goes.','refute','Needs review (actually the buffer changes much less)'],
+    bigger:['It is true that the buffer has a lot of acid and a lot of reaction happens. But that reaction <b>uses up</b> OH⁻, so the pH rise becomes smaller, not larger — check it yourself.','refute','Needs review (actually the buffer changes much less)'],
+    zero:['The direction is right, but not "at all" (MC-buf-02). The ratio [A⁻]/[HA] moves away from 1, so the pH changes a little — look at the second decimal place.','refute','Partly correct (actually small, but not 0)']};
+  $('predSubmit').addEventListener('click',()=>{if(!predSel){$('gateMsg').textContent='Choose an option first.';$('gateMsg').className='gate-msg refute';return;}
+    ST.predicted=true;Object.defineProperty(ST,'prediction',{value:predSel,writable:false,configurable:false,enumerable:true});R2.unlock();
+    const f=PRED_FB[predSel];$('gateMsg').innerHTML=f[0];$('gateMsg').className='gate-msg '+f[1];$('predResult').textContent=f[2];
+    setReagent('base');updateProgress();});
+
+  const Q1_FB={b:['Correct — OH⁻ + CH₃COOH → CH₃COO⁻ + H₂O. So the HA bar gets shorter and the A⁻ bar gets taller.','ok'],
+    a:['Try again — CH₃COO⁻ is a base. Two bases (OH⁻ and CH₃COO⁻) do not react with each other. Which component can give H⁺? (answer not revealed)','no'],
+    c:['Try again — that is what happens in pure water. In the bar chart of the buffer, what decreased? (answer not revealed)','no'],
+    d:['Try again — sodium acetate dissolves well in water, so no precipitate forms. Na⁺ is a spectator ion. (answer not revealed)','no']};
+  document.querySelectorAll('[data-q="1"]').forEach(c=>c.addEventListener('click',e=>{const v=e.target.dataset.v;
+    [...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    const f=Q1_FB[v];$('fb1').textContent=f[0];$('fb1').className='fb '+f[1];if(v==='b')ST.checks.q1=true;updateProgress();}));
+  $('missionBtn').addEventListener('click',()=>{const d=pHbuffer(M.reagent,M.mL,M.C)-pHbuffer(M.reagent,0,M.C);
+    if(M.reagent!=='base'){$('fb2').textContent='Do this in the strong base NaOH mode.';$('fb2').className='fb no';}
+    else if(Math.abs(M.mL-5.0)>0.5){$('fb2').textContent='Keep the NaOH volume at 5.0 mL (±0.5) and change only the concentration. Now: '+M.mL.toFixed(1)+' mL.';$('fb2').className='fb no';}
+    else if(M.C>=0.300){$('fb2').textContent='Lower the buffer concentration below 0.300 M (check your path).';$('fb2').className='fb no';}
+    else if(d>=CFG.missionTarget){$('fb2').textContent='Success — at '+M.C.toFixed(3)+' M, ΔpH = +'+d.toFixed(2)+'. In a dilute buffer there is not enough HA to handle 0.020 mol of OH⁻, so the buffer capacity breaks down.';$('fb2').className='fb ok';ST.checks.q2=true;}
+    else{$('fb2').textContent='Not yet: ΔpH = +'+d.toFixed(2)+'. Lower the concentration further — what happens at a concentration where mol of HA is 0.020 mol (the OH⁻ added) or less?';$('fb2').className='fb no';}
+    updateProgress();});
+  function q3Answer(){return pHbuffer('base',CFG.q3.mL,CFG.q3.C);}
+  $('q3btn').addEventListener('click',()=>{const x=parseFloat($('q3in').value),ans=q3Answer();
+    const nOH=CR*CFG.q3.mL/1000,HA=CFG.q3.C-nOH,A=CFG.q3.C+nOH;
+    if(!isNaN(x)&&Math.abs(x-ans)<=CFG.tol){$('fb3').textContent='Correct — HA '+HA.toFixed(3)+' mol, A⁻ '+A.toFixed(3)+' mol → pH = 4.74 + log('+A.toFixed(3)+'/'+HA.toFixed(3)+') = '+ans.toFixed(2)+'.';$('fb3').className='fb ok';ST.checks.q3=true;}
+    else if(!isNaN(x)&&x>11){$('fb3').textContent='Try again — that value is close to adding the base to water. In the buffer, OH⁻ first reacts with HA (step 1, stoichiometry). (answer not revealed)';$('fb3').className='fb no';}
+    else if(!isNaN(x)&&x<4.745){$('fb3').textContent='Try again — after adding a base, the pH cannot be lower than at the start (4.74). HA decreases and A⁻ increases — check the numerator and the denominator. (answer not revealed)';$('fb3').className='fb no';}
+    else{$('fb3').textContent='Try again — mol of OH⁻ = 4.0 × '+(CFG.q3.mL/1000).toFixed(4)+' L. Subtract that from HA, add it to A⁻, then find log(A⁻/HA). (answer not revealed)';$('fb3').className='fb no';}
+    updateProgress();});
+  const CLOZE_OK=['capacity','capacities','buffercapacity','thecapacity','thebuffercapacity','buffering-capacity','bufferingcapacity'];
+  $('qcbtn').addEventListener('click',()=>{const raw=($('qcin').value||'').trim().toLowerCase().replace(/\s/g,'');
+    if(CLOZE_OK.includes(raw)){$('fbc').textContent='Correct — buffer capacity. It is larger when the absolute amounts of the components are larger.';$('fbc').className='fb ok';ST.checks.cloze=true;}
+    else if(raw==='range'||raw==='bufferrange'||raw==='phrange'||raw==='region'){$('fbc').textContent='Try again — "range" means the pH interval where the buffer works (about pKa ± 1). Which word means the "amount" it can take up? (answer not revealed)';$('fbc').className='fb no';}
+    else{$('fbc').textContent=CFG.hints?'Hint: one word that means how much something can hold.':'Try again — type one word.';$('fbc').className='fb '+(CFG.hints?'hint':'no');}
+    updateProgress();});
+
+  document.querySelectorAll('#entryChoices .choice').forEach(c=>c.addEventListener('click',e=>{
+    [...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    var v=e.target.dataset.v, ok=v==='full';
+    if(ok)$('fbEntry').textContent='Right — neutralization of a weak acid by a strong base is almost complete (it forms water). This is step 1 of the calculation (stoichiometry).';
+    else if(v==='none')$('fbEntry').textContent='A weak acid is still an acid. A strong base such as OH⁻ takes the H⁺ of a weak acid almost completely. Read the key terms and choose again.';
+    else $('fbEntry').textContent='The weak acid itself ionizes only partly, but its reaction with OH⁻ has a very large equilibrium constant, so it is almost complete. Choose again.';
+    $('fbEntry').className='fb '+(ok?'ok':'hint');
+    var g=$('entryGloss'); if(g) g.open=true; if(ok){ST.checks.entry=true;} updateProgress();}));
+  var REFLECT_REL=/(\b(because|since|therefore|so|thus|hence|due to|as a result|which means|this means|when|if)\b|→)/i;
+  var REFLECT_CONCEPTS=/(buffer|weak acid|conjugate|\bHA\b|A⁻|neutrali[sz]\w*|consum\w*|react\w*|ratio|capacity|used up|uses up|Henderson|pKa|OH)/i;
+  $('reflectBtn').addEventListener('click',()=>{var t=($('selfExplain').value||'').trim();
+    if(t.length<40){$('fbReflect').textContent='Not quite — explain in one sentence (40+ characters).';$('fbReflect').className='fb hint';}
+    else if(!REFLECT_CONCEPTS.test(t)){$('fbReflect').textContent='Add a key concept word — use at least one of weak acid (HA), conjugate base, neutralization, ratio, buffer capacity.';$('fbReflect').className='fb hint';}
+    else if(!REFLECT_REL.test(t)){$('fbReflect').textContent='Link cause and effect — use "because", "so" or "therefore" to connect them.';$('fbReflect').className='fb hint';}
+    else{$('fbReflect').textContent='Recorded — explaining in your own words makes understanding stronger.';$('fbReflect').className='fb ok';ST.checks.reflect=true;}
+    updateProgress();});
+  $('qhobtn').addEventListener('click',()=>{var x=parseFloat($('qhoin').value);var ans=capML('base',0.300);
+    if(!isNaN(x)&&Math.abs(x-ans)<=0.5){$('fbho').textContent='Correct — HA 0.300 mol ÷ 4.0 M = 0.0750 L = 75.0 mL. Beyond this point the buffer breaks down (the vertical dotted line on the curve).';$('fbho').className='fb ok';}
+    else if(!isNaN(x)&&Math.abs(x-150)<=1){$('fbho').textContent='Try again — count only the HA (0.300 mol) that reacts with OH⁻, not HA and A⁻ together (0.600 mol). (answer not revealed)';$('fbho').className='fb no';}
+    else{$('fbho').textContent='Try again — divide the mol of HA (which reacts 1:1 with OH⁻) by the NaOH concentration, then convert L to mL. (answer not revealed)';$('fbho').className='fb no';}});
+  $('transferBtn').addEventListener('click',()=>{var t=($('transferText').value||'').trim();
+    if(t.length>=40&&/(HCO|bicarbonate|hydrogen\s*carbonate|carbonic|H₂CO|H2CO|acidosis|used up|runs? out|buffer)/i.test(t)){$('fbTransfer').textContent='Good — you applied the buffer principle to the blood buffer system.';$('fbTransfer').className='fb ok';}
+    else{$('fbTransfer').textContent='Not quite — in one sentence (40+ characters), describe how HCO₃⁻ (the conjugate base) takes up H⁺, and what happens when it runs out.';$('fbTransfer').className='fb hint';}});
+
+  setInterval(()=>{if(ST.predicted&&ST.observed&&Object.keys(ST.checks).every(function(k){return ST.checks[k];})&&!ST.passed){ST.passed=true;updateProgress();}},300);
+
+  function applyMode(){const q=new URLSearchParams(location.search);
+    if(q.get('mode')==='teacher'){$('teacherBar').classList.add('on');
+      $('ansKey').innerHTML='<li>Prediction: the buffer changes much less (buffer +0.06, water +5.30)</li><li>Q1: reacts with CH₃COOH to form CH₃COO⁻ and H₂O</li>'
+        +'<li>Q2: at 5.0 mL, concentration about '+'0.020 M or lower (target ΔpH '+CFG.missionTarget.toFixed(1)+'; 0.020 M → 3.93, 0.025 M → 0.95, which misses the target)</li>'
+        +'<li>Q3('+LV+'): pH = '+q3Answer().toFixed(2)+' (tolerance ±'+CFG.tol+')</li><li>Q4: capacity</li><li>Q5: 75.0 mL</li>';}
+    if(q.get('worksheet')==='1')document.body.classList.add('worksheet');}
+  $('btnTeacher').addEventListener('click',()=>$('teacherBar').classList.toggle('on'));
+  $('btnWorksheet').addEventListener('click',()=>{document.body.classList.toggle('worksheet');window.scrollTo(0,0);});
+  $('tReveal').addEventListener('click',()=>R2.unlock());
+  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',e=>{const p=e.target.dataset.preset;
+    if(p==='text'){setC(0.300);setML(5.0);setReagent('base');}
+    if(p==='collapse'){setC(0.020);setML(5.0);setReagent('base');}
+    if(p==='over'){setC(0.300);setML(80.0);setReagent('base');}
+    if(p==='acid'){setC(0.300);setML(5.0);setReagent('acid');}}));
+
+  document.querySelectorAll('.choice,.toggle').forEach(function(el){
+    if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0');
+    if(!el.hasAttribute('role')) el.setAttribute('role','button');
+    el.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();el.click();}});
+  });
+
+  window.__sim={metric:null,ST,pHbuffer,pHwater,solveH,stoich,capML,dpH,q3Answer,LEVELS,
+    setState(reagent,mL,C){if(reagent)M.reagent=reagent;if(mL!=null)setML(mL);if(C!=null)setC(C);setReagent(M.reagent);},
+    pump(){update();return window.__sim.metric;},
+    level:(LEVELS[LV]?LV:'standard'),
+    state(){return {reagent:M.reagent,mL:M.mL,C:M.C};},
+    key(n){return n==='pred'?'small':n==='q1'?'b':n==='q3'?q3Answer():n==='cloze'?CLOZE_OK.slice():null;},
+    clozeWrong:'range',
+    fn:{pHbuffer:(r,mL,C)=>((r==='base'||r==='acid')&&mL>=0&&C>0)?pHbuffer(r,mL,C):null,
+        pHwater:(r,mL)=>((r==='base'||r==='acid')&&mL>=0)?pHwater(r,mL):null,
+        dpH:(r,mL,C)=>((r==='base'||r==='acid')&&mL>=0&&C>0)?pHbuffer(r,mL,C)-pHbuffer(r,0,C):null},
+    domain:{controls:[{sel:'#vadd',kind:'range'},{sel:'#tBase',kind:'toggle'},{sel:'#tAcid',kind:'toggle'},{sel:'#conc',kind:'range'}],
+      args:{mL:[0,100],C:[0.005,0.5],reagent:['base','acid']},metric:{min:-14,max:14},
+      mission:{kind:'explore',level:LV,goal:'at NaOH 5.0 mL, lower only the concentration until buffer ΔpH ≥ '+CFG.missionTarget,note:'combine the volume and concentration sliders'}},
+    predStates:{small:()=>{setReagent('base');setC(0.300);setML(5.0);},same:()=>{setReagent('base');setC(0.005);setML(5.0);}},
+    leakTokens:{answer:['changes much less','pH change is small','4.74 → 4.80','4.80'],
+      rationale:['reacts with HA to form A⁻','only the ratio [A⁻]/[HA]','nothing to take up'],
+      misconception:['This is a common misconception','not "at all"','becomes smaller, not larger']}};
+  if(window.GCAnnounce)GCAnnounce.attach({gate:()=>ST.predicted,pre:'After you submit your prediction, the pH changes of both beakers will be read aloud.',
+    summary:()=>{const b0=pHbuffer(M.reagent,0,M.C),b=pHbuffer(M.reagent,M.mL,M.C),w=pHwater(M.reagent,M.mL),w0=pHwater(M.reagent,0);
+      return (M.reagent==='base'?'NaOH ':'HCl ')+M.mL.toFixed(1)+' mL, buffer '+M.C.toFixed(3)+' M: buffer pH '+b.toFixed(2)+' (ΔpH '+(b-b0).toFixed(2)+'), water pH '+w.toFixed(2)+' (ΔpH '+(w-w0).toFixed(2)+').';}});
+  ['fb1','fb2','fb3','fbc','fbho','fbReflect','fbTransfer'].forEach(function(id){const el=$(id);if(!el)return;
+    new MutationObserver(function(){const t=el.textContent;if(t&&window.GCAnnounce)GCAnnounce.say(t,{now:true});}).observe(el,{childList:true,characterData:true,subtree:true});});
+  applyMode();
+  applyLevel();
+  update();updateProgress();
+})();
+</script>
+<script>/[?&]mode=teacher(&|$)/.test(location.search)&&document.body.classList.add('mode-teacher')</script>
+<script id="gc-record">(function(){
+"use strict";
+var K='genchem.en.history',OK=/^https:\/\/(lab\.jinuchem\.com|jinu-kbs\.github\.io)$|^http:\/\/localhost(:\d+)?$/;
+function load(){try{return JSON.parse(localStorage.getItem(K))||[];}catch(e){return[];}}
+function put(a){try{localStorage.setItem(K,JSON.stringify(a));}catch(e){}}
+function up(m){try{if(window.parent!==window)window.parent.postMessage(m,'*');}catch(e){}}
+function merge(inc){var a=load(),s={},n=0;a.forEach(function(r){s[r.ts+'|'+r.sim]=1;});
+ inc.forEach(function(r){if(r&&r.ts&&r.sim&&!s[r.ts+'|'+r.sim]){a.push(r);s[r.ts+'|'+r.sim]=1;n++;}});put(a);return n;}
+var GC={
+ save:function(r){r.ts=r.ts||new Date().toISOString();var a=load();a.push(r);put(a);up({type:'genchem:record',v:1,rec:r});return r;},
+ all:load, clear:function(){put([]);},
+ export:function(){var p=null;try{p=JSON.parse(localStorage.getItem('genchem.en.path'));}catch(e){}
+  var b=new Blob([JSON.stringify({app:'genchem',v:2,exported:new Date().toISOString(),history:load(),path:p},null,2)],{type:'application/json'});
+  var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='genchem_en_brain.json';a.click();URL.revokeObjectURL(u);
+  try{localStorage.setItem('genchem.en.backupAt',new Date().toISOString());}catch(e){}},
+ import:function(t){try{var o=JSON.parse(t),i=(o&&o.history)||o||[];if(!Array.isArray(i))return -1;var n=merge(i);
+  if(o&&o.path){try{localStorage.setItem('genchem.en.path',JSON.stringify(o.path));}catch(e){}}return n;}catch(e){return -1;}},
+ _meta:function(){var p=location.pathname.split('/').filter(Boolean),f=decodeURIComponent(p[p.length-1]||''),d=decodeURIComponent(p[p.length-2]||'');
+  var c=(f.match(/^(\d+)/)||[])[1]||d.replace(/[^0-9]/g,''),q=function(n){var m=document.querySelector('meta[name="'+n+'"]');return m?m.content:'';};
+  return{sim:f,path:(/^ch\d\d$/.test(d)?d+'/':'')+f,chapter:c?+c:null,level:(new URLSearchParams(location.search)).get('level')||'standard',
+   standard:q('curriculum-2022'),engine:q('engine-class'),title:document.title};},
+ autoInit:function(){var done=false,m=GC._meta();up({type:'genchem:hello',v:1,sim:m.path});
+  var iv=setInterval(function(){var s=window.__sim,st=s&&s.ST;if(!st||!st.passed||done)return;done=true;var k=null;
+   try{k=typeof s.key==='function'?s.key('pred'):null;}catch(e){}
+   GC.save({ts:new Date().toISOString(),sim:m.sim,path:m.path,title:m.title,chapter:m.chapter,standard:m.standard,engine:m.engine,level:m.level,
+    predicted:st.prediction||null,predict_correct:(k==null||st.prediction==null)?null:String(st.prediction)===String(k),check:st.checks||{},completed:true});},1000);
+  setTimeout(function(){clearInterval(iv);},1800000);}
+};
+window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='genchem:restore'||!OK.test(e.origin)||!Array.isArray(d.history))return;
+ up({type:'genchem:restored',v:1,added:merge(d.history)});});
+window.GCRecord=GC;
+if(document.readyState!=='loading')GC.autoInit();else document.addEventListener('DOMContentLoaded',GC.autoInit);
+})();
+</script>
+<script id="lgc-inject">
+(function(){
+  "use strict";
+  if(document.getElementById('lgcPanel')) return;
+  var KEY='genchem.en.lgc';
+  function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function simId(){ return decodeURIComponent(location.pathname.split('/').pop()||''); }
+  function loadAll(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+  function saveAll(o){ try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){} }
+
+  var id=simId(), all=loadAll(), data=all[id]||{reason:'',cloze:'',problem:''};
+  window.__sim = window.__sim || {};
+  window.__sim.LGC = { data:data, save:function(){ all[id]=data; saveAll(all); } };
+
+  var stl=document.createElement('style');
+  stl.textContent='#lgcPanel{margin:22px auto;max-width:980px;border:1px solid rgba(127,127,127,.35);border-radius:12px;padding:16px 18px;font-family:inherit;line-height:1.6}'
+    +'#lgcPanel h3{font-size:16px;margin:0 0 4px}'
+    +'#lgcPanel .lgc-sub{font-size:12px;opacity:.7;margin-bottom:10px}'
+    +'#lgcPanel label{display:block;font-size:13px;font-weight:600;margin:12px 0 4px}'
+    +'#lgcPanel textarea{width:100%;min-height:54px;border:1px solid rgba(127,127,127,.4);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;background:transparent;color:inherit;resize:vertical}'
+    +'#lgcPanel .lgc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}'
+    +'#lgcPanel button{font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid rgba(127,127,127,.5);background:transparent;color:inherit;cursor:pointer}'
+    +'#lgcPanel button:hover{border-color:currentColor}'
+    +'#lgcPanel .lgc-out{margin-top:10px;font-size:13px;white-space:pre-wrap;opacity:.92}'
+    +'#lgcPanel .lgc-shared{margin-top:12px;border-top:1px dashed rgba(127,127,127,.4);padding-top:10px;font-size:13px}'
+    +'@media print{#lgcPanel{display:none}}';
+  document.head.appendChild(stl);
+
+  var sec=document.createElement('section');
+  sec.id='lgcPanel'; sec.setAttribute('aria-label','My own notes and questions');
+  sec.innerHTML=''
+    +'<h3>My own notes and questions <span style="font-weight:400;font-size:12px">(learner-generated · not graded)</span></h3>'
+    +'<div class="lgc-sub">Explain in your own words, make your own fill-in-the-blank question, and write a question for a classmate. This space is for deeper understanding.</div>'
+    +'<label for="lgcReason">1. Explain my prediction and conclusion in my own words (with reasons)</label>'
+    +'<textarea id="lgcReason"></textarea>'
+    +'<label for="lgcCloze">2. Hide key words in my explanation with [square brackets] to make a fill-in-the-blank question</label>'
+    +'<textarea id="lgcCloze" placeholder="e.g. As the concentration of [H⁺] increases, the [pH] decreases."></textarea>'
+    +'<div class="lgc-btns"><button type="button" id="lgcClozePrev">Preview my question</button></div>'
+    +'<div class="lgc-out" id="lgcClozeOut" aria-live="polite"></div>'
+    +'<label for="lgcProblem">3. A question for a classmate (include the answer)</label>'
+    +'<textarea id="lgcProblem"></textarea>'
+    +'<div class="lgc-btns">'
+    +'<button type="button" id="lgcExport">Save my notes (JSON file)</button>'
+    +'<button type="button" id="lgcShare">Copy share link</button>'
+    +'</div>'
+    +'<div class="lgc-shared" id="lgcShared" style="display:none"></div>';
+  var anchor=document.querySelector('footer');
+  if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(sec,anchor);
+  else document.body.appendChild(sec);
+
+  var $=function(i){return document.getElementById(i);};
+  $('lgcReason').value=data.reason||''; $('lgcCloze').value=data.cloze||''; $('lgcProblem').value=data.problem||'';
+  function persist(){ data.reason=$('lgcReason').value; data.cloze=$('lgcCloze').value; data.problem=$('lgcProblem').value; window.__sim.LGC.save(); }
+  $('lgcReason').addEventListener('input',persist);
+  $('lgcCloze').addEventListener('input',persist);
+  $('lgcProblem').addEventListener('input',persist);
+
+  $('lgcClozePrev').addEventListener('click',function(){
+    var t=$('lgcCloze').value||'', n=0, ans=[];
+    var q=t.replace(/\[([^\]]+)\]/g,function(m,w){ n++; ans.push(w); return '____('+n+')'; });
+    $('lgcClozeOut').textContent = n ? ('Question: '+q+'\nAnswer: '+ans.join(', ')) : 'Put key words in [square brackets] to turn them into blanks.';
+  });
+
+  function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(s){ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+
+  $('lgcExport').addEventListener('click',function(){
+    persist();
+    var payload={app:'genchem',kind:'lgc',sim:id,exported:new Date().toISOString(),lgc:data};
+    var b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u; a.download='genchem_lgc_'+id.replace(/\.html$/,'')+'.json'; a.click(); URL.revokeObjectURL(u);
+  });
+  $('lgcShare').addEventListener('click',function(){
+    persist();
+    var link=location.origin+location.pathname+location.search+'#share='+enc({sim:id,lgc:data});
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link).then(function(){ alert('Share link copied. Send it to a classmate.'); },
+        function(){ prompt('Copy the link below:', link); });
+    } else prompt('Copy the link below:', link);
+  });
+
+  (function(){
+    var m=(location.hash||'').match(/share=([^&]+)/); if(!m) return;
+    try{
+      var o=dec(m[1]), L=o.lgc||{}, html='<b>Shared by a classmate</b>';
+      if(L.reason)  html+='<div>· Explanation: '+esc(L.reason)+'</div>';
+      if(L.cloze)   html+='<div>· Fill-in-the-blank text: '+esc(L.cloze)+'</div>';
+      if(L.problem) html+='<div>· Question: '+esc(L.problem)+'</div>';
+      var sh=$('lgcShared'); sh.innerHTML=html; sh.style.display='block';
+    }catch(e){}
+  })();
+})();
+</script>
+<style>body.worksheet .ws svg [fill="url(#hatch)"],body.worksheet .ws svg [style*="url(#hatch)"]{fill:url(#hatch)!important}
+.ws svg [fill="url(#hatch)"],.ws svg [style*="url(#hatch)"]{fill:url(#hatch)!important}
+@media print{.ws svg [fill="url(#hatch)"],.ws svg [style*="url(#hatch)"]{fill:url(#hatch)!important}}</style>
+<script id="gc-reflectguard">
+(function(){"use strict";
+function go(){var ta=document.getElementById('selfExplain'),b=document.getElementById('reflectBtn');if(!ta||!b)return;
+var ex=(ta.getAttribute('placeholder')||'').replace(/^(?:e\.g\.|example)\s*[:：]?\s*/i,''),fb=document.getElementById('fbReflect')||document.getElementById('fb2');if(!fb)return;
+ta.setAttribute('placeholder','In your own words: "I observed (what), and because (principle), (result)."');
+var n=0,last='',nm=function(x){return x.replace(/[\s.…,·"'()]/g,'');};
+b.addEventListener('click',function(e){var t=nm(ta.value),x=nm(ex);
+ if(x.length>8&&t.length>=8&&(x.indexOf(t)>=0||t.indexOf(x.slice(0,Math.ceil(x.length*.8)))>=0)){e.stopImmediatePropagation();
+  fb.textContent='This looks copied from the example. Recall what you observed and write it again in your own words.';fb.className='fb hint';last=fb.textContent;}},true);
+new MutationObserver(function(){var c=fb.className,t=fb.textContent;if(t===last)return;
+ if(/hint/.test(c)&&/^Not quite/.test(t)){n++;fb.textContent=n<2?'Not quite — write one sentence (40+ characters) that says what you observed and why, e.g. "Because …, …". If it is still not enough, you will get a clue.':t.replace(/^Not quite\s*—\s*/,'Clue: ');}
+ else if(/ok/.test(c)&&ex&&t.indexOf('Compare it with')<0)fb.textContent=t+' Compare it with the example explanation: '+ex;
+ last=fb.textContent;}).observe(fb,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});}
+if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);})();
+</script>
+</body>
+</html>

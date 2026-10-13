@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="sim-tier" content="core">
+<title>Limiting Reactant — N₂ + 3H₂ → 2NH₃ Mixing Box · Simulation (self-directed learning · teacher edition)</title>
+<meta name="description" content="Interactive simulation: mix N₂ and H₂ molecules, run the reaction N₂ + 3H₂ → 2NH₃, and find the limiting reactant from the coefficient (mole) ratio.">
+<meta name="curriculum-univ" content="University general chemistry · Stoichiometry · limiting reactant · ammonia synthesis">
+<meta name="curriculum-2022" content="General Chemistry">
+<meta name="school-level" content="University general chemistry">
+<meta name="engine-class" content="E1-particle-molecularbox">
+<meta name="misconception-id" content="MC-lim-01: the limiting reactant is simply the one present in the smaller number / MC-lim-02: the amount of product equals the amount of limiting reactant (coefficients ignored)">
+<style>
+  :root{
+    --ink:#0B0F17; --ink-700:#1A2030; --ink-600:#222a3d; --ink-400:#5E6B85;
+    --paper:#F4F1EA; --paper-2:#E8E3D6;
+    --accent:#A7BCEC; --accent-2:#E8C275;
+    --gas:#E8C275; --warn:#E36B5B; --good:#7FB98A; --bond:#A7BCEC;
+    --n2:#7FA0E0; --h2:#E0E0E0; --nh3:#7FB98A;
+    --font-serif:Georgia,'Times New Roman',serif;
+    --font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--paper);font-family:var(--font-sans);
+    min-height:100vh;word-break:keep-all;line-break:strict;overflow-wrap:break-word}
+  body{padding:40px 28px 80px;line-height:1.6}
+  .wrap{max-width:1120px;margin:0 auto}
+
+  header{border-bottom:1px solid var(--ink-700);padding-bottom:26px;margin-bottom:24px}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:5px;color:var(--accent);text-transform:uppercase}
+  h1{font-family:var(--font-serif);font-weight:600;letter-spacing:-1.2px;font-size:44px;margin-top:14px;line-height:1.08}
+  h1 em{color:var(--accent-2);font-style:normal}
+  .lede{font-family:var(--font-serif);font-size:18px;color:var(--ink-400);margin-top:16px;max-width:760px}
+
+  .card{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:20px;margin-top:20px}
+  .kicker{font-family:var(--font-mono);font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .kicker .num{background:#2a3350;color:var(--accent-2);border-radius:6px;padding:2px 8px;font-size:11px}
+
+  .lo-goals{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+  .lo-goals .g{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--paper-2)}
+  .lo-goals .chk{width:18px;height:18px;border:1.5px solid var(--ink-400);border-radius:5px;flex:0 0 auto;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink)}
+  .lo-goals .g.done .chk{background:var(--good);border-color:var(--good)}
+  .lo-goals .g.done .chk::after{content:"✓"}
+  .progress{height:12px;border-radius:7px;background:#10162260;border:1px solid #2a3144;overflow:hidden}
+  .progress > span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5E6B85,var(--accent-2));transition:width .4s}
+  .progress-lab{font-family:var(--font-mono);font-size:11px;color:var(--ink-400);margin-top:6px;text-align:right}
+
+  .stage{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px}
+  .box{background:var(--ink-700);border:1px solid #2a3144;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px}
+  .box .tag{display:flex;align-items:center;justify-content:space-between}
+  .box .tag h2{font-family:var(--font-serif);font-size:22px;font-weight:600}
+  .box.real .tag h2{color:var(--accent-2)}
+  .box .sub{font-family:var(--font-mono);font-size:11px;color:var(--ink-400);letter-spacing:1px}
+  canvas.sim{width:100%;height:auto;display:block;background:#0d1320;border:1px solid #2a3144;border-radius:10px}
+  .gauge .row{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .gauge .row b{color:var(--paper);font-size:15px;font-weight:600}
+  .bar{height:10px;border-radius:6px;background:#10162260;overflow:hidden;border:1px solid #2a3144;margin-top:6px}
+  .bar > span{display:block;height:100%;transition:width .12s linear}
+  .box.ideal .bar > span{background:linear-gradient(90deg,#5E6B85,#A7BCEC)}
+  .box.real .bar > span{background:linear-gradient(90deg,#5a8a64,#7FB98A)}
+
+  .choices{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+  .choice{font-family:var(--font-sans);font-size:14px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:10px 16px;cursor:pointer}
+  .choice:hover{border-color:var(--accent)}
+  .choice.sel{background:#2a3350;border-color:var(--accent-2)}
+  .conf-row{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-bottom:12px}
+  .conf-row input{flex:1;accent-color:var(--accent-2)}
+  .gate-msg{font-size:14px;color:var(--paper-2);margin-top:8px;min-height:1.4em}
+  .gate-msg.refute{color:var(--warn)} .gate-msg.hit{color:var(--good)}
+
+  .verdict{margin-top:20px;padding:20px 22px;border-radius:14px;border:1px solid #2a3144;background:#0d1320;position:relative;transition:filter .3s}
+  .verdict.locked{filter:blur(7px);pointer-events:none;user-select:none}
+  .verdict .lockbadge{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;color:var(--accent);background:#0d1320cc;border-radius:14px;filter:none}
+  .verdict.locked + .lockbadge{display:flex}
+  .vwrap{position:relative}
+  .verdict .z{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .verdict .z .big{font-family:var(--font-serif);font-size:38px;color:var(--accent-2);letter-spacing:-1px}
+  .verdict .z .lab{font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .verdict p{font-family:var(--font-serif);font-size:16px;color:var(--paper-2);margin-top:10px;min-height:2.4em}
+  .verdict p b{color:var(--accent-2)}
+
+  .panel{margin-top:20px;background:linear-gradient(180deg,#0d1320,#0B0F17);border:1px solid #2a3144;border-radius:16px;padding:22px}
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+  .ctrl label{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:8px}
+  .ctrl .val{color:var(--paper);font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--accent-2);cursor:pointer}
+  .ctrl .ends{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--ink-400);margin-top:4px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button,.toggle{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:9px 14px;cursor:pointer}
+  button:hover,.toggle:hover{border-color:var(--accent)}
+  .toggle.on{background:#2a3350;border-color:var(--accent)}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-family:var(--font-mono);font-size:11px;color:var(--ink-400)}
+  .legend i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:middle;border:1px solid #0009}
+
+  .notes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+  .note{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:22px}
+  .note h3{font-family:var(--font-mono);font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .note p{font-size:14px;color:var(--paper-2);line-height:1.7}
+  .note .eq{font-family:var(--font-serif);font-style:italic;font-size:19px;color:var(--paper);text-align:center;margin:14px 0 6px;padding:12px;background:#0d1320;border-radius:10px;border:1px solid #2a3144}
+  .note .eqsub{font-family:var(--font-mono);font-size:11px;color:var(--ink-400);text-align:center}
+
+  .q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed #2a3144}
+  .q:last-child{border-bottom:none;margin-bottom:0}
+  .q .qtext{font-size:15px;color:var(--paper);margin-bottom:10px}
+  .q .qtext .qn{color:var(--accent-2);font-family:var(--font-mono);margin-right:8px}
+  .fb{font-size:13px;margin-top:8px;min-height:1.2em}
+  .fb.ok{color:var(--good)} .fb.no{color:var(--warn)} .fb.hint{color:var(--accent)}
+  .num-in{font-family:var(--font-mono);background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:8px 10px;width:120px}
+  .mission{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px}
+  .mission b{color:var(--accent-2)}
+  details.hintbox{margin-top:8px}
+  details.hintbox summary{font-family:var(--font-mono);font-size:11px;color:var(--accent);cursor:pointer}
+  details.hintbox p{font-size:13px;color:var(--ink-400);margin-top:6px}
+
+  .reflect textarea{width:100%;min-height:64px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical}
+  .self-check{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+  .self-check label{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--paper-2);cursor:pointer}
+  .self-check input{margin-top:4px;accent-color:var(--good)}
+  .stamp{display:none;margin-top:14px;text-align:center;font-family:var(--font-serif);font-size:22px;color:var(--good);border:2px dashed var(--good);border-radius:12px;padding:14px}
+  .stamp.on{display:block}
+
+  .teacher{margin-top:24px;border-top:2px solid #2a3144;padding-top:6px}
+  details.tguide summary{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);cursor:pointer;padding:12px 0}
+  .tguide-body{background:var(--ink-700);border:1px solid #2a3144;border-radius:12px;padding:20px;font-size:14px;color:var(--paper-2)}
+  .tguide-body h4{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--accent);margin:14px 0 6px}
+  .tguide-body ul{margin-left:18px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .badge{font-family:var(--font-mono);font-size:11px;background:#0d1320;border:1px solid #2a3144;border-radius:20px;padding:5px 12px;color:var(--paper-2)}
+  .badge.verify{color:var(--good);border-color:var(--good)}
+  .teacher-bar{display:none;background:#2a3350;border:1px solid var(--accent);border-radius:12px;padding:14px;margin-top:18px}
+  .teacher-bar.on{display:block}
+  .teacher-bar .tb-title{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--accent-2);margin-bottom:10px}
+
+  footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--ink-700);font-family:var(--font-mono);font-size:12px;color:var(--ink-400);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  footer b{color:var(--paper-2);font-weight:500}
+
+  @media(max-width:780px){ h1{font-size:32px} .stage{grid-template-columns:1fr} .notes{grid-template-columns:1fr} }
+
+  @media print{ body{background:#fff;color:#000} .no-print{display:none!important} }
+  body.worksheet .no-print{display:none}
+  body.worksheet{background:#fff;color:#111}
+  body.worksheet .ws-only{display:block}
+  .ws-only{display:none}
+  .ws{border:1px solid #999;border-radius:8px;padding:16px;margin-top:14px;color:#111}
+  .ws h3{margin-bottom:8px} .ws .line{border-bottom:1px solid #bbb;height:28px;margin:8px 0}
+
+body:not(.mode-teacher) .teacher-only{display:none!important}
+
+html:has(body.worksheet){background:#fff!important}
+body.worksheet *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#111!important;border-color:#888!important;box-shadow:none!important;text-shadow:none!important}
+body.worksheet canvas{filter:grayscale(1) contrast(1.1)}
+@media print{html{background:#fff!important}
+ body *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#000!important;border-color:#666!important;box-shadow:none!important;text-shadow:none!important}
+ canvas{filter:grayscale(1)}}
+</style>
+</head>
+<body>
+<style id="gc-r2c112">body:not(.predicted) .post-pred{display:none!important}body.predicted .pre-pred{display:none!important}
+.choice:focus-visible,.toggle:focus-visible,canvas:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+body.worksheet .stage,body.worksheet .notes,body.worksheet .panel,body.worksheet .vwrap,body.worksheet #entryCard,body.worksheet #predCard{display:none!important}
+@media print{.stage,.notes,.panel,.vwrap,#entryCard,#predCard,#lgcPanel{display:none!important}.ws-only{display:block!important}}
+</style>
+<script id="gc-r2c112-js">window.R2=window.R2||{unlock:function(){document.body.classList.add("predicted");document.querySelectorAll("[data-lock]").forEach(function(v){v.classList.remove("locked");v.removeAttribute("aria-hidden");v.removeAttribute("inert");v.inert=false;});},relock:function(){document.body.classList.remove("predicted");document.querySelectorAll("[data-lock]").forEach(function(v){v.classList.add("locked");v.setAttribute("aria-hidden","true");v.setAttribute("inert","");});},on:function(){return document.body.classList.contains("predicted");}};
+(function(){var was=false;addEventListener("beforeprint",function(){was=document.body.classList.contains("worksheet");document.body.classList.add("worksheet");});addEventListener("afterprint",function(){if(!was)document.body.classList.remove("worksheet");});})();
+</script>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">General Chemistry · Stoichiometry</div>
+  <h1>Limiting Reactant —<br><em>N₂ + 3H₂ → 2NH₃ Mixing Box</em></h1>
+  <p class="lede">The number of ammonia molecules formed is not an input. It follows from <em>molecules pairing up in the coefficient (mole) ratio</em>.
+    First <b>predict</b>, then change the molecule numbers and <b>observe</b>, and finally <b>check yourself</b>.</p>
+  <p class="sum3" id="sum3" style="font-size:14px;margin:10px 0 0">Key summary: (1) The coefficients in N₂ + 3H₂ → 2NH₃ give the ratio in which molecules react (1:3:2). (2) When one reactant runs out, the reaction stops and the other reactant is left over. (3) Set the numbers in the box, press [Run reaction], and see which reactant runs out first.</p>
+</header>
+
+<div class="card no-print" id="loCard">
+  <div class="kicker"><span class="num">Learning objectives</span> After this activity you can …</div>
+  <div class="lo-goals">
+    <div class="g" id="lo1"><span class="chk"></span><span>explain, with a reason, whether the limiting reactant is decided by <b>the number of molecules or by the coefficient ratio</b>.</span></div>
+    <div class="g" id="lo2"><span class="chk"></span><span>identify the <b>limiting reactant from the 1:3 mole ratio</b> for given numbers of N₂ and H₂.</span></div>
+    <div class="g" id="lo3"><span class="chk"></span><span>calculate the NH₃ formed and the <b>leftover (excess) reactant</b> from the coefficient ratio.</span></div>
+  </div>
+  <div class="progress"><span id="prog"></span></div>
+  <div class="progress-lab" id="progLab">Progress 0% · Predict → Observe → Check → Complete</div>
+  <div class="btns no-print" style="margin-top:12px;align-items:center">
+    <span class="lvl-lab" style="font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--ink-400)">Level</span>
+    <a class="toggle" id="lvlBasic" data-lvl="basic" href="?level=basic" aria-pressed="false">Basic</a>
+    <a class="toggle" id="lvlStandard" data-lvl="standard" href="?level=standard" aria-pressed="false">Standard</a>
+    <a class="toggle" id="lvlAdvanced" data-lvl="advanced" href="?level=advanced" aria-pressed="false">Advanced</a>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="box ideal">
+    <div class="tag"><h2>Before reaction (mixing box)</h2><span class="sub">BEFORE · N₂ + H₂</span></div>
+    <canvas role="img" class="sim" id="cvBefore" width="320" height="380" aria-label="Mixing box before reaction — models of N2 and H2 molecules"></canvas>
+    <div class="gauge"><div class="row"><span>N₂ / H₂ added</span><b id="lblBefore">—</b></div>
+      <div class="bar"><span id="barBefore"></span></div></div>
+  </div>
+  <div class="box real">
+    <div class="tag"><h2>After reaction (complete)</h2><span class="sub">AFTER · NH₃ + LEFTOVER</span></div>
+    <canvas role="img" class="sim" id="cvAfter" width="320" height="380" aria-label="Box after reaction — models of NH3 formed and leftover reactant molecules"></canvas>
+    <div class="gauge"><div class="row"><span>NH₃ molecules formed</span><b id="lblAfter">—</b></div>
+      <div class="bar"><span id="barAfter"></span></div></div>
+  </div>
+</div>
+
+<div class="card no-print" id="entryCard">
+  <div class="kicker"><span class="num">Entry check</span> Before you start — prerequisites and key terms</div>
+  <p style="font-size:15px;margin-bottom:6px">In the equation N₂ + 3H₂ → 2NH₃, how many H₂ molecules does one N₂ molecule need to react completely?</p>
+  <div class="choices" id="entryChoices" role="group" aria-label="Entry check">
+    <span class="choice" data-v="1">1</span><span class="choice" data-v="2">2</span><span class="choice" data-v="3">3</span></div>
+  <div class="fb" id="fbEntry"></div>
+  <details class="hintbox" id="entryGloss"><summary>Key terms</summary>
+    <p><b>Mole</b>: a counting unit for particles (here we compare numbers of molecules directly). ·
+    <b>Coefficient ratio (mole ratio)</b>: the ratio of the coefficients in the equation, N₂:H₂:NH₃ = 1:3:2. ·
+    <b>Batch</b>: how many complete reaction sets a reactant can supply (number ÷ its coefficient). ·
+    <b>Limiting reactant</b>: the reactant that runs out first relative to the coefficient ratio and stops the reaction. ·
+    <b>Excess reactant</b>: the reactant that is not used up and is left over.</p></details>
+</div>
+
+<div class="card no-print" id="predCard">
+  <div class="kicker"><span class="num">Predict</span> Think first, before you observe</div>
+  <p style="font-size:15px;margin-bottom:6px">You put <b>2 N₂ and 3 H₂</b> molecules into the box (N₂ + 3H₂ → 2NH₃). Which is the <b>limiting reactant</b>?</p>
+  <div class="choices" id="predChoices" role="group" aria-label="Prediction choices">
+    <span class="choice" data-v="n2">Nitrogen, N₂</span>
+    <span class="choice" data-v="h2">Hydrogen, H₂</span>
+    <span class="choice" data-v="eq">Both run out at the same time</span>
+  </div>
+  <div class="conf-row"><span>Confidence</span><input type="range" id="conf" min="0" max="100" value="50" aria-label="Confidence"><span id="confLab">Medium</span></div>
+  <button id="predSubmit">Lock in prediction</button>
+  <div class="gate-msg" id="gateMsg"></div>
+</div>
+
+<div class="vwrap no-print">
+  <div class="verdict locked" id="verdict" data-lock aria-hidden="true" inert>
+    <div class="z"><span class="big" id="zVal">NH₃ = —</span>
+      <span class="lab" id="zLab">Shown after you lock in a prediction</span></div>
+    <p id="zMsg">Move the sliders for N₂ and H₂. The limiting reactant, the NH₃ formed and the leftover reactant are calculated live.</p>
+  </div>
+  <div class="lockbadge pre-pred">The explanation opens after you lock in a prediction</div>
+</div>
+
+<div class="panel no-print">
+  <div class="controls">
+    <div class="ctrl"><label>N₂ molecules <span class="val" id="n2Lab">2</span></label>
+      <input type="range" id="n2" min="0" max="10" value="2"><div class="ends"><span>0</span><span>10</span></div></div>
+    <div class="ctrl"><label>H₂ molecules <span class="val" id="h2Lab">3</span></label>
+      <input type="range" id="h2" min="0" max="30" value="3"><div class="ends"><span>0</span><span>30</span></div></div>
+    <div class="ctrl"><label>Controls</label>
+      <div class="btns"><button id="react">Run reaction</button><button id="reset">Reset</button>
+        <span class="toggle on" id="tLabel" aria-pressed="true">Atom labels</span></div></div>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--n2)"></i>N₂ (nitrogen, blue)</span>
+    <span><i style="background:var(--h2)"></i>H₂ (hydrogen, white)</span>
+    <span><i style="background:var(--nh3)"></i>NH₃ (ammonia, green = product)</span>
+  </div>
+</div>
+
+<p class="lockbadge-pre pre-pred" style="margin:18px auto;max-width:1100px;padding:10px 16px;opacity:.85">The explanation opens after you lock in a prediction.</p>
+<div class="notes post-pred">
+  <div class="note"><h3>Key idea 1 · Limiting reactant = the one that is short relative to the coefficient ratio</h3>
+    <p>The limiting reactant is not simply <b>the one with fewer molecules</b>. Compare the reactants after <b>dividing</b> by the coefficients (N₂:H₂ = 1:3).
+      Example: with N₂ = 2 and H₂ = 3, N₂ gives 2 batches and H₂ gives 3 ÷ 3 = 1 batch. H₂ gives fewer batches, so <b>H₂ is the limiting reactant</b> and N₂ is left over.</p>
+    <div class="eq">N₂ + 3H₂ &rarr; 2NH₃</div>
+    <div class="eqsub">Batches: N₂ batches = N₂ | H₂ batches = H₂ ÷ 3 → the smaller one is limiting</div></div>
+  <div class="note"><h3>Key idea 2 · NH₃ formed and leftover</h3>
+    <p>N₂ that reacts = min(N₂, H₂÷3 rounded down). One N₂ gives two NH₃, so
+      <b>NH₃ formed = 2 × (N₂ that reacted)</b>. After the reaction, the limiting reactant is 0 and the other reactant is <b>left over (excess)</b>.
+      The same idea is used for nitrogen fertilizer: ammonia made from N₂ and H₂ is the starting point of most nitrogen fertilizers.</p>
+    <div class="eq">NH₃ = 2 &times; min(N₂, floor(H₂/3))</div>
+    <div class="eqsub">Limiting reactant used up to 0 | excess reactant left over</div></div>
+</div>
+
+<div class="card no-print" id="checkCard">
+  <div class="kicker"><span class="num">Check</span> Formative check — pass all items to complete</div>
+
+  <div class="q" id="q1">
+    <div class="qtext"><span class="qn">Q1</span>You add 2 N₂ and 3 H₂. Which is the limiting reactant? (N₂ + 3H₂ → 2NH₃)</div>
+    <div class="choices" role="group" aria-label="Q1">
+      <span class="choice" data-q="1" data-v="a">Nitrogen, N₂</span>
+      <span class="choice" data-q="1" data-v="b">Hydrogen, H₂</span>
+      <span class="choice" data-q="1" data-v="c">No limiting reactant</span>
+    </div>
+    <details class="hintbox"><summary>Hint</summary><p>Divide each reactant by its own coefficient (N₂÷1, H₂÷3) to get its batches, then compare. The smaller one is limiting.</p></details>
+    <div class="fb" id="fb1"></div>
+  </div>
+
+  <div class="q" id="q2">
+    <div class="qtext"><span class="qn">Q2 · Hands-on task</span>Adjust the sliders and press [Run reaction] to <span id="missionT">reach the target state</span> Then press [Check].</div>
+    <div class="mission">NH₃ formed now: <b id="missionZ">—</b> molecules <span id="missionHint"></span></div>
+    <button data-q="2" id="missionBtn" style="margin-top:8px">Check</button>
+    <div class="fb" id="fb2"></div>
+  </div>
+
+  <div class="q" id="q3">
+    <div class="qtext"><span class="qn">Q3</span><span id="q3t">For the given numbers of N₂ and H₂, how many NH₃ molecules form? (enter a whole number)</span></div>
+    <input class="num-in" id="q3in" inputmode="numeric" placeholder="whole number" aria-label="Q3 answer">
+    <button data-q="3" id="q3btn">Check</button>
+    <details class="hintbox"><summary>Hint</summary><p id="q3hp">Compare the batches.</p></details>
+    <div class="fb" id="fb3"></div>
+  </div>
+
+  <div class="q" id="qc">
+    <div class="qtext"><span class="qn">Q4 · Fill in the blank</span><span id="qct">Fill in the blank: The reactant that runs out first relative to the coefficient ratio and stops the reaction is called the [_____].</span></div>
+    <input class="num-in" id="qcin" placeholder="two words" style="width:200px"><button id="qcbtn">Check</button>
+    <details class="hintbox" id="qcHint"><summary>Hint</summary><p id="qchp">A two-word term: an adjective + "reactant".</p></details>
+    <div class="fb" id="fbc"></div>
+  </div>
+
+  <div class="q" id="qho">
+    <div class="qtext"><span class="qn">Q5 · Apply (higher-order, not required for completion)</span>You add 4 N₂ and 9 H₂ and let the reaction finish. Which pair of limiting reactant and <b>leftover reactant</b> is correct?</div>
+    <div class="choices" role="group" aria-label="Q5">
+      <span class="choice" data-q="ho" data-v="a">H₂ limiting · 1 N₂ left over</span>
+      <span class="choice" data-q="ho" data-v="b">N₂ limiting · H₂ left over</span>
+      <span class="choice" data-q="ho" data-v="c">H₂ limiting · nothing left over</span>
+    </div>
+    <details class="hintbox"><summary>Hint</summary><p>Batches: N₂÷1 = 4, H₂÷3 = 3. Which is smaller? Then count how many N₂ react.</p></details>
+    <div class="fb" id="fbho"></div>
+  </div>
+</div>
+
+<div class="card reflect no-print" id="reflectCard">
+  <div class="kicker"><span class="num">Reflect</span> Reflect — metacognition · completion</div>
+  <p style="font-size:14px;color:var(--ink-400);margin-bottom:10px">My prediction: <b id="predResult" style="color:var(--paper)">Not predicted yet</b></p>
+  <p style="font-size:14px;margin-bottom:6px">In <b>one sentence</b>, explain why the limiting reactant is not just "the one with the smaller amount" (key words: limiting reactant, mole ratio / coefficient ratio):</p>
+  <textarea id="selfExplain" placeholder="e.g. The limiting reactant is the one with the fewest batches after dividing by the coefficient (mole ratio), not the one with fewer molecules, because …"></textarea>
+  <div class="btns" style="margin-top:8px"><button id="reflectBtn">Submit explanation</button></div><div class="fb" id="fbReflect"></div>
+  <div class="self-check">
+    <label><input type="checkbox" class="sc"> I can identify the limiting reactant from the coefficient (mole) ratio</label>
+    <label><input type="checkbox" class="sc"> I can explain why NH₃ formed = 2 × (N₂ that reacted)</label>
+    <label><input type="checkbox" class="sc"> I can calculate the amount of excess reactant left over</label>
+  </div>
+  <details class="hintbox"><summary>Going further (optional)</summary>
+    <p>Set N₂ and H₂ to exactly 1:3 (for example N₂ 3, H₂ 9). Both are used up, with no limiting reactant and nothing left over.
+      Then NH₃ formed = 2 × N₂. In the industrial Haber–Bosch process, H₂ is usually added in excess so that as much N₂ as possible reacts.</p></details>
+  <div class="card" style="margin-top:14px;background:#0d1320">
+    <div class="kicker"><span class="num">Apply</span> Use the idea in a new context (not required for completion)</div>
+    <p style="font-size:14px;color:var(--paper-2)">Transfer task: one sandwich needs 2 slices of bread and 1 patty. You have 10 slices of bread and 3 patties.
+      How many sandwiches can you make, and what is left over? Explain in one sentence using the idea of <b>limiting reactant and coefficient ratio</b>.</p>
+    <textarea id="transferText" placeholder="e.g. Bread is enough for 5 sandwiches but patties only for 3, so the patty is limiting — 3 sandwiches, 4 slices of bread left …" style="width:100%;min-height:56px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical;margin-top:8px"></textarea>
+    <div class="btns" style="margin-top:8px"><button id="transferBtn">Submit transfer task</button></div>
+    <div class="fb" id="fbTransfer"></div>
+  </div>
+  <div class="stamp" id="stamp">COMPLETE · Completed — all checks passed.</div>
+</div>
+
+<div class="ws ws-only">
+  <h3>Worksheet — Limiting reactant: N₂ + 3H₂ → 2NH₃</h3>
+  <p>Name ________  Class ________  Date ________</p>
+  <p><b>1. Predict</b> — With 2 N₂ and 3 H₂, which is the limiting reactant? (N₂ / H₂ / none)</p>
+  <div class="line"></div>
+  <p><b>2. Observe</b> — For each case, fill in the batches, the limiting reactant, the NH₃ formed and the leftover.</p>
+  <p>N₂=2, H₂=3 → limiting:____ NH₃ formed:____ leftover:____</p>
+  <p>N₂=3, H₂=12 → limiting:____ NH₃ formed:____ leftover:____</p>
+  <p><b>2-1. Calculate</b> — <span id="wsQ3">How many NH₃ molecules form from the given N₂ and H₂?</span> Answer: ______</p>
+  <p><b>3. Conclusion</b> — In one line, why is the limiting reactant not just "the one with the smaller amount"?</p>
+  <div class="line"></div><div class="line"></div>
+  <p><b>4. Fill in the blank</b> — <span id="wsCloze">The reactant that runs out first relative to the coefficient ratio is called the [_____].</span></p>
+  <p style="font-size:12px;margin-top:10px">QR / link: the simulation address given by your teacher</p>
+</div>
+
+<div class="teacher no-print">
+  <details class="tguide teacher-only">
+    <summary>Teacher notes — open the lesson plan</summary>
+    <div class="tguide-body">
+      <h4>Lesson plan · 5E phase and time</h4>
+      <ul><li><b>Explore · Explain</b> stage. 10–15 min after the introduction.</li>
+        <li>Works as a whole-class demo (projector, <code>?mode=teacher</code>) or as individual work on one device per student.</li></ul>
+      <h4>Demo in 3 steps</h4>
+      <ul><li>(1) N₂=2, H₂=6 → both used up, NH₃=4 (exact 1:3 mole ratio).</li>
+        <li>(2) N₂=2, H₂=3 → H₂ limiting, NH₃=2, 1 N₂ left over (N₂ has fewer molecules but is NOT limiting).</li>
+        <li>(3) N₂=3, H₂=12 → N₂ limiting, NH₃=6, 3 H₂ left over.</li></ul>
+      <h4>3 key questions</h4>
+      <ul><li>"There are fewer N₂ molecules. So why does H₂ run out first?"</li>
+        <li>"Which reactant decides the number of NH₃ molecules formed?"</li>
+        <li>"The reaction has stopped. Why is one kind of molecule still there?"</li></ul>
+      <h4>Common misconceptions</h4>
+      <ul><li>MC-lim-01: "Limiting reactant = the one with fewer molecules" → it is the one with fewer batches after dividing by the coefficient. With N₂=2, H₂=3, H₂ is limiting.</li>
+        <li>MC-lim-02: "Product formed = amount of limiting reactant" → use the coefficient ratio. NH₃ formed = 2 × (N₂ that reacted).</li></ul>
+      <h4>Answer key (by level, Q2 · Q3 · Q4)</h4>
+      <ul><li>Basic: Q2 4 NH₃ (e.g. N₂ 2 · H₂ 6) · Q3 N₂ 2 · H₂ 9 → 4 (N₂ limiting) · Q4 limiting reactant</li>
+        <li>Standard: Q2 H₂ limiting · 6 NH₃ (e.g. N₂ 4 · H₂ 9) · Q3 N₂ 3 · H₂ 12 → 6 (N₂ limiting) · Q4 limiting reactant</li>
+        <li>Advanced: Q2 H₂ limiting · 1 N₂ left · 8 NH₃ (N₂ 5 · H₂ 12–14) · Q3 N₂ 5 · H₂ 12 → 8 (H₂ limiting; the "fewer molecules" misconception gives 10) · Q4 excess reactant</li>
+        <li>Q5 (apply): H₂ limiting, 3 N₂ react, 1 N₂ left over.</li></ul>
+      <h4>Prerequisites</h4>
+      <ul><li>Coefficients in a chemical equation and balancing; the mole and mole ratio.</li></ul>
+    </div>
+  </details>
+
+  <div class="badges">
+    <span class="badge">University general chemistry · Stoichiometry</span>
+    <span class="badge">General Chemistry</span>
+    <span class="badge">Engine E1 particle / molecular-model box</span>
+    <span class="badge verify">Verified: chemistry · learning design · teacher (3-way, 2026-06-17)</span>
+  </div>
+
+  <div class="btns">
+    <button id="btnTeacher" class="teacher-only">Teacher mode</button>
+    <button id="btnWorksheet">Print worksheet</button>
+  </div>
+
+  <div class="teacher-bar teacher-only" id="teacherBar">
+    <div class="tb-title">Teacher mode — class controls</div>
+    <div class="btns">
+      <button data-preset="exact">Example: exact ratio (NH₃=4, nothing left)</button>
+      <button data-preset="h2lim">Example: H₂ limiting (N₂ left over)</button>
+      <button data-preset="n2lim">Example: N₂ limiting (H₂ left over)</button>
+      <button id="tRevealToggle">Answer/explanation lock: on</button>
+      <button id="tBig">Large demo mode</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div><b>General Chemistry</b> · Limiting reactant · N₂+3H₂→2NH₃ · self-directed learning and teacher edition · qualitative molecular model (counting model)</div>
+  <div><b>KBS Lab</b> · General Chemistry Simulations · works offline · no personal data collected · report errors: bkim@gnu.ac.kr</div>
+</footer>
+
+</div>
+
+<script>
+"use strict";
+(function(){
+  const COEF={N2:1,H2:3,NH3:2};
+  const S={n2:2,h2:3,reacted:false,showLabel:true};
+  function solve(){
+    var ext=Math.min(Math.floor(S.n2/COEF.N2),Math.floor(S.h2/COEF.H2));
+    var usedN2=ext*COEF.N2, usedH2=ext*COEF.H2, nh3=ext*COEF.NH3;
+    var leftN2=S.n2-usedN2, leftH2=S.h2-usedH2;
+    var batchN2=S.n2/COEF.N2, batchH2=S.h2/COEF.H2;
+    var lim;
+    if(S.n2===0||S.h2===0){lim='none';}
+    else if(Math.abs(batchN2-batchH2)<1e-9 && leftN2===0 && leftH2===0){lim='both';}
+    else if(batchN2<batchH2){lim='N2';}
+    else if(batchH2<batchN2){lim='H2';}
+    else {lim=(leftN2<=leftH2)?'N2':'H2';}
+    return {ext:ext,nh3:nh3,leftN2:leftN2,leftH2:leftH2,usedN2:usedN2,usedH2:usedH2,lim:lim,batchN2:batchN2,batchH2:batchH2};
+  }
+
+  class Box{
+    constructor(cv){this.cv=cv;this.ctx=cv.getContext('2d');
+      this.W=320;this.H=380;this.dpr=Math.min(window.devicePixelRatio||1,2);this.resize();}
+    resize(){const w=this.cv.clientWidth||320,h=w*(this.H/this.W);
+      this.cv.width=w*this.dpr;this.cv.height=h*this.dpr;this.scale=this.cv.width/this.W;}
+    inner(){const m=16;return{x0:m,y0:m,x1:this.W-m,y1:this.H-m,bw:this.W-2*m,bh:this.H-2*m};}
+    drawMol(ctx,x,y,kind){
+      const r=9;
+      function atom(cx,cy,col,rr){const g=ctx.createRadialGradient(cx-rr*0.35,cy-rr*0.35,1,cx,cy,rr);
+        g.addColorStop(0,'#ffffffcc');g.addColorStop(0.4,col);g.addColorStop(1,col);
+        ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,rr,0,Math.PI*2);ctx.fill();
+        ctx.strokeStyle='#0009';ctx.lineWidth=0.8;ctx.stroke();}
+      function bond(x1,y1,x2,y2){ctx.strokeStyle='rgba(244,241,234,0.5)';ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+      if(kind==='N2'){ bond(x-6,y,x+6,y); atom(x-6,y,'#7FA0E0',r); atom(x+6,y,'#7FA0E0',r);
+        if(S.showLabel){ctx.fillStyle='#fff';ctx.font='bold 8px '+'ui-monospace,monospace';ctx.textAlign='center';ctx.fillText('N',x-6,y-12);ctx.fillText('N',x+6,y-12);} }
+      else if(kind==='H2'){ bond(x-5,y,x+5,y); atom(x-5,y,'#E0E0E0',7); atom(x+5,y,'#E0E0E0',7);
+        if(S.showLabel){ctx.fillStyle='#cfd6e6';ctx.font='bold 8px ui-monospace,monospace';ctx.textAlign='center';ctx.fillText('H',x-5,y-11);ctx.fillText('H',x+5,y-11);} }
+      else if(kind==='NH3'){
+        bond(x,y,x-9,y+8); bond(x,y,x+9,y+8); bond(x,y,x,y-10);
+        atom(x-9,y+8,'#E0E0E0',6); atom(x+9,y+8,'#E0E0E0',6); atom(x,y-10,'#E0E0E0',6);
+        atom(x,y,'#7FB98A',r);
+        if(S.showLabel){ctx.fillStyle='#fff';ctx.font='bold 9px ui-monospace,monospace';ctx.textAlign='center';ctx.fillText('N',x,y+3);} }
+    }
+    layout(items){const b=this.inner();const pad=10;
+      const x0=b.x0+pad,y0=b.y0+pad+14,x1=b.x1-pad,y1=b.y1-pad;
+      const n=items.length;if(n===0)return [];
+      const cols=Math.max(1,Math.ceil(Math.sqrt(n* ( (x1-x0)/(y1-y0) ))));
+      const rows=Math.max(1,Math.ceil(n/cols));
+      const cw=(x1-x0)/cols, ch=(y1-y0)/rows;
+      const out=[];
+      for(let i=0;i<n;i++){const c=i%cols,r=Math.floor(i/cols);
+        out.push({x:x0+cw*(c+0.5),y:y0+ch*(r+0.5),kind:items[i]});}
+      return out;
+    }
+    render(items,title){const ctx=this.ctx,sc=this.scale,b=this.inner();
+      ctx.setTransform(sc,0,0,sc,0,0);ctx.clearRect(0,0,this.W,this.H);
+      ctx.strokeStyle='#2a3144';ctx.lineWidth=2;ctx.strokeRect(b.x0,b.y0,b.bw,b.bh);
+      ctx.fillStyle='rgba(167,188,236,0.03)';ctx.fillRect(b.x0,b.y0,b.bw,b.bh);
+      ctx.fillStyle='#5E6B85';ctx.font='10px ui-monospace,monospace';ctx.textAlign='left';
+      ctx.fillText(title,b.x0+8,b.y0+16);
+      const placed=this.layout(items);
+      for(const p of placed)this.drawMol(ctx,p.x,p.y,p.kind);
+    }
+  }
+  const boxBefore=new Box(document.getElementById('cvBefore'));
+  const boxAfter=new Box(document.getElementById('cvAfter'));
+
+  const $=id=>document.getElementById(id);
+  const LV=(new URLSearchParams(location.search)).get('level')||'standard';
+  const LEVELS={
+    basic:    {label:'Basic', hints:true,  bank:'choose: limiting reactant / excess reactant',
+      mission:{nh3:4,lim:null,text:'make <b>exactly 4 NH₃ molecules</b>.',hint:'How many H₂ (at least) do 2 N₂ need to react completely?',set:{n2:2,h2:6},near:[{n2:2,h2:3,label:'default'},{n2:2,h2:5,label:'one H₂ short'}]},
+      q3:{n2:2,h2:9},
+      cloze:{text:'The reactant that runs out first relative to the coefficient ratio and stops the reaction is called the [_____].',ok:['limitingreactant','limitingreagent','limitingreactants','limitingreagents','thelimitingreactant'],hint:'A two-word term: an adjective + "reactant". It limits how much product can form.',why:'limiting reactant. It runs out first relative to the coefficient ratio and stops the reaction.'}},
+    standard: {label:'Standard', hints:true,  bank:'two words',
+      mission:{nh3:6,lim:'H2',text:'make <b>H₂ the limiting reactant with exactly 6 NH₃ formed</b>.',hint:'6 NH₃ means how many N₂ reacted? For H₂ to be used up before N₂, you need more N₂ than that.',set:{n2:4,h2:9},near:[{n2:3,h2:9,label:'exact ratio (both used up)'},{n2:4,h2:8,label:'one H₂ short'}]},
+      q3:{n2:3,h2:12},
+      cloze:{text:'The reactant that runs out first relative to the coefficient ratio and stops the reaction is called the [_____].',ok:['limitingreactant','limitingreagent','limitingreactants','limitingreagents','thelimitingreactant'],hint:'A two-word term: an adjective + "reactant". It limits how much product can form.',why:'limiting reactant. It runs out first relative to the coefficient ratio and stops the reaction.'}},
+    advanced: {label:'Advanced', hints:false, bank:'exact term',
+      mission:{nh3:8,lim:'H2',leftN2:1,text:'make <b>H₂ the limiting reactant, with exactly 1 N₂ left over and 8 NH₃ formed</b>.',hint:'',set:{n2:5,h2:12},near:[{n2:4,h2:12,label:'exact ratio (nothing left)'},{n2:5,h2:11,label:'one H₂ short'}]},
+      q3:{n2:5,h2:12},
+      cloze:{text:'The reactant that is not used up and remains after the reaction ends is called the [_____].',ok:['excessreactant','excessreagent','excessreactants','excessreagents','theexcessreactant'],hint:'',why:'excess reactant. It is what remains after the limiting reactant has run out.'}}
+  };try{window.__GC_LEVELS=LEVELS;}catch(e){}
+  const CFG=LEVELS[LV]||LEVELS.standard;
+  function applyLevel(){
+    var q=new URLSearchParams(location.search);
+    function href(lv){q.set('level',lv);return '?'+q.toString();}
+    ['Basic','Standard','Advanced'].forEach(function(C){var lv=C.toLowerCase();var a=$('lvl'+C);if(a){a.href=href(lv);a.classList.toggle('on',lv===(LEVELS[LV]?LV:'standard'));}});
+    if(!CFG.hints){document.querySelectorAll('details.hintbox').forEach(function(d){d.style.display='none';});}
+    var ph=$('qcin'); if(ph) ph.placeholder=CFG.bank;
+    $('missionT').innerHTML=CFG.mission.text; $('missionHint').textContent=CFG.mission.hint?('Hint: '+CFG.mission.hint):'';
+    $('q3t').textContent=q3Text(); $('q3hp').textContent='Divide each reactant by its coefficient and compare the batches → the smaller one is limiting. N₂ that reacted × 2 = NH₃.';
+    $('qct').textContent='Fill in the blank: '+CFG.cloze.text; $('qchp').textContent=CFG.cloze.hint;
+    $('wsQ3').textContent=q3Text(); $('wsCloze').textContent=CFG.cloze.text;
+  }
+  function q3Text(){return 'You let '+CFG.q3.n2+' N₂ and '+CFG.q3.h2+' H₂ react completely. How many NH₃ molecules form? (enter a whole number)';}
+  function q3Res(){var o={n2:S.n2,h2:S.h2};S.n2=CFG.q3.n2;S.h2=CFG.q3.h2;var r=solve();S.n2=o.n2;S.h2=o.h2;return r;}
+  function missionPass(){var r=solve(),m=CFG.mission;return S.reacted&&r.nh3===m.nh3&&(!m.lim||r.lim===m.lim)&&(m.leftN2==null||r.leftN2===m.leftN2);}
+  function setN2(v){S.n2=v;$('n2Lab').textContent=v;}
+  function setH2(v){S.h2=v;$('h2Lab').textContent=v;}
+  $('n2').addEventListener('input',e=>{setN2(+e.target.value);render();});
+  $('h2').addEventListener('input',e=>{setH2(+e.target.value);render();});
+  $('react').addEventListener('click',()=>{S.reacted=true;if(ST.predicted)ST.moved=true;render();});
+  $('reset').addEventListener('click',()=>{S.reacted=false;render();});
+  $('tLabel').addEventListener('click',e=>{S.showLabel=!S.showLabel;e.target.classList.toggle('on',S.showLabel);render();});
+  setN2(2);setH2(3);
+  window.addEventListener('resize',()=>{boxBefore.resize();boxAfter.resize();render();});
+
+  const ST={predicted:false,observed:false,passed:false,prediction:null,checks:{entry:false,q1:false,q2:false,q3:false,cloze:false,reflect:false},
+    revealLock:true};
+  function pct(){let p=0;if(ST.predicted)p+=25;if(ST.observed)p+=25;
+    const c=Object.values(ST.checks).filter(Boolean).length;p+=Math.round(c/Object.keys(ST.checks).length*40);
+    if(ST.passed)p+=10;return Math.min(100,p);}
+  function updateProgress(){const p=pct();$('prog').style.width=p+'%';
+    $('progLab').textContent='Progress '+p+'% · Predict → Observe → Check → Complete';
+    $('lo1').classList.toggle('done',ST.observed);
+    $('lo2').classList.toggle('done',ST.predicted&&ST.observed);
+    $('lo3').classList.toggle('done',ST.checks.q1);
+    if(ST.passed){$('stamp').classList.add('on');}}
+
+  let predSel=null;
+  $('predChoices').addEventListener('click',e=>{const c=e.target.closest('.choice');if(!c)return;
+    [...$('predChoices').children].forEach(x=>x.classList.remove('sel'));c.classList.add('sel');predSel=c.dataset.v;});
+  $('conf').addEventListener('input',e=>{const v=+e.target.value;$('confLab').textContent=v<33?'Low':v<66?'Medium':'High';});
+  $('predSubmit').addEventListener('click',()=>{if(ST.predicted)return;
+    if(!predSel){$('gateMsg').textContent='First choose one of the options.';$('gateMsg').className='gate-msg refute';return;}
+    ST.predicted=true;R2.unlock();setTimeout(function(){try{Object.defineProperty(ST,'prediction',{value:ST.prediction,writable:false,configurable:false,enumerable:true});}catch(e){}},0);ST.prediction=predSel;
+    $('verdict').classList.remove('locked');
+    if(predSel==='h2'){$('gateMsg').textContent='Good prediction! Set N₂=2 and H₂=3, run the reaction, and check it (H₂÷3 = 1 batch is limiting).';$('gateMsg').className='gate-msg hit';}
+    else if(predSel==='n2'){$('gateMsg').innerHTML='Many students think so. But the limiting reactant is decided by the <b>coefficient ratio</b>, not by the <b>number of molecules</b> — H₂÷3 = 1 batch &lt; N₂÷1 = 2 batches, so <b>H₂ is limiting</b>.';$('gateMsg').className='gate-msg refute';}
+    else{$('gateMsg').innerHTML='Both run out together only at exactly 1:3. Here N₂:H₂ = 2:3, so only one of them is limiting — try it and see.';$('gateMsg').className='gate-msg refute';}
+    $('predResult').textContent=(predSel==='h2')?'Correct (you predicted H₂ limiting)':'Needs review (H₂ is actually limiting)';
+    render();updateProgress();
+  });
+
+  document.querySelectorAll('[data-q="1"]').forEach(c=>c.addEventListener('click',e=>{
+    const v=e.target.dataset.v;[...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    if(v==='b'){$('fb1').textContent='Correct — H₂÷3 = 1 batch is less than N₂÷1 = 2 batches, so H₂ is limiting and 1 N₂ is left over.';$('fb1').className='fb ok';ST.checks.q1=true;}
+    else if(v==='a'){$('fb1').textContent='Try again — N₂ has fewer molecules, but the limiting reactant is decided by the coefficient ratio. Recalculate H₂÷3. (answer not revealed)';$('fb1').className='fb no';}
+    else{$('fb1').textContent='Try again — for an exact match N₂:H₂ must be 1:3 (e.g. 2:6). Here it is 2:3. (answer not revealed)';$('fb1').className='fb no';}
+    updateProgress();}));
+
+  $('missionBtn').addEventListener('click',()=>{const v=S.reacted?solve().nh3:null;
+    if(missionPass()){$('fb2').textContent='Correct — NH₃ formed = '+v+'. The number of NH₃ is twice the number of N₂ that reacted.';$('fb2').className='fb ok';ST.checks.q2=true;}
+    else if(!S.reacted){$('fb2').textContent='First press [Run reaction] to complete the reaction.';$('fb2').className='fb no';}
+    else{$('fb2').textContent='Try again — not the target state yet (NH₃ now = '+(v==null?'—':v)+'). Compare the batches (N₂÷1, H₂÷3) and adjust the numbers again.';$('fb2').className='fb no';}
+    updateProgress();});
+
+  $('q3btn').addEventListener('click',()=>{const raw=($('q3in').value||'').trim(),x=/^\d+$/.test(raw)?parseInt(raw,10):NaN,r=q3Res();
+    if(x===r.nh3){$('fb3').textContent='Correct — N₂÷1='+r.batchN2.toFixed(2)+', H₂÷3='+r.batchH2.toFixed(2)+' → '+(r.lim==='H2'?'H₂':'N₂')+' is limiting; '+r.ext+' N₂ react → NH₃ = 2×'+r.ext+' = '+r.nh3+'.';$('fb3').className='fb ok';ST.checks.q3=true;}
+    else if(x===2*CFG.q3.n2&&r.lim==='H2'){$('fb3').textContent='Try again — did you assume all N₂ reacts because there are fewer N₂? If H₂÷3 gives fewer batches, H₂ runs out first. (answer not revealed)';$('fb3').className='fb no';}
+    else{$('fb3').textContent='Try again — compare the batches (N₂÷1, H₂÷3); the smaller one is the N₂ that reacts, and NH₃ = 2 × N₂ that reacted. (answer not revealed)';$('fb3').className='fb no';}
+    updateProgress();});
+
+  $('qcbtn').addEventListener('click',()=>{var raw=($('qcin').value||'');var x=raw.trim().toLowerCase().replace(/\s/g,'');
+    var CLOZE_OK=CFG.cloze.ok;
+    if(CLOZE_OK.includes(x)){$('fbc').textContent='Correct — '+CFG.cloze.why;$('fbc').className='fb ok';ST.checks.cloze=true;}
+    else{$('fbc').textContent=CFG.hints?('Hint: '+CFG.cloze.hint):'Try again — enter the exact term.';$('fbc').className='fb '+(CFG.hints?'hint':'no');}
+    updateProgress();});
+
+  document.querySelectorAll('#entryChoices .choice').forEach(c=>c.addEventListener('click',e=>{
+    [...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    var ok=e.target.dataset.v==='3';
+    $('fbEntry').textContent=ok?'Right — the coefficient ratio N₂:H₂ is 1:3, so each N₂ needs 3 H₂':'Try again — the coefficient in front of H₂ (3) is the number of H₂ needed per N₂';
+    $('fbEntry').className='fb '+(ok?'ok':'hint');
+    var g=$('entryGloss'); if(g) g.open=true; if(ok)ST.checks.entry=true; updateProgress();}));
+  $('reflectBtn').addEventListener('click',()=>{var t=($('selfExplain').value||'').trim();
+    var hasConcept=/\b(mole ratios?|coefficient ratios?|coefficients?|ratios?|batch(es)?|stoichiometr\w*)\b/i.test(t),hasRel=/\b(because|since|therefore|so|thus|hence|due to|as a result|which means|this means|when|if)\b/i.test(t);
+    if(t.length>=40&&hasConcept&&!hasRel){$('fbReflect').textContent='Not quite — your key words are good. Now link cause and effect with words such as "because" or "so".';$('fbReflect').className='fb hint';}
+    else if(t.length>=40&&hasConcept){$('fbReflect').textContent='Recorded — explaining the coefficient ratio in your own words makes it stick.';$('fbReflect').className='fb ok';ST.checks.reflect=true;}
+    else if(t.length>=40&&!hasConcept){$('fbReflect').textContent='Not quite — add a key word (mole ratio, coefficient ratio). The limiting reactant is decided by the coefficient ratio, not by the number of molecules.';$('fbReflect').className='fb hint';}
+    else{$('fbReflect').textContent='Not quite — write one sentence (40+ characters) and mention the coefficient (mole) ratio.';$('fbReflect').className='fb hint';}
+    updateProgress();});
+
+  document.querySelectorAll('[data-q="ho"]').forEach(c=>c.addEventListener('click',e=>{
+    const v=e.target.dataset.v;[...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    if(v==='a'){$('fbho').textContent='Correct — N₂÷1 = 4 > H₂÷3 = 3, so H₂ is limiting. 3 N₂ react → 4 − 3 = 1 N₂ left over.';$('fbho').className='fb ok';}
+    else if(v==='b'){$('fbho').textContent='Try again — N₂ gives 4 batches and H₂ gives 3. The reactant with fewer batches is limiting. (answer not revealed)';$('fbho').className='fb no';}
+    else{$('fbho').textContent='Try again — the limiting reactant is right, but something is left over. Count how many N₂ react. (answer not revealed)';$('fbho').className='fb no';}}));
+  $('transferBtn').addEventListener('click',()=>{var t=($('transferText').value||'').trim();
+    if(t.length>=40){$('fbTransfer').textContent='Good — you applied the limiting reactant and coefficient ratio idea to a new situation (sandwiches).';$('fbTransfer').className='fb ok';}
+    else{$('fbTransfer').textContent='Not quite — in one sentence (40+ characters), say what is limiting and what is left over.';$('fbTransfer').className='fb hint';}});
+
+  function applyMode(){const q=new URLSearchParams(location.search);
+    if(q.get('mode')==='teacher'){$('teacherBar').classList.add('on');}
+    if(q.get('worksheet')==='1'){document.body.classList.add('worksheet');}}
+  $('btnTeacher').addEventListener('click',()=>$('teacherBar').classList.toggle('on'));
+  $('btnWorksheet').addEventListener('click',()=>{document.body.classList.toggle('worksheet');window.scrollTo(0,0);});
+  $('tRevealToggle').addEventListener('click',e=>{ST.revealLock=!ST.revealLock;
+    e.target.textContent='Answer/explanation lock: '+(ST.revealLock?'on':'off');
+    if(!ST.revealLock)$('verdict').classList.remove('locked');});
+  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',e=>{
+    const p=e.target.dataset.preset;
+    if(p==='exact'){setN2(2);$('n2').value=2;setH2(6);$('h2').value=6;}
+    if(p==='h2lim'){setN2(2);$('n2').value=2;setH2(3);$('h2').value=3;}
+    if(p==='n2lim'){setN2(3);$('n2').value=3;setH2(12);$('h2').value=12;}
+    S.reacted=true;render();}));
+  let big=false;$('tBig').addEventListener('click',()=>{big=!big;document.querySelector('.wrap').style.zoom=big?'1.4':'1';});
+  applyMode();
+  applyLevel();
+
+  document.querySelectorAll('.choice,.toggle').forEach(function(el){
+    if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0');
+    if(!el.hasAttribute('role')) el.setAttribute('role','button');
+    el.addEventListener('keydown',function(ev){
+      if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();el.click();}});
+  });
+
+  function render(){
+    const r=solve();
+    const before=[];
+    for(let i=0;i<S.n2;i++)before.push('N2');
+    for(let i=0;i<S.h2;i++)before.push('H2');
+    boxBefore.render(before,'Before: N₂ '+S.n2+' · H₂ '+S.h2);
+    let after;
+    if(S.reacted){
+      after=[];
+      for(let i=0;i<r.nh3;i++)after.push('NH3');
+      for(let i=0;i<r.leftN2;i++)after.push('N2');
+      for(let i=0;i<r.leftH2;i++)after.push('H2');
+      boxAfter.render(after,'After: NH₃ '+r.nh3+' · leftover N₂ '+r.leftN2+' / H₂ '+r.leftH2);
+    } else {
+      boxAfter.render(before,'Not reacted yet — press [Run reaction]');
+    }
+    $('lblBefore').textContent='N₂ '+S.n2+' / H₂ '+S.h2;
+    $('lblAfter').textContent=S.reacted?(r.nh3+' molecules'):'— (before reaction)';
+    const maxNH3=20;
+    $('barBefore').style.width=Math.min(100,(S.n2+S.h2)/40*100)+'%';
+    $('barAfter').style.width=Math.min(100,r.nh3/maxNH3*100)+'%';
+    $('missionZ').textContent=r.nh3;
+    window.__sim.metric={type:'N2left',value:S.reacted?r.leftN2:S.n2,unit:'molecules (N₂ in box)'};
+    if(!ST.predicted){$('zVal').textContent='NH₃ = —';$('zLab').textContent='Shown after you lock in a prediction';$('zMsg').textContent='The explanation opens after you lock in a prediction.';}
+    else{$('zVal').textContent='NH₃ = '+r.nh3;$('zLab').textContent='NH₃ formed = 2 × (N₂ that reacted) · N₂ left over '+(S.reacted?r.leftN2:'—');
+    let limTxt;
+    if(r.lim==='none')limTxt='One reactant is 0, so no reaction occurs.';
+    else if(r.lim==='both')limTxt='<b>Exact 1:3 mole ratio</b> — both reactants are used up together, with nothing left over.';
+    else if(r.lim==='H2')limTxt='<b>H₂ is the limiting reactant</b> — H₂÷3 = '+r.batchH2.toFixed(2)+' batches &lt; N₂÷1 = '+r.batchN2.toFixed(2)+' batches. '+r.leftN2+' N₂ <b>left over</b>.';
+    else limTxt='<b>N₂ is the limiting reactant</b> — N₂÷1 = '+r.batchN2.toFixed(2)+' batches &lt; H₂÷3 = '+r.batchH2.toFixed(2)+' batches. '+r.leftH2+' H₂ <b>left over</b>.';
+    $('zMsg').innerHTML=limTxt+' NH₃ formed = 2 × (N₂ that reacted, '+r.ext+') = '+r.nh3+'.';}
+    if(ST.predicted&&!ST.observed&&ST.moved&&S.reacted&&(r.lim==='N2'||r.lim==='H2')){ST.observed=true;updateProgress();}
+    if(ST.predicted&&ST.observed&&Object.keys(ST.checks).every(function(k){return ST.checks[k];})&&!ST.passed){ST.passed=true;updateProgress();}
+  }
+  function applyCond(c){S.reacted=!!c.r;$('n2').value=c.n2;$('h2').value=c.h2;setN2(c.n2);setH2(c.h2);render();}
+  window.__sim={S,solve,boxBefore,boxAfter,metric:null,ST,render,LEVELS,domain:{eqSteps:1},
+    pump(n){for(let i=0;i<n;i++){}render();},
+    seed(k){S.seed=(k>>>0)||1;applyCond({n2:2,h2:3,r:false});return k;},
+    initState(){applyCond({n2:2,h2:3,r:false});return {desc:'Default: N₂ 2 · H₂ 3, before reaction',reacted:false};},
+    missionState(){const m=CFG.mission.set;applyCond({n2:m.n2,h2:m.h2,r:true});return {n2:m.n2,h2:m.h2,reacted:true};},
+    nearStates(){return CFG.mission.near.map(c=>({label:c.label,apply(){applyCond({n2:c.n2,h2:c.h2,r:true});return {n2:c.n2,h2:c.h2,reacted:true};}})).concat([{label:'target numbers · before reaction',apply(){const m=CFG.mission.set;applyCond({n2:m.n2,h2:m.h2,r:false});return {n2:m.n2,h2:m.h2,reacted:false};}}]);},
+    judge(){return missionPass();},
+    key(n){return n==='pred'?'h2':(n==='q1'?'b':(n==='cloze'?CFG.cloze.ok.slice():(n==='q3'?q3Res().nh3:null)));},
+    leakTokens:{answer:['H₂ is the limiting reactant','H₂ is limiting','H₂ runs out first'],rationale:['decided by the coefficient ratio','H₂÷3 = 1 batch'],misconception:['N₂ has fewer molecules','because there are fewer N₂']}};
+  render();updateProgress();
+})();
+</script>
+<script>/[?&]mode=teacher(&|$)/.test(location.search)&&document.body.classList.add('mode-teacher')</script>
+<script id="gc-record">(function(){
+"use strict";
+var K='genchem.en.history',OK=/^https:\/\/(lab\.jinuchem\.com|jinu-kbs\.github\.io)$|^http:\/\/localhost(:\d+)?$/;
+function load(){try{return JSON.parse(localStorage.getItem(K))||[];}catch(e){return[];}}
+function put(a){try{localStorage.setItem(K,JSON.stringify(a));}catch(e){}}
+function up(m){try{if(window.parent!==window)window.parent.postMessage(m,'*');}catch(e){}}
+function merge(inc){var a=load(),s={},n=0;a.forEach(function(r){s[r.ts+'|'+r.sim]=1;});
+ inc.forEach(function(r){if(r&&r.ts&&r.sim&&!s[r.ts+'|'+r.sim]){a.push(r);s[r.ts+'|'+r.sim]=1;n++;}});put(a);return n;}
+var GC={
+ save:function(r){r.ts=r.ts||new Date().toISOString();var a=load();a.push(r);put(a);up({type:'genchem:record',v:1,rec:r});return r;},
+ all:load, clear:function(){put([]);},
+ export:function(){var p=null;try{p=JSON.parse(localStorage.getItem('genchem.en.path'));}catch(e){}
+  var b=new Blob([JSON.stringify({app:'genchem',v:2,exported:new Date().toISOString(),history:load(),path:p},null,2)],{type:'application/json'});
+  var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='genchem_en_brain.json';a.click();URL.revokeObjectURL(u);
+  try{localStorage.setItem('genchem.en.backupAt',new Date().toISOString());}catch(e){}},
+ import:function(t){try{var o=JSON.parse(t),i=(o&&o.history)||o||[];if(!Array.isArray(i))return -1;var n=merge(i);
+  if(o&&o.path){try{localStorage.setItem('genchem.en.path',JSON.stringify(o.path));}catch(e){}}return n;}catch(e){return -1;}},
+ _meta:function(){var p=location.pathname.split('/').filter(Boolean),f=decodeURIComponent(p[p.length-1]||''),d=decodeURIComponent(p[p.length-2]||'');
+  var c=(f.match(/^(\d+)/)||[])[1]||d.replace(/[^0-9]/g,''),q=function(n){var m=document.querySelector('meta[name="'+n+'"]');return m?m.content:'';};
+  return{sim:f,path:(/^ch\d\d$/.test(d)?d+'/':'')+f,chapter:c?+c:null,level:(new URLSearchParams(location.search)).get('level')||'standard',
+   standard:q('curriculum-2022'),engine:q('engine-class'),title:document.title};},
+ autoInit:function(){var done=false,m=GC._meta();up({type:'genchem:hello',v:1,sim:m.path});
+  var iv=setInterval(function(){var s=window.__sim,st=s&&s.ST;if(!st||!st.passed||done)return;done=true;var k=null;
+   try{k=typeof s.key==='function'?s.key('pred'):null;}catch(e){}
+   GC.save({ts:new Date().toISOString(),sim:m.sim,path:m.path,title:m.title,chapter:m.chapter,standard:m.standard,engine:m.engine,level:m.level,
+    predicted:st.prediction||null,predict_correct:(k==null||st.prediction==null)?null:String(st.prediction)===String(k),check:st.checks||{},completed:true});},1000);
+  setTimeout(function(){clearInterval(iv);},1800000);}
+};
+window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='genchem:restore'||!OK.test(e.origin)||!Array.isArray(d.history))return;
+ up({type:'genchem:restored',v:1,added:merge(d.history)});});
+window.GCRecord=GC;
+if(document.readyState!=='loading')GC.autoInit();else document.addEventListener('DOMContentLoaded',GC.autoInit);
+})();
+</script>
+<script id="lgc-inject">
+(function(){
+  "use strict";
+  if(document.getElementById('lgcPanel')) return;
+  var KEY='genchem.en.lgc';
+  function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function simId(){ return decodeURIComponent(location.pathname.split('/').pop()||''); }
+  function loadAll(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+  function saveAll(o){ try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){} }
+
+  var id=simId(), all=loadAll(), data=all[id]||{reason:'',cloze:'',problem:''};
+  window.__sim = window.__sim || {};
+  window.__sim.LGC = { data:data, save:function(){ all[id]=data; saveAll(all); } };
+
+  var stl=document.createElement('style');
+  stl.textContent='#lgcPanel{margin:22px auto;max-width:980px;border:1px solid rgba(127,127,127,.35);border-radius:12px;padding:16px 18px;font-family:inherit;line-height:1.6}'
+    +'#lgcPanel h3{font-size:16px;margin:0 0 4px}'
+    +'#lgcPanel .lgc-sub{font-size:12px;opacity:.7;margin-bottom:10px}'
+    +'#lgcPanel label{display:block;font-size:13px;font-weight:600;margin:12px 0 4px}'
+    +'#lgcPanel textarea{width:100%;min-height:54px;border:1px solid rgba(127,127,127,.4);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;background:transparent;color:inherit;resize:vertical}'
+    +'#lgcPanel .lgc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}'
+    +'#lgcPanel button{font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid rgba(127,127,127,.5);background:transparent;color:inherit;cursor:pointer}'
+    +'#lgcPanel button:hover{border-color:currentColor}'
+    +'#lgcPanel .lgc-out{margin-top:10px;font-size:13px;white-space:pre-wrap;opacity:.92}'
+    +'#lgcPanel .lgc-shared{margin-top:12px;border-top:1px dashed rgba(127,127,127,.4);padding-top:10px;font-size:13px}'
+    +'@media print{#lgcPanel{display:none}}';
+  document.head.appendChild(stl);
+
+  var sec=document.createElement('section');
+  sec.id='lgcPanel'; sec.setAttribute('aria-label','My own notes and questions');
+  sec.innerHTML=''
+    +'<h3>My own notes and questions <span style="font-weight:400;font-size:12px">(learner-generated · not graded)</span></h3>'
+    +'<div class="lgc-sub">Explain in your own words, make your own fill-in-the-blank question, and write a question for a classmate. This space is for deeper understanding.</div>'
+    +'<label for="lgcReason">1. Explain my prediction and conclusion in my own words (with reasons)</label>'
+    +'<textarea id="lgcReason"></textarea>'
+    +'<label for="lgcCloze">2. Hide key words in my explanation with [square brackets] to make a fill-in-the-blank question</label>'
+    +'<textarea id="lgcCloze" placeholder="e.g. As the concentration of [H⁺] increases, the [pH] decreases."></textarea>'
+    +'<div class="lgc-btns"><button type="button" id="lgcClozePrev">Preview my question</button></div>'
+    +'<div class="lgc-out" id="lgcClozeOut" aria-live="polite"></div>'
+    +'<label for="lgcProblem">3. A question for a classmate (include the answer)</label>'
+    +'<textarea id="lgcProblem"></textarea>'
+    +'<div class="lgc-btns">'
+    +'<button type="button" id="lgcExport">Save my notes (JSON file)</button>'
+    +'<button type="button" id="lgcShare">Copy share link</button>'
+    +'</div>'
+    +'<div class="lgc-shared" id="lgcShared" style="display:none"></div>';
+  var anchor=document.querySelector('footer');
+  if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(sec,anchor);
+  else document.body.appendChild(sec);
+
+  var $=function(i){return document.getElementById(i);};
+  $('lgcReason').value=data.reason||''; $('lgcCloze').value=data.cloze||''; $('lgcProblem').value=data.problem||'';
+  function persist(){ data.reason=$('lgcReason').value; data.cloze=$('lgcCloze').value; data.problem=$('lgcProblem').value; window.__sim.LGC.save(); }
+  $('lgcReason').addEventListener('input',persist);
+  $('lgcCloze').addEventListener('input',persist);
+  $('lgcProblem').addEventListener('input',persist);
+
+  $('lgcClozePrev').addEventListener('click',function(){
+    var t=$('lgcCloze').value||'', n=0, ans=[];
+    var q=t.replace(/\[([^\]]+)\]/g,function(m,w){ n++; ans.push(w); return '____('+n+')'; });
+    $('lgcClozeOut').textContent = n ? ('Question: '+q+'\nAnswer: '+ans.join(', ')) : 'Put key words in [square brackets] to turn them into blanks.';
+  });
+
+  function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(s){ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+
+  $('lgcExport').addEventListener('click',function(){
+    persist();
+    var payload={app:'genchem',kind:'lgc',sim:id,exported:new Date().toISOString(),lgc:data};
+    var b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u; a.download='genchem_lgc_'+id.replace(/\.html$/,'')+'.json'; a.click(); URL.revokeObjectURL(u);
+  });
+  $('lgcShare').addEventListener('click',function(){
+    persist();
+    var link=location.origin+location.pathname+location.search+'#share='+enc({sim:id,lgc:data});
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link).then(function(){ alert('Share link copied. Send it to a classmate.'); },
+        function(){ prompt('Copy the link below:', link); });
+    } else prompt('Copy the link below:', link);
+  });
+
+  (function(){
+    var m=(location.hash||'').match(/share=([^&]+)/); if(!m) return;
+    try{
+      var o=dec(m[1]), L=o.lgc||{}, html='<b>Shared by a classmate</b>';
+      if(L.reason)  html+='<div>· Explanation: '+esc(L.reason)+'</div>';
+      if(L.cloze)   html+='<div>· Fill-in-the-blank text: '+esc(L.cloze)+'</div>';
+      if(L.problem) html+='<div>· Question: '+esc(L.problem)+'</div>';
+      var sh=$('lgcShared'); sh.innerHTML=html; sh.style.display='block';
+    }catch(e){}
+  })();
+})();
+</script>
+<script id="gc-reflectguard">
+(function(){"use strict";
+function go(){var ta=document.getElementById('selfExplain'),b=document.getElementById('reflectBtn');if(!ta||!b)return;
+var ex=(ta.getAttribute('placeholder')||'').replace(/^(?:e\.g\.|example)\s*[:：]?\s*/i,''),fb=document.getElementById('fbReflect')||document.getElementById('fb2');if(!fb)return;
+ta.setAttribute('placeholder','In your own words: "I observed (what), and because (principle), (result)."');
+var n=0,last='',nm=function(x){return x.replace(/[\s.…,·"'()]/g,'');};
+b.addEventListener('click',function(e){var t=nm(ta.value),x=nm(ex);
+ if(x.length>8&&t.length>=8&&(x.indexOf(t)>=0||t.indexOf(x.slice(0,Math.ceil(x.length*.8)))>=0)){e.stopImmediatePropagation();
+  fb.textContent='This looks copied from the example. Recall what you observed and write it again in your own words.';fb.className='fb hint';last=fb.textContent;}},true);
+new MutationObserver(function(){var c=fb.className,t=fb.textContent;if(t===last)return;
+ if(/hint/.test(c)&&/^Not quite/.test(t)){n++;fb.textContent=n<2?'Not quite — write one sentence (40+ characters) that says what you observed and why, e.g. "Because …, …". If it is still not enough, you will get a clue.':t.replace(/^Not quite\s*—\s*/,'Clue: ');}
+ else if(/ok/.test(c)&&ex&&t.indexOf('Compare it with')<0)fb.textContent=t+' Compare it with the example explanation: '+ex;
+ last=fb.textContent;}).observe(fb,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});}
+if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);})();
+</script>
+<script id="gc-r2c112-tail">(function(){function kb(el){if(el.hasAttribute("tabindex"))return;el.setAttribute("tabindex","0");if(!el.getAttribute("role"))el.setAttribute("role","button");el.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();el.click();}});}
+function pr(el){el.setAttribute("aria-pressed",/(^|\s)(on|sel|active)(\s|$)/.test(el.className)?"true":"false");}
+function go(){document.querySelectorAll(".choice").forEach(kb);document.querySelectorAll(".choice,.toggle,.seg,[aria-pressed]").forEach(function(el){pr(el);new MutationObserver(function(){pr(el);}).observe(el,{attributes:true,attributeFilter:["class"]});});try{var L=window.__GC_LEVELS||(typeof LEVELS!=="undefined"?LEVELS:null);if(window.__sim&&L&&!window.__sim.LEVELS)window.__sim.LEVELS=L;}catch(e){}}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go();addEventListener("load",go);})();
+</script>
+<script id="gc-r2c112b">(function(){var live,t=null,last="";function L(){if(live)return live;live=document.getElementById("gcStatusLive");if(live)return live;live=document.createElement("p");live.id="gcStatusLive";live.setAttribute("role","status");live.setAttribute("aria-live","polite");live.className="no-print";live.style.cssText="margin:6px auto 0;max-width:1100px;padding:4px 16px;font-size:13px;opacity:.85";live.textContent="Changes you make are announced here.";var st=document.querySelector(".stage");if(st&&st.parentNode)st.parentNode.insertBefore(live,st.nextSibling);else document.body.appendChild(live);return live;}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",L);else L();
+function nm(el){var a=el.getAttribute("aria-label");if(a)return a;if(el.id){var l=document.querySelector("label[for=\""+el.id+"\"]");if(l)return l.textContent.trim();}var p=el.closest("label,.ctl,.row,.field");return p?p.textContent.replace(/\s+/g," ").trim().slice(0,24):(el.textContent||"").trim().slice(0,24);}
+function say(el){var v=el.tagName==="SELECT"?(el.options[el.selectedIndex]||{}).text:(el.type==="range"||el.type==="number")?el.value:"";var x=(el.classList.contains("choice")?"Selected: "+(el.textContent||"").trim().slice(0,30):(nm(el)+(v?" "+v:""))).trim();var m=window.__sim&&window.__sim.metric;if(document.body.classList.contains("predicted")&&m&&m.value!=null&&isFinite(+m.value))x+=" · result "+(+(+m.value).toPrecision(3))+(m.unit?" "+m.unit:"");if(x&&x!==last){last=x;L().textContent=x;}}
+function on(e){var el=e.target;if(!el||el.closest("#lgcPanel,.teacher-only,.ws"))return;if(e.type!=="click"&&!/^(range|number|checkbox|radio|select-one)$/.test(el.type||""))return;if(e.type==="click"){el=el.closest(".toggle,.seg,.choice,[aria-pressed]");if(!el||el.closest("#predChoices,#entryChoices"))return;}clearTimeout(t);t=setTimeout(function(){say(el);},400);}
+document.addEventListener("input",on,true);document.addEventListener("change",on,true);document.addEventListener("click",on,true);})();
+</script>
+</body>
+</html>

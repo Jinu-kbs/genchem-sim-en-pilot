@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="sim-tier" content="core">
+<title>Polyprotic Acids: Stepwise Ionization and Species Fractions of Phosphoric Acid · Simulation (self-directed learning · teacher edition)</title>
+<meta name="description" content="Change the pH and calculate the exact species fractions (α) of phosphoric acid and other polyprotic acids, and solve the pH of an acid solution from the charge balance.">
+<meta name="curriculum-univ" content="General Chemistry · weak acids / polyprotic acids / stepwise ionization and species fractions / pH of a polyprotic acid solution (exact charge balance)">
+<meta name="curriculum-2022" content="General Chemistry">
+<meta name="school-level" content="University general chemistry">
+<meta name="engine-class" content="E2-equation-driven">
+<meta name="misconception-id" content="MC-poly-01: at pH 7.21, phosphoric acid exists mostly as PO₄³⁻ / MC-poly-02: a diprotic acid gives two H⁺, so [H⁺] doubles">
+<style>
+:root{--ink:#0B0F17;--ink-700:#1A2030;--ink-600:#222a3d;--ink-400:#8C98B3;
+--paper:#F4F1EA;--paper-2:#E8E3D6;--accent:#A7BCEC;--accent-2:#E8C275;
+--warn:#E36B5B;--good:#7FB98A;
+--font-serif:Georgia,'Times New Roman',serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+--font-sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--ink);color:var(--paper);font-family:var(--font-sans);min-height:100vh;word-break:keep-all;overflow-wrap:break-word}
+body{padding:40px 28px 80px;line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto}
+header{border-bottom:1px solid var(--ink-700);padding-bottom:26px;margin-bottom:24px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:5px;color:var(--accent);text-transform:uppercase}
+h1{font-family:var(--font-serif);font-weight:600;letter-spacing:-1.2px;font-size:44px;margin-top:14px;line-height:1.08}
+h1 em{color:var(--accent-2);font-style:normal}
+.lede{font-family:var(--font-serif);font-size:18px;color:var(--ink-400);margin-top:16px;max-width:760px}
+.card{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:20px;margin-top:20px}
+.kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.kicker .num{background:#2a3350;color:var(--accent-2);border-radius:6px;padding:2px 8px}
+.lo-goals{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.lo-goals .g{display:flex;gap:10px;font-size:15px;color:var(--paper-2)}
+.lo-goals .chk{width:18px;height:18px;border:1.5px solid var(--ink-400);border-radius:5px;flex:0 0 auto;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink)}
+.lo-goals .g.done .chk{background:var(--good);border-color:var(--good)} .lo-goals .g.done .chk::after{content:"✓"}
+.progress{height:12px;border-radius:7px;background:#10162260;border:1px solid #2a3144;overflow:hidden}
+.progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5E6B85,var(--accent-2));transition:width .4s}
+.progress-lab{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px;text-align:right}
+.stage{display:grid;grid-template-columns:0.8fr 1.2fr;gap:20px;margin-top:8px}
+.box{background:var(--ink-700);border:1px solid #2a3144;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.box h2{font-family:var(--font-serif);font-size:20px;color:var(--accent-2)}
+canvas{width:100%;height:auto;display:block;background:#0d1320;border:1px solid #2a3144;border-radius:10px}
+.ph-read{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+.ph-read b{color:var(--paper);font-size:20px}
+.choices{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+.choice{font-size:14px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:10px 16px;cursor:pointer}
+.choice:hover{border-color:var(--accent)} .choice.sel{background:#2a3350;border-color:var(--accent-2)}
+.conf-row{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-bottom:12px}
+.conf-row input{flex:1;accent-color:var(--accent-2)}
+.gate-msg{font-size:14px;margin-top:8px;min-height:1.4em} .gate-msg.refute{color:var(--warn)} .gate-msg.hit{color:var(--good)}
+.verdict{margin-top:20px;padding:20px 22px;border-radius:14px;border:1px solid #2a3144;background:#0d1320;transition:filter .3s}
+.verdict.locked{filter:blur(7px);pointer-events:none}
+.vwrap{position:relative} .lockbadge{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;color:var(--accent)}
+.verdict.locked + .lockbadge{display:flex}
+.verdict .big{font-family:var(--font-serif);font-size:30px;color:var(--accent-2)}
+.verdict p{font-family:var(--font-serif);font-size:16px;color:var(--paper-2);margin-top:10px;min-height:2.4em} .verdict p b{color:var(--accent-2)}
+.panel{margin-top:20px;background:linear-gradient(180deg,#0d1320,#0B0F17);border:1px solid #2a3144;border-radius:16px;padding:22px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.ctrl label{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:8px}
+.ctrl .val{color:var(--paper);font-weight:600}
+input[type=range]{width:100%;accent-color:var(--accent-2);cursor:pointer}
+.ctrl .ends{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:4px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button,.toggle{font-family:var(--font-mono);font-size:12px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:9px 14px;cursor:pointer}
+button:hover,.toggle:hover{border-color:var(--accent)} .toggle.on{background:#2a3350;border-color:var(--accent-2)}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+.note{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:22px}
+.note h3{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+.note p{font-size:14px;color:var(--paper-2)} .note .eq{font-family:var(--font-serif);font-style:italic;font-size:18px;text-align:center;margin:14px 0 6px;padding:12px;background:#0d1320;border-radius:10px;border:1px solid #2a3144}
+.q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed #2a3144} .q:last-child{border-bottom:none;margin-bottom:0}
+.q .qtext{font-size:15px;margin-bottom:10px} .q .qtext .qn{color:var(--accent-2);font-family:var(--font-mono);margin-right:8px}
+.fb{font-size:13px;margin-top:8px;min-height:1.2em} .fb.ok{color:var(--good)} .fb.no{color:var(--warn)} .fb.hint{color:var(--accent)}
+.num-in{font-family:var(--font-mono);background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:8px 10px;width:120px}
+.mission{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px} .mission b{color:var(--accent-2)}
+details.hintbox summary{font-family:var(--font-mono);font-size:12px;color:var(--accent);cursor:pointer} details.hintbox p{font-size:13px;color:var(--ink-400);margin-top:6px}
+.reflect textarea{width:100%;min-height:64px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical}
+.self-check{display:flex;flex-direction:column;gap:8px;margin:12px 0} .self-check label{display:flex;gap:10px;font-size:14px;color:var(--paper-2);cursor:pointer} .self-check input{margin-top:4px;accent-color:var(--good)}
+.stamp{display:none;margin-top:14px;text-align:center;font-family:var(--font-serif);font-size:22px;color:var(--good);border:2px dashed var(--good);border-radius:12px;padding:14px} .stamp.on{display:block}
+.teacher{margin-top:24px;border-top:2px solid #2a3144;padding-top:6px}
+details.tguide summary{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);cursor:pointer;padding:12px 0}
+.tguide-body{background:var(--ink-700);border:1px solid #2a3144;border-radius:12px;padding:20px;font-size:14px;color:var(--paper-2)} .tguide-body h4{font-family:var(--font-mono);font-size:12px;color:var(--accent);margin:14px 0 6px} .tguide-body ul{margin-left:18px}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0} .badge{font-family:var(--font-mono);font-size:12px;background:#0d1320;border:1px solid #2a3144;border-radius:20px;padding:5px 12px;color:var(--paper-2)} .badge.verify{color:var(--good);border-color:var(--good)}
+.teacher-bar{display:none;background:#2a3350;border:1px solid var(--accent);border-radius:12px;padding:14px;margin-top:18px} .teacher-bar.on{display:block} .teacher-bar .tb-title{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);margin-bottom:10px}
+footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--ink-700);font-family:var(--font-mono);font-size:12px;color:var(--ink-400);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px} footer b{color:var(--paper-2);font-weight:500}
+@media(max-width:780px){h1{font-size:32px}.stage{grid-template-columns:1fr}.notes{grid-template-columns:1fr}}
+@media print{body{background:#fff;color:#000}.no-print{display:none!important}}
+body.worksheet .no-print{display:none} body.worksheet{background:#fff;color:#111} body.worksheet .ws-only{display:block}
+.ws-only{display:none} .ws{border:1px solid #999;border-radius:8px;padding:16px;margin-top:14px;color:#111} .ws .line{border-bottom:1px solid #bbb;height:28px;margin:8px 0}
+
+
+body:not(.mode-teacher) .teacher-only{display:none!important}
+
+
+html:has(body.worksheet){background:#fff!important}
+body.worksheet *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#111!important;border-color:#888!important;box-shadow:none!important;text-shadow:none!important}
+body.worksheet canvas{filter:grayscale(1) contrast(1.1)}
+@media print{html{background:#fff!important}
+body *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#000!important;border-color:#666!important;box-shadow:none!important;text-shadow:none!important}
+canvas{filter:grayscale(1)}}
+
+
+
+.sp-tab{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}.sp-tab td,.sp-tab th{border-bottom:1px solid #2a3144;padding:4px 6px;text-align:left}
+.abar{height:10px;border:1px solid #313a52;border-radius:5px;background:#0d1320;overflow:hidden}.abar>span{display:block;height:100%}
+.ab0{background:var(--accent)}.ab1{background:repeating-linear-gradient(45deg,var(--accent-2) 0 4px,#0d1320 4px 7px)}.ab2{background:repeating-linear-gradient(90deg,var(--good) 0 3px,#0d1320 3px 6px)}.ab3{background:repeating-linear-gradient(0deg,var(--warn) 0 3px,#0d1320 3px 6px)}
+.katab{font-family:var(--font-mono);font-size:12px;color:var(--paper-2)}
+.rd{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+.rd b{color:var(--paper);font-size:15px}
+.cond{font-size:14px;color:var(--paper-2)} .cond b{color:var(--accent-2)}
+.srcbar{height:14px;border:1px solid #313a52;border-radius:7px;overflow:hidden;display:flex;background:#0d1320}
+.srcbar>span{display:block;height:100%} .srcbar .s-sol{background:var(--accent)} .srcbar .s-w{background:repeating-linear-gradient(45deg,var(--accent-2) 0 4px,#0d1320 4px 7px)}
+.srclab{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+canvas:focus{outline:2px solid var(--accent-2);outline-offset:2px}
+.limit{border-left:3px solid var(--accent-2)} .limit p{font-size:13px;color:var(--paper-2)}
+.small{font-size:12px;color:var(--ink-400)}
+.meta-row{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:10px}
+.ws svg{max-width:none;width:100%;display:block;margin:6px 0}
+input[type=range]{min-height:24px}
+.ws-legend{font-size:12px;margin:2px 0 8px}
+button,.choice,input.num-in{min-height:40px} .choice{display:inline-flex;align-items:center}
+
+body:not(.predicted) .post-pred{display:none!important}
+body.predicted .pp-wait{display:none!important}
+.pp-wait{font-size:13px;border:1px dashed #556;border-radius:10px;padding:10px 12px}
+.verdict.locked{display:none!important}
+.verdict.locked + .lockbadge{position:static!important;display:block!important;padding:14px 16px;border:1px dashed #556;border-radius:12px;text-align:center;background:transparent}
+.sum3 ol{margin:4px 0 0 20px;font-size:14px;line-height:1.75}
+.ws-key{margin-top:12px;border-top:1px dashed #777;padding-top:8px;font-size:13px}
+body.worksheet .stage,body.worksheet canvas,body.worksheet .notes,body.worksheet .panel,body.worksheet .vwrap,body.worksheet .teacher-bar,body.worksheet #lgcPanel,body.worksheet .limit,body.worksheet .no-print{display:none!important}
+body.worksheet .ws,body.worksheet .ws-only{display:block!important}
+body.worksheet .ws svg *{fill:none!important;stroke:#000!important}
+body.worksheet .ws svg text{fill:#000!important;stroke:none!important}
+@media print{
+.stage,canvas,.notes,.panel,.vwrap,.teacher-bar,#lgcPanel,.limit,.no-print,#predCard,.lockbadge{display:none!important}
+.ws,.ws-only{display:block!important}
+body:not(.mode-teacher) .teacher-only{display:none!important}
+.ws svg *{fill:none!important;stroke:#000!important}
+.ws svg text{fill:#000!important;stroke:none!important}
+}
+span.pp-wait{border:0;padding:0}
+.kicker,.ctrl label,.ends,.ctrl .ends,.progress-lab,.small,.mission,.fb,details.hintbox summary,.rd,.srclab,.meta-row,.badge,footer,.conf-row,.ph-read,.tguide-body h4{font-size:12px}
+</style>
+<script id="gc-wsplot">
+(G=>{
+const Z=Math,B=Z.abs,R=v=>Z.round(v*10)/10,L=Z.log10,K=' fill="#000" stroke="none"',N=' fill="none" stroke="#000"',J=JSON.stringify,
+E=s=>(''+s).replace(/[&<>\x22\x27]/g,c=>'&#'+c.charCodeAt(0)+';'),A=(k,v)=>' '+k+'="'+v+'"',XY=(x,y)=>A('x',x)+A('y',y),
+DA={dash:'6 4',dot:'1.5 3',dashdot:'7 3 1.5 3',longdash:'12 4',dashdotdot:'7 3 1.5 3 1.5 3'},Q=[],W='<g class="ws-key teacher-only">',PD='<path d="M',
+fin=y=>typeof y=='number'&&isFinite(y),H=(a,b)=>Z.hypot(a[0]-b[0],a[1]-b[1]),
+ax=(a,p,q)=>{const l=a.log,f=v=>l?L(v):v,lo=f(a.min),hi=f(a.max);return{f:v=>p+(f(v)-lo)/(hi-lo)*(q-p),i:z=>{const t=lo+(z-p)/(q-p)*(hi-lo);return l?10**t:t}}},
+tk=a=>{let t=a.ticks,r=[],i;if(t&&t.map)return t;
+if(a.log){for(i=Z.ceil(L(a.min));i<=L(a.max)+1e-9;i++)r.push(10**i);return r}
+t=t||5;for(i=0;i<=t;i++)r.push(a.min+(a.max-a.min)*i/t);return r},
+fa=(a,v)=>{const e=Z.round(L(v));return(a.fmt||a.log&&'sup')=='sup'&&10**e==v?(e?e-1?'10'+(''+e).replace(/./g,c=>'⁰¹²³⁴⁵⁶⁷⁸⁹⁻'['0123456789-'.indexOf(c)]):'10':'1'):
+B(v)>=1e4||v&&B(v)<1e-3?v.toExponential(0):''+ +v.toPrecision(4)},
+tx=(x,y,s,a,z)=>'<text'+XY(x,y)+' font-size="'+(z||9)+'"'+(a||' text-anchor="middle"')+K+'>'+E(s)+'</text>',
+frame=o=>{const w=o.w||320,h=o.h||200,p=o.pad??34,b=h-p,X=ax(o.x,p,w-p),Y=ax(o.y,b,p),c=({min,max,log})=>({min,max,log:!!log});
+let s='<g'+N+'>'+PD+p+' '+p+'V'+b+'H'+(w-p)+'"/>';
+tk(o.x).map(v=>{const x=R(X.f(v));s+=PD+x+' '+b+'v4"/>'+tx(x,b+14,fa(o.x,v))});
+tk(o.y).map(v=>{const y=R(Y.f(v));s+=PD+p+' '+y+'h-4"/>'+tx(p-6,y+3,fa(o.y,v),' text-anchor="end"')});
+if(o.x.label)s+=tx(w/2,h-4,o.x.label);
+if(o.y.label)s+=tx(10,h/2,o.y.label,' text-anchor="middle" transform="rotate(-90 10 '+h/2+')"');
+return{svg:s+'</g>',X:X.f,Y:Y.f,iX:X.i,o:{w,h,pad:p,x:c(o.x),y:c(o.y)}}},
+sample=(f,x0,x1,o={})=>{const n=o.n||160,r=o.fr,g=o.log||r&&r.o.x.log,D=o.depth??3,Y=r&&r.o.y,
+ok=y=>fin(y)&&(!r||o.clip==0||(y-Y.min)*(y-Y.max)<=0),
+pt=z=>{const x=r?r.iX(z):z;return[x,f(x),z]},a=g?L(x0):x0,b=g?L(x1):x1,P=[],S=[];let C=[],q,i,t;
+for(i=0;i<=n;i++){t=a+(b-a)*i/n;t=g?10**t:t;P.push(pt(r?R(r.X(t)):t))}
+const sub=(p,q,d)=>{if(!d||!r||!ok(p[1])||!ok(q[1])||B(r.Y(p[1])-r.Y(q[1]))<=2)return[];
+const m=R((p[2]+q[2])/2);if(m==p[2]||m==q[2])return[];const c=pt(m);return[...sub(p,c,d-1),c,...sub(c,q,d-1)]};
+q=[P[0]];for(i=1;i<P.length;i++)if(P[i][2]!=P[i-1][2])q.push(...sub(P[i-1],P[i],D),P[i]);
+q.map(p=>{if(ok(p[1]))C.push([p[0],p[1]]);else if(C[0]){S.push(C);C=[]}});
+if(C[0])S.push(C);return S},
+ln=o=>{const d=o.dash&&o.dash.map?o.dash.join(' '):DA[o.dash];return N+A('stroke-width',o.width||1.4)+(d?A('stroke-dasharray',d):'')},
+polyline=(S,r,o={})=>S.filter(g=>g[1]).map(g=>'<polyline'+ln(o)+(o.fn?A('data-fn',E(o.fn)):'')+(o.args?A('data-args',E(J(o.args))):'')+(o.id?A('data-series',E(o.id)):'')+
+A('data-n',g.length)+A('data-x0',g[0][0])+A('data-x1',g.at(-1)[0])+A('points',g.map(p=>R(r.X(p[0]))+','+R(r.Y(p[1]))).join(' '))+'/>').join(''),
+mk=(X,Y,h,f)=>{const a=(f?' fill="#000" stroke="#000"':N)+' stroke-width="1.2"/>',P=v=>'<polygon'+A('points',v.map(([u,w])=>X+u+','+(Y+w)).join(' '))+a;
+return h=='square'?'<rect'+XY(X-4,Y-4)+' width="8" height="8"'+a:h=='triangle'?P([[0,-5],[5,4],[-5,4]]):h=='tdown'?P([[0,5],[5,-4],[-5,-4]]):
+h=='diamond'?P([[0,-5],[5,0],[0,5],[-5,0]]):h=='cross'?PD+(X-4)+' '+(Y-4)+'l8 8m0-8l-8 8"'+N+'/>':'<circle'+A('cx',X)+A('cy',Y)+' r="4"'+a},
+mark=(x,y,h,r,f)=>mk(R(r.X(x)),R(r.Y(y)),h,f),
+svg=(parts,o={})=>{const r=o.frame,{w=320,h=200}=r?r.o:o;let b=[].concat(parts).join('');if(o.answer)b=W+b+'</g>';
+return'<svg'+A('viewBox','0 0 '+w+' '+(h+(o.eh||0)))+' width="100%" role="img"'+(r?" data-frame='"+J(r.o)+"'":'')+
+'><title>'+E(o.title||'Graph')+'</title><desc>'+E(o.desc||'')+'</desc>'+b+'</svg>'},
+fn=p=>p.call?p:(''+p).split('.').reduce((f,k)=>k&&f!=null?f[k]:f,G),
+nm=o=>o.s.label||o.s.id||o.k,
+lay=sp=>{const r=frame(sp.frame),it=[],pl=[];
+(sp.series||[{}]).map((s,k)=>{const p=s.fn||sp.fn,f=fn(p),x=s.x||sp.x||[r.o.x.min,r.o.x.max],F=v=>f(v,...(s.args||[])),m=s.marks,mx=[];if(!f?.call)return;
+const g=sample(F,x[0],x[1],{fr:r,n:s.n}),a=g.flatMap(c=>c.map(q=>[r.X(q[0]),r.Y(q[1])]));let n=0,e;
+if(m&&m.xs)m.xs.map(v=>fin(F(v))&&mx.push([r.X(v),r.Y(F(v))]));
+else if(m){a.map((q,i)=>i&&(n+=H(q,a[i-1])));e=Z.min(m.every||60,n/3.5);n=e/2;a.map((q,i)=>{if(i&&(n-=H(q,a[i-1]))<=0){mx.push(q);n+=e}})}
+it.push({s,k,p,g,a,m:mx})});
+it.map(o=>{const a=o.a,la=o.s.labelAt??'auto';if(!o.s.label||!a[0])return;let b=a.at(-1),c=-1;
+if(la=='auto')for(let j=1;j<9;j++){const q=a[Z.floor(a.length*j/9.5)];let d=1e9;
+it.map(u=>u!=o&&u.a.map((v,i)=>i&&(u.a[i-1][0]-q[0])*(v[0]-q[0])<=0&&(d=Z.min(d,B(v[1]-q[1])))));pl.map(l=>d=Z.min(d,B(l.y-q[1])+B(l.x-q[0])/4));if(d>c){c=d;b=q}}
+else if(la!='end'){const X=r.X(la);b=a.reduce((u,q)=>B(q[0]-X)<B(u[0]-X)?q:u)}
+const w=(''+o.s.label).length*5.6,l=c>=0&&c<10;pl.push(o.b={x:R(Z.min(b[0]+4,r.o.w-w-2)),y:R(b[1]-(l?16:5)),w,q:b,l})});
+return{r,it}},
+draw=(el,sp)=>{const{r,it}=lay(sp),parts=[r.svg],an=[],lg=sp.legend,v=it.some(o=>o.s.label||o.s.marks||o.s.id);let eh=0;
+it.map(o=>{const s=o.s,l=o.b;let g=polyline(o.g,r,{dash:s.dash,width:s.width,fn:!o.p.call&&o.p,args:s.args,id:s.id||v&&'s'+o.k});
+o.m.map(q=>g+=mk(R(q[0]),R(q[1]),s.marks.shape,s.marks.filled));
+if(l)g+=(l.l?PD+R(l.q[0])+' '+R(l.q[1])+'L'+l.x+' '+(l.y+3)+'"'+N+' stroke-width=".6"/>':'')+tx(l.x,l.y,s.label,' text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="3"',10).replace(K,' fill="#000"');an.push(g)});
+if(lg){const c=lg.cols||2,w=(r.o.w-20)/c;it.map((o,i)=>{const x=10+i%c*w,y=r.o.h+12+Z.floor(i/c)*14,s=o.s;
+an.push(PD+x+' '+y+'h24"'+ln(s)+'/>'+(s.marks?mk(x+12,y,s.marks.shape,s.marks.filled):'')+tx(x+28,y+3,nm(o),' text-anchor="start"'))});eh=Z.ceil(it.length/c)*14+8}
+(sp.marks||[]).map(m=>parts.push(mark(m.x,m.y,m.shape,r,m.filled)));
+if(sp.answer)parts.push(W+an.join('')+'</g>');
+return el.innerHTML=svg(parts,{frame:r,title:sp.title,desc:sp.desc,eh})},
+lint=sp=>{const{r,it}=lay(sp),e=[],u={},b=it.filter(o=>o.b),p=(c,m)=>c&&e.push(m);
+p(it[8],it.length+' series (9 or more series)');
+if(it[1])it.map(o=>{const s=o.s,k=ln(s)+(s.marks?s.marks.shape+!!s.marks.filled:'');p(u[k],'duplicate dash/marker '+u[k]+'/'+nm(o));u[k]=nm(o);p(o.m.length<3,'fewer than 3 markers '+nm(o))});
+b.map((a,i)=>b.slice(i+1).map(c=>p(B(a.b.y-c.b.y)<10&&a.b.x<c.b.x+c.b.w&&c.b.x<a.b.x+a.b.w,'label overlap '+nm(a)+'/'+nm(c))));
+p(r.o.w<.6*(sp.pageW||680),'width '+r.o.w+'px < 60% of page');return e},
+render=(el,sp)=>{if(typeof el=='string')el=document.querySelector(el);if(!el)return'';Q.push([el,sp]);
+if(!Q[1]&&G.addEventListener)G.addEventListener('beforeprint',()=>Q.map(q=>draw(...q)));
+return/[?&]worksheet=1/.test(G.location?.search)||sp.now?draw(el,sp):''};
+G.GCPlot={frame:frame,sample:sample,polyline:polyline,mark:mark,svg:svg,render:render,draw:draw,lint:lint,specs:()=>Q.map(q=>q[1]),version:2};
+})(globalThis);
+</script>
+<style id="r4fix"> .sr-only{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}body.predicted .pre-pred{display:none!important}a{color:var(--accent)}a:visited{color:var(--accent-2)}#lgcPanel .lgc-sub,#lgcPanel .lgc-out{opacity:1!important}@media print{a,a:visited{color:#000}}</style>
+<script id="gc-announce">
+(G=>{
+const D=G.document,T=()=>Date.now();
+const st={el:null,delay:400,gap:5000,win:1000,mode:'debounce',gate:null,pre:'',summary:null,timer:null,at:null,pend:null,last:null,lastW:-1e9,ui:-1e9,count:0};
+function ensure(id){if(st.el&&st.el.isConnected!==false)return st.el;let el=D&&D.getElementById(id||'statusLive');
+  if(!el&&D){el=D.createElement('div');el.id=id||'statusLive';(D.body||D.documentElement).appendChild(el);
+    el.setAttribute('style','position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0');}
+  if(el){el.setAttribute('role','status');el.setAttribute('aria-live','polite');el.setAttribute('aria-atomic','true');}
+  st.el=el;return el;}
+function write(t){if(typeof t==='function')t=t();t=String(t==null?'':t).replace(/\s+/g,' ').trim();if(!t||t===st.last)return false;
+  const el=ensure();if(!el)return false;el.textContent=t;st.last=t;st.lastW=T();st.count++;return true;}
+const open=()=>!st.gate||!!st.gate();
+function input(){st.ui=T();}
+if(D&&D.addEventListener)['input','change','click','keydown','pointerdown'].forEach(e=>D.addEventListener(e,input,true));
+function flush(){st.at=null;const w=st.lastW+st.gap-T();if(w>0){st.at=setTimeout(flush,w);return;}const t=st.pend;st.pend=null;if(t!=null&&open())write(t);}
+function auto(t){const n=T();if(st.ui>st.lastW&&n-st.ui<=3000&&n-st.lastW>=1000){clearTimeout(st.at);st.at=null;st.pend=null;return write(t);}
+  st.pend=t;if(st.at)return true;if(n-st.lastW>=st.gap){st.pend=null;return write(t);}st.at=setTimeout(flush,st.lastW+st.gap-n);return true;}
+function route(t,o){if(o&&o.now){clearTimeout(st.timer);return write(t);}
+  if(T()-st.ui<=st.win){clearTimeout(st.timer);st.timer=setTimeout(()=>{st.timer=null;if(open())write(t);},st.delay);return true;}return auto(t);}
+function attach(o){o=o||{};for(const k of ['delay','gap','win','mode','gate','pre','summary'])if(o[k]!=null)st[k]=o[k];
+  ensure(o.id);if(!open()&&st.pre)write(st.pre);return GCAnnounce;}
+function say(text,o){o=o||{};if(st.mode==='block'&&!o.force)return false;if(!open())return st.pre?write(st.pre):false;return route(text,o);}
+function update(){if(!st.summary)return false;return say(()=>st.summary());}
+function blockEnd(text,o){if(!open())return false;return route(text,o);}
+function reset(){clearTimeout(st.timer);clearTimeout(st.at);st.at=null;st.pend=null;st.last=null;if(st.el)st.el.textContent='';if(!open()&&st.pre)write(st.pre);}
+const GCAnnounce={version:2,attach,say,update,blockEnd,reset,input,get last(){return st.last;},get count(){return st.count;},get mode(){return st.mode;}};
+G.GCAnnounce=GCAnnounce;
+})(typeof window!=='undefined'?window:globalThis);
+</script>
+</head>
+<body>
+<script>
+window.R2={
+unlock:function(){document.body.classList.add('predicted');
+document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.remove('locked');v.removeAttribute('aria-hidden');v.removeAttribute('inert');v.inert=false;});},
+relock:function(){document.body.classList.remove('predicted');
+document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.add('locked');v.setAttribute('aria-hidden','true');v.setAttribute('inert','');});},
+on:function(){return document.body.classList.contains('predicted');}
+};
+(function(){var was=false;
+window.addEventListener('beforeprint',function(){was=document.body.classList.contains('worksheet');document.body.classList.add('worksheet');});
+window.addEventListener('afterprint',function(){if(!was)document.body.classList.remove('worksheet');});})();
+(function(){
+document.addEventListener('DOMContentLoaded',function(){
+document.querySelectorAll('.choice,.toggle').forEach(function(el){
+if(el.hasAttribute('tabindex')||el.tagName==='A'||el.tagName==='BUTTON')return;
+el.setAttribute('tabindex','0');if(!el.hasAttribute('role'))el.setAttribute('role','button');
+el.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();el.click();}});});});})();
+</script>
+<div class="wrap">
+
+<header>
+<div class="eyebrow">General Chemistry · Acid–Base Equilibria · POLYPROTIC ACIDS</div>
+<h1>Stepwise ionization of phosphoric acid and<br><em>species fractions</em></h1>
+<p class="lede">An acid such as phosphoric acid (H₃PO₄) can give away more than one proton. Which species dominates at each pH? Change the pH yourself and calculate the fraction (α) of the four species
+with exact equations. You will also solve the pH of the acid dissolved in water from the charge balance. Predict first.</p>
+</header>
+
+<div class="card no-print">
+<div class="kicker"><span class="num">Learning objectives</span> After this activity you can …</div>
+<div class="lo-goals">
+<div class="g" id="lo1"><span class="chk"></span><span>write the <b>stepwise ionization</b> of a polyprotic acid as equations with Ka1, Ka2 and Ka3.</span></div>
+<div class="g" id="lo2"><span class="chk"></span><span><span class="pre-pred">use data to decide how the <b>dominant species</b> and the fraction of each species change with pH.</span><span class="post-pred">compare pH with pKa to decide the <b>dominant species</b> and the fraction of each species.</span></span></div>
+<div class="g" id="lo3"><span class="chk"></span><span>explain why, when the Ka values differ greatly, you may <b>calculate the pH from the first step only</b>.</span></div>
+</div>
+<div class="progress"><span id="prog"></span></div>
+<div class="progress-lab" id="progLab">Progress 0% · Predict → Observe → Check → Complete</div>
+<div class="meta-row"><span>Estimated time 20–25 min</span><span>Prerequisites: Ka of a weak acid · pH = −log[H⁺] · pKa = −log Ka</span><span id="lvlNote">—</span></div>
+<div class="btns no-print" style="margin-top:12px;align-items:center">
+<span class="lvl-lab" style="font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--ink-400)">Level</span>
+<a class="toggle" id="lvlBasic" data-lvl="basic" href="?level=basic">Basic</a>
+<a class="toggle" id="lvlStandard" data-lvl="standard" href="?level=standard">Standard</a>
+<a class="toggle" id="lvlAdvanced" data-lvl="advanced" href="?level=advanced">Advanced</a>
+</div>
+</div>
+
+<div class="card sum3" id="sum3">
+<div class="kicker"><span class="num">Key summary</span> Three key ideas</div>
+<ol><li>A polyprotic acid gives away its protons one at a time, step by step. Each step has its own acid dissociation constant (Ka1, Ka2, Ka3).</li>
+<li>The species fraction α is the share of one species in the total acid concentration. The fractions of all species add up to 1.</li>
+<li><span class="pre-pred">When the pH changes, the position of each step's equilibrium changes, and so do the ratios between the species.</span><span class="post-pred">In each step, the concentration ratio of conjugate base to conjugate acid is set by the ratio of that step's Ka to [H⁺] (Ka = [H⁺][conjugate base]/[conjugate acid]).</span></li></ol>
+</div>
+
+<div class="stage">
+<div class="box">
+<h2>Solution conditions</h2>
+<div class="cond" id="condTxt">phosphoric acid H₃PO₄ · pH 1.00</div>
+<div class="katab" id="kaTab">Ka1 7.5×10⁻³ · Ka2 6.2×10⁻⁸ · Ka3 4.2×10⁻¹³</div>
+<div class="cond small" id="eqTxt">H₃PO₄ ⇌ H⁺ + H₂PO₄⁻ ⇌ … (stepwise ionization)</div>
+<div class="pp-wait">The fraction of each species and the dominant species are shown after you submit your prediction.</div>
+<div class="post-pred">
+<table class="sp-tab" id="spTab" aria-label="Table of species fractions"><tbody id="spBody"></tbody></table>
+<p class="cond" style="margin-top:8px">Dominant species: <b id="domNow">—</b></p>
+<p class="cond small" id="solTxt">—</p>
+</div>
+</div>
+<div class="box">
+<h2>Fraction vs pH (distribution curves)</h2>
+<div class="pp-wait">The species distribution curves are shown after you submit your prediction.</div>
+<div class="post-pred">
+<canvas id="cvCurve" width="460" height="300" tabindex="0" role="application" aria-roledescription="interactive fraction–pH graph" aria-describedby="cvHelp" aria-label="Graph of species fraction vs pH"></canvas><span class="sr-only" id="cvHelp">Focus the graph. The right or up arrow raises the pH by 0.05; the left or down arrow lowers it by 0.05. The pH slider does the same.</span>
+<div class="ph-read"><span id="legendTxt">solid → dashed → dotted → dash-dot: species that have lost more and more protons</span><span id="curLab">—</span></div>
+</div>
+</div>
+</div>
+
+<div class="card no-print" id="entryCard">
+<div class="kicker"><span class="num">Entry check</span> Before you start — prerequisites and key terms</div>
+<p style="font-size:15px;margin-bottom:6px">Which statement correctly describes a polyprotic acid?</p>
+<div class="choices" id="entryChoices" role="group" aria-label="Entry check">
+<span class="choice" data-v="oxy">An acid with several oxygen atoms</span><span class="choice" data-v="poly">An acid with two or more H atoms that can ionize</span><span class="choice" data-v="strong">A strong acid that ionizes completely in water</span></div>
+<div class="fb" id="fbEntry" aria-live="polite"></div>
+<details class="hintbox" id="entryGloss"><summary>Key terms</summary>
+<p><b>Stepwise ionization</b>: H₃PO₄ ⇌ H⁺ + H₂PO₄⁻ (Ka1), H₂PO₄⁻ ⇌ H⁺ + HPO₄²⁻ (Ka2), HPO₄²⁻ ⇌ H⁺ + PO₄³⁻ (Ka3). ·
+<b>pKa</b> = −log Ka. · <b>Species fraction α</b>: concentration of one species ÷ total acid concentration (0 to 1). ·
+<b>Dominant species</b>: the species with the largest fraction at that pH. · <b>Charge balance</b>: total positive charge concentration = total negative charge concentration.</p></details>
+</div>
+
+<div class="card no-print" id="predCard">
+<div class="kicker"><span class="num">Predict</span> Think first, before you observe</div>
+<p style="font-size:15px;margin-bottom:6px">A phosphoric acid solution is held at pH <b>7.21</b> with a buffer (25 °C). In which form does the phosphoric acid mainly exist?</p>
+<div class="choices" id="predChoices" role="group" aria-label="Prediction">
+<span class="choice" data-v="po4">Mostly PO₄³⁻ — the pH is near neutral, so it has lost all its protons</span>
+<span class="choice" data-v="half">H₂PO₄⁻ and HPO₄²⁻ in nearly equal amounts — about half of the second protons have left</span>
+<span class="choice" data-v="h3">Mostly H₃PO₄ — it is a weak acid, so it hardly ionizes</span>
+<span class="choice" data-v="quarter">25% each of the four species — all three steps happen evenly</span>
+</div>
+<div class="conf-row"><span>Confidence</span><input type="range" id="conf" min="0" max="100" value="50" aria-label="Confidence"><span id="confLab">Medium</span></div>
+<button id="predSubmit">Lock in prediction</button>
+<div class="gate-msg" id="gateMsg" aria-live="polite"></div>
+</div>
+
+<div class="vwrap no-print">
+<div class="verdict locked" id="verdict" data-lock aria-hidden="true" inert>
+<div class="big" id="domBig">Dominant species —</div>
+<p id="domMsg">Change the pH and the type of acid.</p>
+</div>
+<div class="lockbadge">The explanation opens after you lock in a prediction</div>
+</div>
+
+<div class="panel no-print">
+<div class="controls">
+<div class="ctrl"><label>Polyprotic acid <span class="val" id="spLab">H₃PO₄</span></label>
+<div class="btns" id="spBtns" role="group" aria-label="Type of polyprotic acid"><span class="toggle on" data-sp="p" role="button" aria-pressed="true">phosphoric acid H₃PO₄</span><span class="toggle" data-sp="c" role="button" aria-pressed="false">carbonic acid H₂CO₃</span><span class="toggle" data-sp="o" role="button" aria-pressed="false">oxalic acid H₂C₂O₄</span><span class="toggle" data-sp="t" role="button" aria-pressed="false">citric acid H₃C₆H₅O₇</span></div></div>
+<div class="ctrl"><label for="ph">Solution pH (held by a buffer) <span class="val" id="phLab">1.00</span></label>
+<input type="range" id="ph" min="0" max="1400" value="100" step="1" aria-label="pH"><div class="ends"><span>0</span><span>14</span></div></div>
+<div class="ctrl"><label for="lc">Concentration C of the acid alone in water <span class="val" id="lcLab">0.10 M</span></label>
+<input type="range" id="lc" min="0" max="400" value="300" step="5" aria-label="log of acid concentration"><div class="ends"><span>10⁻⁴ M</span><span>1 M</span></div></div>
+<div class="ctrl"><label>Actions</label>
+<div class="btns"><button id="toSol">Go to the pH of this solution</button><button id="auto">Scan pH automatically</button><button id="reset">Reset</button></div></div>
+</div>
+<p class="small" style="margin-top:12px">Fractions are calculated exactly: α = (term of that species)/(h³ + Ka1h² + Ka1Ka2h + Ka1Ka2Ka3), with h = [H⁺]. "The pH of this solution" is found by solving the charge balance
+[H⁺] = [OH⁻] + Σ(charge × concentration) without approximation, for the acid alone dissolved at C M.</p>
+</div>
+
+<div class="notes post-pred">
+<div class="note"><h3>At pH = pKa, two neighboring species are half and half</h3>
+<p>Take the log of Ka2 = [H⁺][HPO₄²⁻]/[H₂PO₄⁻]: pKa2 = pH + log([H₂PO₄⁻]/[HPO₄²⁻]). When pH equals pKa2 (7.21), the log term is 0,
+so the two species have equal concentrations — two distribution curves cross near 50%. When pH is 1 unit above pKa, there is about 10 times more conjugate base; 2 units above, about 100 times more.</p>
+<div class="eq">pH = pKa ⟹ [conjugate acid] = [conjugate base]</div>
+<p style="margin-top:6px">pH 7.21 is more than 5 units below pKa3 (12.38), so there is almost no PO₄³⁻ (about 10⁻⁵). The idea "neutral means all protons are lost" is wrong. In soil water near pH 5–8, the same curves show that phosphate from fertilizer exists mainly as H₂PO₄⁻ and HPO₄²⁻.</p></div>
+<div class="note"><h3>The pH of a polyprotic acid solution is set almost entirely by the first step</h3>
+<p>When Ka1 and Ka2 differ by a factor of 10³ or more, the H⁺ from the second step is negligible. For example, for 0.0037 M H₂CO₃, Ka1 alone gives [H⁺] = 4.0×10⁻⁵ M,
+pH 4.40, and [CO₃²⁻] is only 5.6×10⁻¹¹ M, almost equal to Ka2. The "solution pH" in this simulation checks this with the exact charge-balance solution that includes every step and water.</p>
+<div class="eq">[H⁺] = [OH⁻] + [H₂A⁻] + 2[HA²⁻] + 3[A³⁻]</div></div>
+</div>
+
+<div class="card limit no-print post-pred">
+<div class="kicker"><span class="num">Limits</span> Limits of this model</div>
+<p>The model uses 25 °C, Kw = 1.0×10⁻¹⁴ and activity coefficients of 1 (ideal solution). The fraction curves assume the pH is held by a buffer. Ka values are common reference values for polyprotic acids.
+Some sources label pKa3 as 12.67, but Ka3 = 4.2×10⁻¹³ gives 12.38, so this simulation uses the Ka values as the reference.
+Constants that differ by more than 5% from literature values (CRC Handbook, 84th ed. · Wikipedia) are listed in the teacher layer. For carbonic acid, Ka1 is the apparent value that counts all dissolved CO₂ as H₂CO₃.</p>
+</div>
+
+<div class="card no-print post-pred" id="checkCard">
+<div class="kicker"><span class="num">Check</span> Formative check — pass all items to complete</div>
+<div class="q" id="q1">
+<div class="qtext"><span class="qn">Q1</span><span id="q1Text">—</span></div>
+<div class="choices" role="group" aria-label="Q1" id="q1Choices">
+<span class="choice" data-q="1" data-v="a">—</span>
+<span class="choice" data-q="1" data-v="b">—</span>
+<span class="choice" data-q="1" data-v="c">—</span></div>
+<details class="hintbox"><summary>Hint</summary><p id="q1Hint">—</p></details>
+<div class="fb" id="fb1" aria-live="polite"></div>
+</div>
+<div class="q" id="q2">
+<div class="qtext"><span class="qn">Q2 · Task</span><span id="missionTxt">—</span></div>
+<div class="mission">Now: <b id="missionNow">—</b> · Goal: <b id="missionGoal">—</b></div>
+<button id="missionBtn" style="margin-top:8px">Check</button>
+<div class="fb" id="fb2"></div>
+</div>
+<div class="q" id="q3">
+<div class="qtext"><span class="qn">Q3</span><span id="q3txt">—</span></div>
+<input class="num-in" id="q3in" inputmode="decimal" placeholder="number" aria-label="Q3 answer"><button id="q3btn">Check</button>
+<details class="hintbox"><summary>Hint</summary><p id="q3hint">—</p></details>
+<div class="fb" id="fb3"></div>
+</div>
+<div class="q" id="qc">
+<div class="qtext"><span class="qn">Q4 · Fill in the blank</span><span id="qcText">—</span></div>
+<input class="num-in" id="qcin" placeholder="symbol or formula" style="width:180px" aria-label="Q4 blank"><button id="qcbtn">Check</button>
+<details class="hintbox" id="qcHint"><summary>Hint</summary><p id="qcHintTxt">—</p></details>
+<div class="fb" id="fbc"></div>
+</div>
+<div class="q" id="qho">
+<div class="qtext"><span class="qn">Q5 · Apply (advanced, not required for completion)</span>In human blood (pH about 7.4), what is the approximate ratio HPO₄²⁻ : H₂PO₄⁻ of the two main phosphate species? (one decimal place; use the reference Ka2 of phosphoric acid)</div>
+<input class="num-in" id="qhoin" inputmode="decimal" placeholder="e.g. 1.0" aria-label="Q5 answer"><button id="qhobtn">Check</button>
+<div class="fb" id="fbho"></div>
+</div>
+</div>
+
+<div class="card reflect no-print post-pred" id="reflectCard">
+<div class="kicker"><span class="num">Reflect</span> Reflect — metacognition · completion</div>
+<p style="font-size:14px;color:var(--ink-400);margin-bottom:10px">My prediction result: <b id="predResult" style="color:var(--paper)">Not predicted yet</b></p>
+<p style="font-size:14px;margin-bottom:6px">Explain in <b>one sentence</b> why the idea "at pH 7.21, phosphoric acid is mostly PO₄³⁻" is wrong. Use a concept word (pKa, fraction, conjugate acid, conjugate base) and a reason word ("because", "so"):</p>
+<textarea id="selfExplain" placeholder="e.g. The pH equals pKa2, so …" aria-label="Self-explanation"></textarea>
+<div class="btns" style="margin-top:8px"><button id="reflectBtn">Submit explanation</button></div><div class="fb" id="fbReflect" aria-live="polite"></div>
+<div class="self-check">
+<label><input type="checkbox" class="sc"> I can write the stepwise ionization equations of a polyprotic acid with Ka1, Ka2 and Ka3</label>
+<label><input type="checkbox" class="sc"> I can compare pH with pKa to decide the dominant species</label>
+<label><input type="checkbox" class="sc"> I can state when the pH of a polyprotic acid solution can be estimated from Ka1 alone</label>
+</div>
+<div class="card" style="margin-top:14px;background:#0d1320">
+<div class="kicker"><span class="num">Apply</span> Use the idea in a new context (not required for completion)</div>
+<p style="font-size:14px;color:var(--paper-2)">In a carbonated soft drink (pH about 3) and in seawater (pH about 8.1), what is the main dissolved carbonic-acid species in each? Compare with pKa1 and pKa2 and explain in one or two sentences.</p>
+<textarea id="transferText" placeholder="e.g. pH 3 is below pKa1, so …" aria-label="Transfer task" style="width:100%;min-height:56px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical;margin-top:8px"></textarea>
+<div class="btns" style="margin-top:8px"><button id="transferBtn">Submit transfer task</button></div>
+<div class="fb" id="fbTransfer"></div>
+</div>
+<p style="font-size:13px;color:var(--ink-400);margin-top:12px">Next up: Kb and pH of weak bases → buffer solutions (Henderson–Hasselbalch equation) and titration of polyprotic acids.</p>
+<div class="stamp" id="stamp">COMPLETE · Completed — all checks passed.</div>
+</div>
+
+<div class="ws ws-only">
+<h3>Worksheet — Stepwise ionization and species fractions of polyprotic acids</h3>
+<p>Name ________  Class ________  Date ________</p>
+<p><b>1. Predict</b> — What is the main form of phosphoric acid at pH 7.21? (mostly PO₄³⁻ / H₂PO₄⁻ and HPO₄²⁻ about equal / mostly H₃PO₄ / 25% each) Reason for your choice:</p><div class="line"></div>
+<p><b>2. Stepwise ionization</b> — Write the three ionization steps of phosphoric acid and each pKa (calculated from the reference Ka, two decimal places).</p>
+<p>H₃PO₄ ⇌ ______ pKa1 = ____ · H₂PO₄⁻ ⇌ ______ pKa2 = ____ · HPO₄²⁻ ⇌ ______ pKa3 = ____</p>
+<p><b>3. Observe</b> — On the axes below, sketch the fraction curves of the four phosphate species and mark the pH values where the curves cross (solid H₃PO₄, dashed H₂PO₄⁻, dotted HPO₄²⁻, dash-dot PO₄³⁻).</p>
+<div id="wsPlot" aria-label="Worksheet graph axes"></div>
+<p><b>4. Calculate</b> — pH of a 0.0037 M H₂CO₃ solution = ______</p>
+<p><b>5. Fill in the blank</b> — The fraction curves of two neighboring species cross where pH = [＿＿＿].</p>
+<p class="ws-legend ws-key teacher-only">Curve key (teacher copy): solid H₃PO₄ · dashed H₂PO₄⁻ · dotted HPO₄²⁻ · dash-dot PO₄³⁻. Markers separate the curves.</p>
+<div class="ws-key teacher-only"><b>Answer key (teacher only · not in the student printout)</b> — 1. H₂PO₄⁻ and HPO₄²⁻ about half each (49.9% : 50.1%); PO₄³⁻ is 3.4×10⁻⁶ ·
+2. H⁺ + H₂PO₄⁻ (2.12) · H⁺ + HPO₄²⁻ (7.21) · H⁺ + PO₄³⁻ (12.38) ·
+3. Crossing pH 2.12 · 7.21 · 12.38. A label of 12.67 seen in some graphs does not match the Ka3 value · 4. 4.40 · 5. pKa (the pKa of that step)</div>
+</div>
+
+<div class="teacher no-print">
+<details class="tguide teacher-only"><summary>Teacher notes — open the lesson plan</summary>
+<div class="tguide-body">
+<h4>Lesson plan · 5E phase and time</h4><ul><li><b>Explore and Explain</b>, 20–25 min. Right after monoprotic weak acids, before buffer solutions. Whole-class demonstration (<code>?mode=teacher</code>) or individual work.</li></ul>
+<h4>Demonstration in 3 steps</h4><ul><li>① Phosphoric acid, scan pH automatically from 0 to 14 — the dominant species changes four times.</li><li>② Stop at pH 7.21 — two bars are almost the same length; the third anion is near 0.</li><li>③ Carbonic acid 0.0037 M, "Go to the pH of this solution" — 4.40; the second step contributes almost nothing.</li></ul>
+<h4>Three key questions</h4><ul><li>"Can you predict from the table where two curves cross?"</li><li>"The acid can give three H⁺. Why is [H⁺] of the acid solution not three times larger?"</li><li>"HPO₄²⁻ dominates over the wide range between pKa2 and pKa3. What does this mean?"</li></ul>
+<h4>Common misconceptions</h4><ul><li>MC-poly-01 "mostly PO₄³⁻ at pH 7.21" → the belief that neutral = fully deprotonated. pH is 5 below pKa3, so the PO₄³⁻ fraction is about 10⁻⁵.</li><li>MC-poly-02 "a diprotic acid doubles [H⁺]" → Ka2 is nearly 10⁴ times smaller than Ka1, so H⁺ from the second step is about 10⁻⁶ of the first. Counting it twice gives 4.10 instead of 4.40.</li></ul>
+<h4>Calculation method (E2 exact equations)</h4><ul><li>Fractions: αᵢ = (h^(n−i)·K1…Kᵢ)/Σ, no approximation. Solution pH: f(h) = h − Kw/h − C·Σ i·αᵢ(h) = 0 solved by bisection in log space (f increases monotonically with h).</li></ul>
+<h4>Reference values and a labeling inconsistency</h4><ul><li>Phosphoric acid 7.5×10⁻³ / 6.2×10⁻⁸ / 4.2×10⁻¹³ → pKa 2.12 / 7.21 / 12.38. Carbonic acid 4.3×10⁻⁷ / 5.6×10⁻¹¹, oxalic acid 5.9×10⁻² / 6.4×10⁻⁵, citric acid 7.4×10⁻⁴ / 1.7×10⁻⁵ / 4.0×10⁻⁷.</li>
+<li>Labels pKa1 2.12 and pKa2 7.21 agree with the Ka table, but a pKa3 label of 12.67 seen in some graphs differs from 12.38 calculated from Ka3. Reference = the Ka table.</li>
+<li>0.0037 M H₂CO₃: pH 4.40, [CO₃²⁻] = 5.6×10⁻¹¹ M — exact solution 4.4015.</li></ul>
+<h4>Literature check (2 sources: LibreTexts Table E1 = CRC Handbook 84th ed. · Wikipedia page of each substance, checked 2026-10-03)</h4><ul>
+<li>Phosphoric acid pKa: CRC 2.16 / 7.21 / 12.32, Wikipedia 2.14 / 7.20 / 12.37. The reference Ka1 (7.5×10⁻³) differs from CRC (6.9×10⁻³) by 9%, and Ka3 (4.2×10⁻¹³) differs from CRC (4.8×10⁻¹³) by 13%, but is close to Wikipedia (4.3×10⁻¹³). 12.67 appears in neither source.</li>
+<li>Carbonic acid pKa: CRC and Wikipedia both 6.35 / 10.33. The reference Ka2 5.6×10⁻¹¹ differs from the literature 4.7×10⁻¹¹ by 19% (listed side by side).</li>
+<li>Oxalic acid pKa2: CRC 3.81, Wikipedia 4.28 — the sources disagree. The reference 4.19 lies between them. Citric acid: CRC 3.13 / 4.76 / 6.40, Wikipedia 3.128 / 4.761 / 6.396 — agrees with the reference values.</li>
+<li>Grading uses the reference values only. Literature values are for display.</li></ul>
+    </div>
+</details>
+<div class="badges"><span class="badge">University general chemistry · weak acids</span><span class="badge">Engine E2 equation-driven (exact fractions · charge balance)</span><span class="badge verify">Verified: independent Python (mpmath) multi-point comparison</span></div>
+<div class="btns"><button id="btnTeacher" class="teacher-only">Toggle teacher mode</button><button id="btnWorksheet">Print worksheet (preview)</button></div>
+<div class="teacher-bar teacher-only" id="teacherBar">
+<div class="tb-title">Teacher mode — class controls</div>
+<div class="btns"><button id="tReveal">Unlock answers/explanations</button>
+<button class="post-pred" data-preset="pka2">Phosphoric acid pH 7.21</button><button class="post-pred" data-preset="ex1614">0.0037 M H₂CO₃</button><button class="post-pred" data-preset="pka3">Phosphoric acid pH 12.38</button></div>
+</div>
+</div>
+
+<footer>
+<div><b>General Chemistry</b> · weak acids · polyprotic acids · exact fractions and charge balance (quantitatively verified) · sources: CRC Handbook 84th ed., Wikipedia (literature values listed)</div>
+<div><b>KBS Lab</b> · General Chemistry Simulations · works offline · no personal data collected · report errors: bkim@gnu.ac.kr</div>
+</footer>
+</div>
+<script>
+"use strict";
+(function(){
+const $=id=>document.getElementById(id);
+const LV=(new URLSearchParams(location.search)).get('level')||'standard';
+const LEVELS={
+basic:{label:'Basic',hints:true,bank:'number',
+q1:{text:'Evaluate this claim: "0.0037 M H₂CO₃ can give two H⁺, so [H⁺] is twice the value from the first step alone."',ans:'b',
+ch:{a:'True — it has 2 protons, so [H⁺] also doubles',b:'False — Ka2 is much smaller than Ka1, so H⁺ from the second step is negligible',c:'False — the second step gives more H⁺ than the first'},
+fb:{b:'Correct — Ka2 (5.6×10⁻¹¹) is about 1/8000 of Ka1 (4.3×10⁻⁷), so HCO₃⁻ ionizes further only very slightly and gives very little H⁺.',
+a:'Being able to give a proton is not the same as the amount actually given. Compare the size of Ka2 with Ka1. (answer not revealed)',
+c:'Removing a proton from the negatively charged HCO₃⁻ is harder. Which is larger, Ka1 or Ka2? (answer not revealed)'},
+hint:'Compare Ka1 and Ka2 of carbonic acid in the reference Ka values.'},
+mission:{sp:'p',kind:'ge',i:2,lo:0.90,
+txt:'Choose phosphoric acid and adjust the pH to make a solution in which the fraction of HPO₄²⁻ is 90% or more. Then press [Check].',
+goal:'H₃PO₄ · α(HPO₄²⁻) ≥ 0.90',hint:'HPO₄²⁻ is the species that has lost 2 protons. Look for a pH between pKa2 and pKa3.'},
+q3:{txt:'What is the pH of a 0.0037 M H₂CO₃ solution? (two decimal places)',ans:4.40,tol:0.015,hint:'Use Ka1 only: x²/0.0037 = 4.3×10⁻⁷, pH = −log x.',
+wrong:[[4.10,'You counted both protons. H⁺ from the second step is negligible.'],[2.43,'−log 0.0037 assumes complete ionization, like a strong acid. H₂CO₃ is a weak acid.']]},
+cloze:{text:'Fill in the blank: when the pH equals the pKa of a step, the conjugate acid and conjugate base of that step are each [＿＿]% of the total (when only these two neighboring species are present). (number)',
+ok:['50','50%','50.0','50.0%','50percent','50percents','fifty','fiftypercent'],wrong:['100','25','100%','25%'],hint:'The two concentrations are equal and add up to 100%. What is each?'}},
+standard:{label:'Standard',hints:true,bank:'symbol',
+q1:{text:'Why is Ka1 > Ka2 > Ka3 for a polyprotic acid? Choose the best reason.',ans:'a',
+ch:{a:'The more negative the species, the harder it is to remove a positive proton from it',b:'Later steps have more H atoms left in the molecule',c:'All the H⁺ formed in the first step reacts with water and disappears'},
+fb:{a:'Correct — because of electrostatic attraction, the more negative the charge (as in H₂PO₄⁻ and HPO₄²⁻), the harder it is to release H⁺.',
+b:'In fact, fewer H atoms remain as the steps go on. Look at the charge of each species. (answer not revealed)',
+c:'H⁺ does push the later equilibria to the left, but that is not why the constants Ka differ in size. Think about charge. (answer not revealed)'},
+hint:'How does the charge change from H₃PO₄ → H₂PO₄⁻ → HPO₄²⁻?'},
+mission:{sp:'p',kind:'eq',i:1,j:2,lo:0.45,hi:0.55,
+txt:'Choose phosphoric acid and adjust the pH so that the fractions of H₂PO₄⁻ and HPO₄²⁻ are both 45–55%. Then press [Check].',
+goal:'H₃PO₄ · α(H₂PO₄⁻) and α(HPO₄²⁻) both 0.45–0.55',hint:'The pH where the two species are equal is related to the pKa of which step?'},
+q3:{txt:'In a phosphoric acid solution held at pH 7.00, what percentage of the total phosphate is HPO₄²⁻? (whole number; use the reference Ka)',ans:38,tol:1,hint:'[HPO₄²⁻]/[H₂PO₄⁻] = Ka2/[H⁺] = 0.62. The other two species are negligible.',
+wrong:[[62,'That is the share of H₂PO₄⁻. When pH < pKa2, there is more of the conjugate acid.'],[50,'pH 7.00 is not equal to pKa2 (7.21).']]},
+cloze:{text:'Fill in the blank: the fraction curves of two neighboring species cross where pH = [＿＿]. (symbol)',
+ok:['pka','pkavalue','thepka','pkaofthatstep','thepkaofthatstep','pkaofthestep','thepkaofthestep','pka1','pka2','pka3','pka₁','pka₂','pka₃','pk_a','pkₐ','pk(a)'],wrong:['ka','pkb','7','7.21'],hint:'It is the symbol for the negative log of Ka.'}},
+advanced:{label:'Advanced',hints:false,bank:'number',
+q1:{text:'In a phosphoric acid solution held at pH 12.38, what is [PO₄³⁻]/[HPO₄²⁻]?',ans:'a',
+ch:{a:'About 1',b:'About 0.5',c:'About 1000'},
+fb:{a:'Correct — pH = pKa3 (12.38), so Ka3/[H⁺] = 1. If you used the 12.67 label seen in some graphs, you would get it wrong.',
+b:'The ratio is Ka3/[H⁺]. Compare pH with pKa3. (answer not revealed)',
+c:'If pKa3 is 12.38, what is Ka3/[H⁺] at [H⁺] = 10⁻¹²·³⁸? (answer not revealed)'},
+hint:''},
+mission:{sp:'c',kind:'ge',i:1,lo:0.975,
+txt:'Choose carbonic acid and adjust the pH to make a solution in which the fraction of HCO₃⁻ is 97.5% or more. Then press [Check]. Also look at how that pH relates to pKa1 and pKa2.',
+goal:'H₂CO₃ · α(HCO₃⁻) ≥ 0.975',hint:''},
+q3:{txt:'For phosphoric acid, at what pH is [H₃PO₄] = [HPO₄²⁻]? (two decimal places)',ans:4.67,tol:0.015,hint:'',
+wrong:[[7.21,'That pH is where [H₂PO₄⁻] = [HPO₄²⁻]. The ratio [H₃PO₄]/[HPO₄²⁻] depends on Ka1Ka2/[H⁺]².'],[2.12,'That pH is where [H₃PO₄] = [H₂PO₄⁻].']]},
+cloze:{text:'Fill in the blank: when the pH is 1 unit above the pKa of a step, [conjugate base]/[conjugate acid] for that step = [＿＿]. (number)',
+ok:['10','10.0','10times','10x','x10','tentimes','ten','10-fold','10fold','tenfold','ten-fold','10:1'],wrong:['1','0.1','2'],hint:''}}
+};
+const CFG=LEVELS[LV]||LEVELS.standard;
+
+const Kw=1.0e-14;
+const SP={p:{f:'H₃PO₄',name:'phosphoric acid',K:[7.5e-3,6.2e-8,4.2e-13],s:['H₃PO₄','H₂PO₄⁻','HPO₄²⁻','PO₄³⁻']},
+c:{f:'H₂CO₃',name:'carbonic acid',K:[4.3e-7,5.6e-11],s:['H₂CO₃','HCO₃⁻','CO₃²⁻']},
+o:{f:'H₂C₂O₄',name:'oxalic acid',K:[5.9e-2,6.4e-5],s:['H₂C₂O₄','HC₂O₄⁻','C₂O₄²⁻']},
+t:{f:'H₃C₆H₅O₇',name:'citric acid',K:[7.4e-4,1.7e-5,4.0e-7],s:['H₃C₆H₅O₇','H₂C₆H₅O₇⁻','HC₆H₅O₇²⁻','C₆H₅O₇³⁻']}};
+function alphas(pH,sp){const s=SP[sp];if(!s||typeof pH!=='number'||!isFinite(pH)||pH<0||pH>14)return null;
+const n=s.K.length,lh=-pH*Math.LN10,L=[];let acc=0;
+for(let i=0;i<=n;i++){if(i>0)acc+=Math.log(s.K[i-1]);L.push((n-i)*lh+acc);}
+const m=Math.max(...L),E=L.map(v=>Math.exp(v-m)),D=E.reduce((a,b)=>a+b,0);return E.map(v=>v/D);}
+function alpha(pH,sp,i){const a=alphas(pH,sp);if(!a||!(i>=0&&i<a.length))return null;return a[i];}
+function nbar(h,sp){const a=alphas(-Math.log10(h),sp);let t=0;a.forEach((v,i)=>{t+=i*v;});return t;}
+function pHsol(C,sp){if(!SP[sp]||typeof C!=='number'||!isFinite(C)||C<1e-4*(1-1e-9)||C>1*(1+1e-9))return null;
+const f=l=>{const h=Math.exp(l);return h-Kw/h-C*nbar(h,sp);};
+let lo=Math.log(1e-14),hi=Math.log(1);for(let k=0;k<200;k++){const m=(lo+hi)/2;if(f(m)>0)hi=m;else lo=m;}
+const p=-((lo+hi)/2)/Math.LN10;return (isFinite(p)&&p>=0&&p<=14)?p:null;}
+function pKa(sp,i){const s=SP[sp];return s&&s.K[i]?-Math.log10(s.K[i]):null;}
+const fn={alpha,pHsol,pKa,
+aP0:x=>alpha(x,'p',0),aP1:x=>alpha(x,'p',1),aP2:x=>alpha(x,'p',2),aP3:x=>alpha(x,'p',3),
+domAlpha:(x,sp)=>{const a=alphas(x,sp);return a?Math.max(...a):null;}};
+
+const SUP={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};
+function sci(x,d,u){if(!(x>0)||!isFinite(x))return '—';let e=Math.floor(Math.log10(x)),m=x/Math.pow(10,e);
+if(+m.toFixed(d)>=10){m/=10;e+=1;}return m.toFixed(d)+'×10'+String(e).split('').map(c=>SUP[c]||c).join('')+(u==null?' M':u);}
+function pc(a){return a>=0.001?(100*a).toFixed(1)+'%':(a>0?sci(a,1,''):'0');}
+const DASH=[[],[8,5],[2,4],[9,4,2,4]],COL=['#A7BCEC','#E8C275','#7FB98A','#E36B5B'],DNAME=['solid','dashed','dotted','dash-dot'];
+
+const S={sp:'p',ph:1.00,lc:-1};
+function C(){return Math.pow(10,S.lc);}
+function cur(){const a=alphas(S.ph,S.sp);let k=0;a.forEach((v,i)=>{if(v>a[k])k=i;});return {a,k};}
+
+function drawCurve(){const c=$('cvCurve');if(!c)return;const ctx=c.getContext('2d');const W=c.width,H=c.height,s=SP[S.sp];
+ctx.clearRect(0,0,W,H);const pL=40,pB=30,pT=12,pR=12;
+const x=p=>pL+p/14*(W-pL-pR),y=v=>pT+(1-v)*(H-pT-pB);
+ctx.strokeStyle='#1c2535';ctx.lineWidth=1;ctx.fillStyle='#8a96b0';ctx.font='11px ui-monospace,monospace';
+for(let v=0;v<=1.0001;v+=0.25){ctx.beginPath();ctx.moveTo(pL,y(v));ctx.lineTo(W-pR,y(v));ctx.stroke();ctx.fillText(Math.round(v*100)+'%',4,y(v)+4);}
+for(let p=0;p<=14;p+=2){ctx.fillText(String(p),x(p)-4,H-12);}
+ctx.fillText('pH',W-30,H-24);
+s.K.forEach((k,i)=>{const q=-Math.log10(k);ctx.setLineDash([2,3]);ctx.strokeStyle='#5E6B85';ctx.beginPath();ctx.moveTo(x(q),pT);ctx.lineTo(x(q),H-pB);ctx.stroke();
+ctx.setLineDash([]);ctx.fillStyle='#8a96b0';ctx.fillText('pKa'+(i+1)+' '+q.toFixed(2),Math.min(W-90,x(q)+3),pT+12+14*i);});
+for(let i=0;i<=s.K.length;i++){ctx.setLineDash(DASH[i]);ctx.strokeStyle=COL[i];ctx.lineWidth=2.4;ctx.beginPath();
+for(let k=0;k<=280;k++){const p=k/20,v=alpha(p,S.sp,i);k===0?ctx.moveTo(x(p),y(v)):ctx.lineTo(x(p),y(v));}ctx.stroke();}
+ctx.setLineDash([]);ctx.strokeStyle='#F4F1EA';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x(S.ph),pT);ctx.lineTo(x(S.ph),H-pB);ctx.stroke();}
+
+const ST={predicted:false,observed:false,passed:false,prediction:null,manip:false,checks:{entry:false,q1:false,q2:false,q3:false,cloze:false,reflect:false}};
+function pcent(){let p=0;if(ST.predicted)p+=25;if(ST.observed)p+=25;
+p+=Math.round(Object.values(ST.checks).filter(Boolean).length/Object.keys(ST.checks).length*40);if(ST.passed)p+=10;return Math.min(100,p);}
+function updateProgress(){const p=pcent();$('prog').style.width=p+'%';$('progLab').textContent='Progress '+p+'% · Predict → Observe → Check → Complete';
+$('lo1').classList.toggle('done',ST.checks.q1&&ST.checks.cloze);$('lo2').classList.toggle('done',ST.observed&&ST.checks.q2);$('lo3').classList.toggle('done',ST.checks.q3&&ST.checks.reflect);
+if(ST.passed)$('stamp').classList.add('on');}
+
+function update(){const s=SP[S.sp],q=cur(),a=q.a;
+const v=Math.max(...a);
+window.__sim.metric={type:'fraction',value:(isFinite(v)?v:null),unit:'',alphas:a.slice(),dominant:s.s[q.k],pH:S.ph,species:s.s.slice()};
+$('condTxt').textContent=s.name+' '+s.f+' · pH '+S.ph.toFixed(2);
+$('kaTab').textContent=s.K.map((k,i)=>'Ka'+(i+1)+' '+sci(k,1,'')+' (pKa'+(i+1)+' '+(-Math.log10(k)).toFixed(2)+')').join(' · ');
+$('eqTxt').textContent=s.s.slice(0,-1).map((x,i)=>x+' ⇌ H⁺ + '+s.s[i+1]).join(' ; ');
+$('phLab').textContent=S.ph.toFixed(2);$('lcLab').textContent=S.lc>=-1.0001?C().toFixed(C()>=0.1?2:3)+' M':sci(C(),1);
+$('spBody').innerHTML=s.s.map((x,i)=>'<tr><td>'+x+'</td><td style="width:45%"><div class="abar" role="img" aria-label="'+x+' '+pc(a[i])+'"><span class="ab'+i+'" style="width:'+(100*a[i]).toFixed(1)+'%"></span></div></td><td>'+pc(a[i])+'</td><td class="small">'+DNAME[i]+'</td></tr>').join('');
+$('domNow').textContent=s.s[q.k]+' ('+pc(a[q.k])+')';
+const ps=pHsol(C(),S.sp);$('solTxt').textContent='Note: if only this acid is dissolved at '+$('lcLab').textContent+', the pH is '+(ps==null?'—':ps.toFixed(2))+' (exact charge-balance solution including every step and water).';
+$('domBig').textContent='Dominant species '+s.s[q.k];
+let near=-1;s.K.forEach((k,i)=>{if(Math.abs(S.ph+Math.log10(k))<=0.05)near=i;});
+let msg;
+if(near>=0)msg='The pH is almost equal to pKa'+(near+1)+' ('+(-Math.log10(s.K[near])).toFixed(2)+') → <b>'+s.s[near]+'</b> and <b>'+s.s[near+1]+'</b> are present in almost the same amount ('+pc(a[near])+' : '+pc(a[near+1])+').';
+else msg='At pH '+S.ph.toFixed(2)+', <b>'+s.s[q.k]+'</b> is the largest at '+pc(a[q.k])+'. In each step, the conjugate base dominates when pH is above pKa, and the conjugate acid dominates when pH is below pKa.';
+$('domMsg').innerHTML=msg;
+$('missionNow').textContent=s.f+', pH '+S.ph.toFixed(2)+', '+s.s.map((x,i)=>x+' '+pc(a[i])).join(' · ');
+$('curLab').textContent='current pH '+S.ph.toFixed(2);
+{const o=a.map((v,i)=>i).sort((i,j)=>a[j]-a[i]);GCAnnounce.say(s.name+' pH '+S.ph.toFixed(2)+', dominant '+s.s[o[0]]+' fraction '+a[o[0]].toFixed(3)+', next '+s.s[o[1]]+' '+pc(a[o[1]])+'. If only this acid is dissolved at '+$('lcLab').textContent+', the pH is '+(ps==null?'—':ps.toFixed(2)));}
+drawCurve();}
+function observe(){if(!ST.predicted)return;ST.manip=true;
+if(!ST.observed&&S.sp==='p'&&Math.abs(S.ph-7.21)<=0.05){ST.observed=true;updateProgress();}}
+function syncSliders(){$('ph').value=String(Math.round(S.ph*100));$('lc').value=String(Math.round((S.lc+4)*100));
+$('ph').setAttribute('aria-valuetext','pH '+S.ph.toFixed(2));$('lc').setAttribute('aria-valuetext',$('lcLab').textContent);}
+function setSp(sp,user){if(!SP[sp])return;S.sp=sp;document.querySelectorAll('#spBtns .toggle').forEach(t=>{const on=t.dataset.sp===sp;t.classList.toggle('on',on);t.setAttribute('aria-pressed',on?'true':'false');});
+$('spLab').textContent=SP[sp].f;update();if(user)observe();}
+function setPh(p,user){S.ph=Math.max(0,Math.min(14,Math.round((isFinite(p)?p:1)*100)/100));update();syncSliders();if(user)observe();}
+function setLc(l,user){S.lc=Math.max(-4,Math.min(0,Math.round((isFinite(l)?l:-1)*20)/20));update();syncSliders();if(user)observe();}
+
+$('ph').addEventListener('input',e=>setPh((+e.target.value)/100,true));
+$('lc').addEventListener('input',e=>setLc(-4+(+e.target.value)/100,true));
+document.querySelectorAll('#spBtns .toggle').forEach(t=>t.addEventListener('click',()=>setSp(t.dataset.sp,true)));
+$('cvCurve').addEventListener('keydown',ev=>{const k=ev.key;let d=0;if(k==='ArrowRight'||k==='ArrowUp')d=0.05;else if(k==='ArrowLeft'||k==='ArrowDown')d=-0.05;else return;ev.preventDefault();setPh(S.ph+d,true);});
+$('toSol').addEventListener('click',()=>{const p=pHsol(C(),S.sp);if(p!=null)setPh(p,true);});
+let tmr=null;
+function stopAuto(){if(tmr){clearInterval(tmr);tmr=null;}$('auto').textContent='Scan pH automatically';}
+$('auto').addEventListener('click',()=>{if(tmr){stopAuto();return;}$('auto').textContent='Stop';if(S.ph>=13.99)setPh(0,true);
+tmr=setInterval(()=>{if(document.hidden)return;if(S.ph>=14){stopAuto();return;}setPh(S.ph+0.1,true);},250);});
+$('reset').addEventListener('click',()=>{stopAuto();setSp('p',false);setPh(1,false);setLc(-1,false);});
+$('conf').addEventListener('input',e=>{const v=+e.target.value;$('confLab').textContent=v<33?'Low':v<66?'Medium':'High';});
+
+let predSel=null;
+$('predChoices').addEventListener('click',e=>{const c=e.target.closest('.choice');if(!c||ST.predicted)return;
+[...$('predChoices').children].forEach(x=>x.classList.remove('sel'));c.classList.add('sel');predSel=c.dataset.v;});
+const PFB={half:['hit','Good prediction. Now keep phosphoric acid selected and move the pH slider yourself to about 7.21 to compare the two bars.','Correct (H₂PO₄⁻ ≈ HPO₄²⁻)'],
+po4:['refute','This is a common misconception. Ka3 is very small, so the third proton leaves only near pH 12. Move the slider to about 7.21 and check the PO₄³⁻ bar yourself.','Needs review (actually H₂PO₄⁻ ≈ HPO₄²⁻)'],
+h3:['refute','The first proton of H₃PO₄ leaves quite easily (Ka1 = 7.5×10⁻³). Use the slider to see how much H₃PO₄ remains at pH 7.21.','Needs review (actually H₂PO₄⁻ ≈ HPO₄²⁻)'],
+quarter:['refute','The fractions of the four species differ greatly with pH, and only about two species are present in significant amounts at once. Move to pH 7.21 and compare the bars.','Needs review (actually H₂PO₄⁻ ≈ HPO₄²⁻)']};
+$('predSubmit').addEventListener('click',()=>{if(ST.predicted)return;
+if(!predSel){$('gateMsg').textContent='Choose an option first.';$('gateMsg').className='gate-msg refute';return;}
+ST.predicted=true;Object.defineProperty(ST,'prediction',{value:predSel,writable:false,configurable:false});R2.unlock();const f=PFB[predSel];
+$('gateMsg').textContent=f[1];$('gateMsg').className='gate-msg '+f[0];$('predResult').textContent=f[2];
+$('predSubmit').disabled=true;document.querySelectorAll('#predChoices .choice').forEach(c=>{c.setAttribute('aria-disabled','true');c.style.pointerEvents='none';});
+update();updateProgress();});
+
+document.querySelectorAll('[data-q="1"]').forEach(c=>c.addEventListener('click',e=>{const v=e.target.dataset.v;
+[...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+const ok=v===CFG.q1.ans;$('fb1').textContent=(ok||/^(Correct|Try again)/.test(CFG.q1.fb[v])?'':'Try again — ')+CFG.q1.fb[v];$('fb1').className='fb '+(ok?'ok':'no');if(ok)ST.checks.q1=true;updateProgress();}));
+function missionOK(){const m=CFG.mission;if(S.sp!==m.sp)return false;const a=alphas(S.ph,S.sp);
+if(m.kind==='ge')return a[m.i]>=m.lo-1e-12;
+return a[m.i]>=m.lo&&a[m.i]<=m.hi&&a[m.j]>=m.lo&&a[m.j]<=m.hi;}
+$('missionBtn').addEventListener('click',()=>{const m=CFG.mission;
+if(!ST.predicted||!ST.manip){$('fb2').textContent='First submit your prediction, then adjust the acid and the pH yourself — the starting state does not count for the task.';$('fb2').className='fb no';updateProgress();return;}
+if(S.sp!==m.sp){$('fb2').textContent='Wrong acid — choose '+SP[m.sp].name+' '+SP[m.sp].f+'.';$('fb2').className='fb no';}
+else if(missionOK()){$('fb2').textContent='Success — pH '+S.ph.toFixed(2)+': '+SP[S.sp].s.map((x,i)=>x+' '+pc(alphas(S.ph,S.sp)[i])).join(' · ')+'.';$('fb2').className='fb ok';ST.checks.q2=true;}
+else{$('fb2').textContent='Not yet — at pH '+S.ph.toFixed(2)+' the condition is not met. '+(CFG.hints?m.hint:'Compare with the pKa values and adjust the pH again.');$('fb2').className='fb no';}
+updateProgress();});
+$('q3btn').addEventListener('click',()=>{const x=parseFloat(($('q3in').value||'').replace(',','.'));const q=CFG.q3;
+if(!isNaN(x)&&Math.abs(x-q.ans)<=q.tol+1e-9){$('fb3').textContent='Correct — '+q.ans+'.';$('fb3').className='fb ok';ST.checks.q3=true;}
+else{let t='Try again — '+(CFG.hints?q.hint:'Check your calculation again.')+' (answer not revealed)';
+if(!isNaN(x))for(const w of q.wrong){if(Math.abs(x-w[0])<=Math.max(q.tol,0.015)){t='Try again — '+w[1]+' (answer not revealed)';break;}}
+$('fb3').textContent=t;$('fb3').className='fb no';}
+updateProgress();});
+const CLOZE_OK=CFG.cloze.ok.slice();
+$('qcbtn').addEventListener('click',()=>{const raw=($('qcin').value||'').trim().toLowerCase().replace(/\s+/g,'');
+if(CLOZE_OK.indexOf(raw)>=0){$('fbc').textContent='Correct — this is the key relationship.';$('fbc').className='fb ok';ST.checks.cloze=true;}
+else if(CFG.cloze.wrong.indexOf(raw)>=0){$('fbc').textContent='Try again — this is a common confusion. In Ka2 = [H⁺][conjugate base]/[conjugate acid], think about the case where the two concentrations are equal.';$('fbc').className='fb no';}
+else{$('fbc').textContent=CFG.hints?'Hint: '+CFG.cloze.hint:'Try again — check the form of the blank (symbol or number).';$('fbc').className='fb '+(CFG.hints?'hint':'no');}
+updateProgress();});
+const EFB={poly:['ok','Right — e.g. phosphoric acid H₃PO₄ is a triprotic acid with 3 H atoms that can ionize.'],
+oxy:['hint','Even with many oxygen atoms, an acid with only one H that can ionize is monoprotic (e.g. HClO₄). Count the "protons".'],
+strong:['hint','Strength and the number of protons are different properties. Phosphoric acid is a weak acid, but it can give 3 protons.']};
+document.querySelectorAll('#entryChoices .choice').forEach(c=>c.addEventListener('click',e=>{
+[...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+const v=e.target.dataset.v,f=EFB[v];$('fbEntry').textContent=f[1];$('fbEntry').className='fb '+f[0];
+const g=$('entryGloss');if(g)g.open=true;if(v==='poly')ST.checks.entry=true;updateProgress();}));
+const REFLECT_CONCEPTS=/(pK\s*a|K\s*a\s*[23]|fraction|conjugate|step|deprotonat\w*|los[et]\w*\s+(\w+\s+)?protons?|HPO|H₂PO|H2PO|PO₄|PO4)/i;
+const REFLECT_REL=/(\b(because|since|therefore|so|thus|hence|due to|as a result|which means|this means|when|if)\b|→)/i;
+$('reflectBtn').addEventListener('click',()=>{const t=($('selfExplain').value||'').trim();
+if(t.length<40){$('fbReflect').textContent='Not quite — explain in one sentence (40+ characters).';$('fbReflect').className='fb hint';}
+else if(!REFLECT_CONCEPTS.test(t)){$('fbReflect').textContent='Add a key concept word — at least one of pKa, fraction, conjugate acid/base, stepwise ionization.';$('fbReflect').className='fb hint';}
+else if(!REFLECT_REL.test(t)){$('fbReflect').textContent='Link cause and effect — use "because", "so" or "therefore".';$('fbReflect').className='fb hint';}
+else{$('fbReflect').textContent='Recorded — explaining in your own words makes understanding stronger.';$('fbReflect').className='fb ok';ST.checks.reflect=true;}
+updateProgress();});
+$('qhobtn').addEventListener('click',()=>{const x=parseFloat(($('qhoin').value||'').replace(',','.'));
+if(!isNaN(x)&&Math.abs(x-1.6)<=0.1){$('fbho').textContent='Correct — Ka2/[H⁺] = 6.2×10⁻⁸ / 10⁻⁷·⁴ = 1.6. In blood there is slightly more HPO₄²⁻.';$('fbho').className='fb ok';}
+else if(!isNaN(x)&&Math.abs(x-0.6)<=0.1){$('fbho').textContent='Try again — that is H₂PO₄⁻/HPO₄²⁻ (upside down). When pH is above pKa2, there is more conjugate base.';$('fbho').className='fb no';}
+else{$('fbho').textContent='Try again — calculate [HPO₄²⁻]/[H₂PO₄⁻] = Ka2/[H⁺], or set the slider to 7.40 and compare the bars.';$('fbho').className='fb no';}});
+$('transferBtn').addEventListener('click',()=>{const t=($('transferText').value||'').trim();
+if(t.length>=40){$('fbTransfer').textContent='Good — pH 3 is more than 3 units below pKa1 (6.37), so it is mostly H₂CO₃ (dissolved CO₂). pH 8.1 lies between pKa1 and pKa2 (10.25), so it is mostly HCO₃⁻.';$('fbTransfer').className='fb ok';}
+else{$('fbTransfer').textContent='Not quite — compare the pH with pKa and write at least 40 characters.';$('fbTransfer').className='fb hint';}});
+setInterval(()=>{if(ST.predicted&&ST.observed&&Object.keys(ST.checks).every(function(k){return ST.checks[k];})&&!ST.passed){ST.passed=true;updateProgress();}},300);
+
+const WSPEC={frame:{w:520,h:260,x:{min:0,max:14,ticks:7,label:'pH'},y:{min:0,max:1,ticks:4,label:'fraction α'}},
+series:[{fn:'__sim.fn.aP0',dash:'solid',label:'H₃PO₄',labelAt:1.0,marks:{shape:'circle',every:40}},{fn:'__sim.fn.aP1',dash:'dash',label:'H₂PO₄⁻',labelAt:4.7,marks:{shape:'square',every:40}},
+{fn:'__sim.fn.aP2',dash:'dot',label:'HPO₄²⁻',labelAt:9.8,marks:{shape:'triangle',every:40}},{fn:'__sim.fn.aP3',dash:'dashdot',label:'PO₄³⁻',labelAt:13.5,marks:{shape:'diamond',every:40}}],
+answer:true,title:'Phosphoric acid species fraction vs pH',desc:'Horizontal axis pH 0–14, vertical axis fraction 0–1. Only the teacher copy shows the fraction curves of the four species (reference Ka values).'};
+function applyMode(){const q=new URLSearchParams(location.search);
+if(q.get('mode')==='teacher')$('teacherBar').classList.add('on');
+if(q.get('worksheet')==='1')document.body.classList.add('worksheet');}
+$('btnTeacher').addEventListener('click',()=>$('teacherBar').classList.toggle('on'));
+$('btnWorksheet').addEventListener('click',()=>{document.body.classList.toggle('worksheet');try{if(window.GCPlot)GCPlot.draw($('wsPlot'),WSPEC);}catch(e){}window.scrollTo(0,0);});
+$('tReveal').addEventListener('click',()=>R2.unlock());
+document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',e=>{const p=e.target.dataset.preset;
+if(p==='pka2'){setSp('p');setPh(7.21);}
+if(p==='pka3'){setSp('p');setPh(12.38);}
+if(p==='ex1614'){setSp('c');setLc(Math.log10(0.0037));const v=pHsol(0.0037,'c');if(v!=null)setPh(v);}}));
+function applyLevel(){const q=new URLSearchParams(location.search);
+function href(lv){q.set('level',lv);return '?'+q.toString();}
+['Basic','Standard','Advanced'].forEach(function(Cn){const lv=Cn.toLowerCase();const a=$('lvl'+Cn);if(a){a.href=href(lv);a.classList.toggle('on',lv===(LEVELS[LV]?LV:'standard'));}});
+if(!CFG.hints){document.querySelectorAll('details.hintbox').forEach(function(d){if(d.id!=='entryGloss')d.style.display='none';});}
+const ph=$('qcin');if(ph)ph.placeholder=CFG.bank;
+$('q1Text').textContent=CFG.q1.text;document.querySelectorAll('#q1Choices [data-q="1"]').forEach(c=>{c.textContent=CFG.q1.ch[c.dataset.v];});$('q1Hint').textContent=CFG.q1.hint||'';
+$('missionTxt').textContent=CFG.mission.txt;$('missionGoal').textContent=CFG.mission.goal;
+$('q3txt').textContent=CFG.q3.txt;$('q3hint').textContent=CFG.q3.hint||'';
+$('qcText').textContent=CFG.cloze.text;$('qcHintTxt').textContent=CFG.cloze.hint||'';
+$('lvlNote').textContent='Current level: '+CFG.label;}
+
+window.__sim={metric:null,ST,fn,LEVELS,level:(LEVELS[LV]?LV:'standard'),SP,
+domain:{controls:[{sel:'#spBtns .toggle',kind:'toggle'},{sel:'#ph',kind:'range'},{sel:'#lc',kind:'range'}],metric:{min:0,max:1},mission:{kind:'explore',note:'choose an acid + pH/concentration sliders; fraction goal is checked'}},
+leakTokens:{answer:['almost the same amount','about half each','H₂PO₄⁻ ≈ HPO₄²⁻'],
+rationale:['pH = pKa','The pH is almost equal to pKa','to [H⁺] (Ka =','the log term is 0'],
+misconception:['This is a common misconception','neutral means all protons are lost','the third proton leaves only near pH 12']},
+predStates:{half:()=>window.__sim.setState('p',7.21),po4:()=>window.__sim.setState('p',13),h3:()=>window.__sim.setState('p',1),quarter:()=>window.__sim.setState('p',4.7)},
+key(n){return n==='pred'?'half':(n==='cloze'?CLOZE_OK.slice():(n==='q1'?CFG.q1.ans:null));},
+clozeWrong:CFG.cloze.wrong[0],
+state(){return {sp:S.sp,pH:S.ph,C:C(),lc:S.lc};},
+setState(sp,p,Cv){if(SP[sp])setSp(sp);if(p!=null&&isFinite(p))setPh(p);if(Cv>0)setLc(Math.log10(Cv));return window.__sim.metric;},
+missionOK,
+pump(){update();return window.__sim.metric;}};
+GCAnnounce.attach({gate:()=>ST.predicted,pre:'After you submit your prediction, the species fractions will be read aloud.'});
+applyMode();applyLevel();syncSliders();update();updateProgress();
+if(window.GCPlot)GCPlot.render($('wsPlot'),WSPEC);
+})();
+</script>
+<script>/[?&]mode=teacher(&|$)/.test(location.search)&&document.body.classList.add('mode-teacher')</script>
+<script id="gc-record">(function(){
+"use strict";
+var K='genchem.en.history',OK=/^https:\/\/(lab\.jinuchem\.com|jinu-kbs\.github\.io)$|^http:\/\/localhost(:\d+)?$/;
+function load(){try{return JSON.parse(localStorage.getItem(K))||[];}catch(e){return[];}}
+function put(a){try{localStorage.setItem(K,JSON.stringify(a));}catch(e){}}
+function up(m){try{if(window.parent!==window)window.parent.postMessage(m,'*');}catch(e){}}
+function merge(inc){var a=load(),s={},n=0;a.forEach(function(r){s[r.ts+'|'+r.sim]=1;});
+ inc.forEach(function(r){if(r&&r.ts&&r.sim&&!s[r.ts+'|'+r.sim]){a.push(r);s[r.ts+'|'+r.sim]=1;n++;}});put(a);return n;}
+var GC={
+ save:function(r){r.ts=r.ts||new Date().toISOString();var a=load();a.push(r);put(a);up({type:'genchem:record',v:1,rec:r});return r;},
+ all:load, clear:function(){put([]);},
+ export:function(){var p=null;try{p=JSON.parse(localStorage.getItem('genchem.en.path'));}catch(e){}
+  var b=new Blob([JSON.stringify({app:'genchem',v:2,exported:new Date().toISOString(),history:load(),path:p},null,2)],{type:'application/json'});
+  var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='genchem_en_brain.json';a.click();URL.revokeObjectURL(u);
+  try{localStorage.setItem('genchem.en.backupAt',new Date().toISOString());}catch(e){}},
+ import:function(t){try{var o=JSON.parse(t),i=(o&&o.history)||o||[];if(!Array.isArray(i))return -1;var n=merge(i);
+  if(o&&o.path){try{localStorage.setItem('genchem.en.path',JSON.stringify(o.path));}catch(e){}}return n;}catch(e){return -1;}},
+ _meta:function(){var p=location.pathname.split('/').filter(Boolean),f=decodeURIComponent(p[p.length-1]||''),d=decodeURIComponent(p[p.length-2]||'');
+  var c=(f.match(/^(\d+)/)||[])[1]||d.replace(/[^0-9]/g,''),q=function(n){var m=document.querySelector('meta[name="'+n+'"]');return m?m.content:'';};
+  return{sim:f,path:(/^ch\d\d$/.test(d)?d+'/':'')+f,chapter:c?+c:null,level:(new URLSearchParams(location.search)).get('level')||'standard',
+   standard:q('curriculum-2022'),engine:q('engine-class'),title:document.title};},
+ autoInit:function(){var done=false,m=GC._meta();up({type:'genchem:hello',v:1,sim:m.path});
+  var iv=setInterval(function(){var s=window.__sim,st=s&&s.ST;if(!st||!st.passed||done)return;done=true;var k=null;
+   try{k=typeof s.key==='function'?s.key('pred'):null;}catch(e){}
+   GC.save({ts:new Date().toISOString(),sim:m.sim,path:m.path,title:m.title,chapter:m.chapter,standard:m.standard,engine:m.engine,level:m.level,
+    predicted:st.prediction||null,predict_correct:(k==null||st.prediction==null)?null:String(st.prediction)===String(k),check:st.checks||{},completed:true});},1000);
+  setTimeout(function(){clearInterval(iv);},1800000);}
+};
+window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='genchem:restore'||!OK.test(e.origin)||!Array.isArray(d.history))return;
+ up({type:'genchem:restored',v:1,added:merge(d.history)});});
+window.GCRecord=GC;
+if(document.readyState!=='loading')GC.autoInit();else document.addEventListener('DOMContentLoaded',GC.autoInit);
+})();
+</script>
+<script id="lgc-inject">
+(function(){
+"use strict";
+if(document.getElementById('lgcPanel')) return;
+var KEY='genchem.en.lgc';
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function simId(){ return decodeURIComponent(location.pathname.split('/').pop()||''); }
+function loadAll(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+function saveAll(o){ try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){} }
+
+var id=simId(), all=loadAll(), data=all[id]||{reason:'',cloze:'',problem:''};
+window.__sim = window.__sim || {};
+window.__sim.LGC = { data:data, save:function(){ all[id]=data; saveAll(all); } };
+
+var stl=document.createElement('style');
+stl.textContent='#lgcPanel{margin:22px auto;max-width:980px;border:1px solid rgba(127,127,127,.35);border-radius:12px;padding:16px 18px;font-family:inherit;line-height:1.6}'
++'#lgcPanel h3{font-size:16px;margin:0 0 4px}'
++'#lgcPanel .lgc-sub{font-size:12px;opacity:.7;margin-bottom:10px}'
++'#lgcPanel label{display:block;font-size:13px;font-weight:600;margin:12px 0 4px}'
++'#lgcPanel textarea{width:100%;min-height:54px;border:1px solid rgba(127,127,127,.4);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;background:transparent;color:inherit;resize:vertical}'
++'#lgcPanel .lgc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}'
++'#lgcPanel button{font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid rgba(127,127,127,.5);background:transparent;color:inherit;cursor:pointer}'
++'#lgcPanel button:hover{border-color:currentColor}'
++'#lgcPanel .lgc-out{margin-top:10px;font-size:13px;white-space:pre-wrap;opacity:.92}'
++'#lgcPanel .lgc-shared{margin-top:12px;border-top:1px dashed rgba(127,127,127,.4);padding-top:10px;font-size:13px}'
++'@media print{#lgcPanel{display:none}}';
+document.head.appendChild(stl);
+
+var sec=document.createElement('section');
+sec.id='lgcPanel'; sec.setAttribute('aria-label','My own notes and questions');
+sec.innerHTML=''
++'<h3>My own notes and questions <span style="font-weight:400;font-size:12px">(learner-generated · not graded)</span></h3>'
++'<div class="lgc-sub">Explain in your own words, make your own fill-in-the-blank question, and write a question for a classmate. This space is for deeper understanding.</div>'
++'<label for="lgcReason">1. Explain my prediction and conclusion in my own words (with reasons)</label>'
++'<textarea id="lgcReason"></textarea>'
++'<label for="lgcCloze">2. Hide key words in my explanation with [square brackets] to make a fill-in-the-blank question</label>'
++'<textarea id="lgcCloze" placeholder="e.g. As the concentration of [H⁺] increases, the [pH] decreases."></textarea>'
++'<div class="lgc-btns"><button type="button" id="lgcClozePrev">Preview my question</button></div>'
++'<div class="lgc-out" id="lgcClozeOut" aria-live="polite"></div>'
++'<label for="lgcProblem">3. A question for a classmate (include the answer)</label>'
++'<textarea id="lgcProblem"></textarea>'
++'<div class="lgc-btns">'
++'<button type="button" id="lgcExport">Save my notes (JSON file)</button>'
++'<button type="button" id="lgcShare">Copy share link</button>'
++'</div>'
++'<div class="lgc-shared" id="lgcShared" style="display:none"></div>';
+var anchor=document.querySelector('footer');
+if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(sec,anchor);
+else document.body.appendChild(sec);
+
+var $=function(i){return document.getElementById(i);};
+$('lgcReason').value=data.reason||''; $('lgcCloze').value=data.cloze||''; $('lgcProblem').value=data.problem||'';
+function persist(){ data.reason=$('lgcReason').value; data.cloze=$('lgcCloze').value; data.problem=$('lgcProblem').value; window.__sim.LGC.save(); }
+$('lgcReason').addEventListener('input',persist);
+$('lgcCloze').addEventListener('input',persist);
+$('lgcProblem').addEventListener('input',persist);
+
+$('lgcClozePrev').addEventListener('click',function(){
+var t=$('lgcCloze').value||'', n=0, ans=[];
+var q=t.replace(/\[([^\]]+)\]/g,function(m,w){ n++; ans.push(w); return '____('+n+')'; });
+$('lgcClozeOut').textContent = n ? ('Question: '+q+'\nAnswer: '+ans.join(', ')) : 'Put key words in [square brackets] to turn them into blanks.';
+});
+
+function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+function dec(s){ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+
+$('lgcExport').addEventListener('click',function(){
+persist();
+var payload={app:'genchem',kind:'lgc',sim:id,exported:new Date().toISOString(),lgc:data};
+var b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+var u=URL.createObjectURL(b),a=document.createElement('a');
+a.href=u; a.download='genchem_lgc_'+id.replace(/\.html$/,'')+'.json'; a.click(); URL.revokeObjectURL(u);
+});
+$('lgcShare').addEventListener('click',function(){
+persist();
+var link=location.origin+location.pathname+location.search+'#share='+enc({sim:id,lgc:data});
+if(navigator.clipboard&&navigator.clipboard.writeText){
+navigator.clipboard.writeText(link).then(function(){ alert('Share link copied. Send it to a classmate.'); },
+function(){ prompt('Copy the link below:', link); });
+} else prompt('Copy the link below:', link);
+});
+
+(function(){
+var m=(location.hash||'').match(/share=([^&]+)/); if(!m) return;
+try{
+var o=dec(m[1]), L=o.lgc||{}, html='<b>Shared by a classmate</b>';
+if(L.reason)  html+='<div>· Explanation: '+esc(L.reason)+'</div>';
+if(L.cloze)   html+='<div>· Fill-in-the-blank text: '+esc(L.cloze)+'</div>';
+if(L.problem) html+='<div>· Question: '+esc(L.problem)+'</div>';
+var sh=$('lgcShared'); sh.innerHTML=html; sh.style.display='block';
+}catch(e){}
+})();
+})();
+</script>
+<script id="gc-reflectguard">
+(function(){"use strict";
+function go(){var ta=document.getElementById('selfExplain'),b=document.getElementById('reflectBtn');if(!ta||!b)return;
+var ex=(ta.getAttribute('placeholder')||'').replace(/^(?:e\.g\.|example)\s*[:：]?\s*/i,''),fb=document.getElementById('fbReflect')||document.getElementById('fb2');if(!fb)return;
+ta.setAttribute('placeholder','In your own words: "I observed (what), and because (principle), (result)."');
+var n=0,last='',nm=function(x){return x.replace(/[\s.…,·"'()]/g,'');};
+b.addEventListener('click',function(e){var t=nm(ta.value),x=nm(ex);
+ if(x.length>8&&t.length>=8&&(x.indexOf(t)>=0||t.indexOf(x.slice(0,Math.ceil(x.length*.8)))>=0)){e.stopImmediatePropagation();
+  fb.textContent='This looks copied from the example. Recall what you observed and write it again in your own words.';fb.className='fb hint';last=fb.textContent;}},true);
+new MutationObserver(function(){var c=fb.className,t=fb.textContent;if(t===last)return;
+ if(/hint/.test(c)&&/^Not quite/.test(t)){n++;fb.textContent=n<2?'Not quite — write one sentence (40+ characters) that says what you observed and why, e.g. "Because …, …". If it is still not enough, you will get a clue.':t.replace(/^Not quite\s*—\s*/,'Clue: ');}
+ else if(/ok/.test(c)&&ex&&t.indexOf('Compare it with')<0)fb.textContent=t+' Compare it with the example explanation: '+ex;
+ last=fb.textContent;}).observe(fb,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});}
+if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);})();
+</script>
+</body>
+</html>
+

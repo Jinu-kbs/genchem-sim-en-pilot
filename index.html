@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>General Chemistry Simulations — English pilot</title>
+<meta name="description" content="10 interactive general chemistry simulations in English for IPB University students: solubility, pH, buffers, precipitation and acid rain, linked to agriculture and soil. No login, works offline.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%231d4ed8%27/%3E%3Ccircle cx=%2711%27 cy=%2712%27 r=%274%27 fill=%27%23fff%27/%3E%3Ccircle cx=%2721%27 cy=%2720%27 r=%275%27 fill=%27%23fff%27/%3E%3C/svg%3E">
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--ink:#0f172a;--ink2:#334155;--muted:#475569;--line:#dbe2ea;--line2:#c3cedb;
+  --link:#1d4ed8;--hero:#1d4ed8;--hero-ink:#fff;--soft:#eef4ff;--chip:#eef2f7;--chip-ink:#1e293b;
+  --btn:#1d4ed8;--btn-ink:#fff;--ok:#047857;--ok-bg:#e7f6f0;--prog:#b45309;--prog-bg:#fdf3e4;--focus:#f59e0b;--radius:14px}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--card:#121b2e;--ink:#e5e9f0;--ink2:#cbd5e1;--muted:#a3b1c6;--line:#24314a;--line2:#33435f;
+  --link:#93b4ff;--hero:#1e3a8a;--soft:#17223a;--chip:#1b2740;--chip-ink:#e5e9f0;--btn:#2563eb;
+  --ok:#34d399;--ok-bg:#0f2a22;--prog:#fbbf24;--prog-bg:#2d2310}}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Pretendard",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+a{color:var(--link)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--card);color:var(--link);padding:10px 14px;z-index:9}.skip:focus{left:8px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header.hero{background:var(--hero);color:var(--hero-ink);padding:28px 0 24px}
+.hero .eyebrow{font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.92;margin:0}
+.hero h1{font-size:clamp(24px,5.4vw,36px);line-height:1.2;margin:6px 0 10px}
+.hero p.lead{font-size:17px;margin:0 0 14px;max-width:760px}
+.hero ul.facts{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0 0 14px}
+.hero ul.facts li{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:4px 12px;font-size:14px}
+.hero a{color:#fff;font-weight:600}
+.hero .links{display:flex;flex-wrap:wrap;gap:10px}
+.hero .links a{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border-radius:10px;background:#fff;color:#1d4ed8;text-decoration:none;font-weight:700}
+.hero .links a.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.7)}
+main{padding:20px 0 40px}
+section.box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:0 0 18px}
+h2{font-size:20px;margin:0 0 10px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:15px}
+.steps b{display:block;color:var(--link)}
+.pwrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.pbar{flex:1 1 220px;height:12px;background:var(--chip);border-radius:999px;overflow:hidden;border:1px solid var(--line2)}
+.pfill{height:100%;width:0;background:var(--btn)}
+#pTxt{font-weight:700}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.rcard{display:block;min-height:44px;border:1px solid var(--line2);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--ink);background:var(--card)}
+.rcard.main{border:2px solid var(--link);background:var(--soft)}
+.rcard small{display:block;font-size:13px;color:var(--muted);font-weight:600}
+.rcard b{color:var(--link)}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tools label.sr,.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+input[type=search],select{font:inherit;font-size:16px;min-height:44px;border:1px solid var(--line2);border-radius:10px;padding:8px 12px;background:var(--card);color:var(--ink);max-width:100%}
+input[type=search]{flex:1 1 240px}
+button,.btn{font:inherit;font-size:15px;min-height:44px;min-width:44px;padding:8px 14px;border-radius:10px;border:1px solid var(--line2);background:var(--card);color:var(--ink);cursor:pointer}
+button.pri{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+button.fb[aria-pressed=true]{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+button.fb .n{font-size:13px;opacity:.9}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+#rmsg{font-size:14px;color:var(--muted);margin:10px 0 0}
+.chap{margin:22px 0 0}
+.chap h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+.chap h2 .cn{font-size:14px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.chap h2 .cm{font-size:13px;color:var(--muted);font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+@media (max-width:420px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:8px}
+.card[data-st=d]{border-color:var(--ok)}
+.card h3{font-size:18px;line-height:1.35;margin:0}
+.card h3 a{text-decoration:none;display:flex;align-items:center;min-height:44px}.card h3 a:hover{text-decoration:underline}
+.card .lo{margin:0;font-size:15px;color:var(--ink2)}
+.card .agri{margin:0;font-size:14px;color:var(--muted)}
+.card .agri .k{font-weight:700;color:var(--ink2)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tag,.st{font-size:13px;border-radius:999px;padding:2px 10px;background:var(--chip);color:var(--chip-ink)}
+.card[data-st=d] .st{background:var(--ok-bg);color:var(--ok);font-weight:700}
+.card[data-st=p] .st{background:var(--prog-bg);color:var(--prog);font-weight:700}
+.go{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;min-height:44px;padding:8px 18px;border-radius:10px;background:var(--btn);color:var(--btn-ink);text-decoration:none;font-weight:700}
+.empty{padding:16px;text-align:center;color:var(--muted)}
+details.mine summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.sm{font-size:14px;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:18px 0 28px;font-size:14px;color:var(--muted)}
+@media print{header.hero,.tools,.go,#resume,details.mine{display:none}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+<a class="skip" href="#list">Skip to the simulation list</a>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">KBS Lab · General Chemistry Simulations · English pilot</p>
+    <h1>Predict, try it, check yourself: chemistry for agriculture and soil</h1>
+    <p class="lead">Welcome, IPB University students. These 10 pilot simulations cover solubility, pH, buffers, precipitation and acid rain, the chemistry behind fertilizers, irrigation water and soil acidity.</p>
+    <ul class="facts"><li>No login</li><li>Free</li><li>Works offline</li><li>Progress stays in this browser</li><li>10 simulations</li></ul>
+    <div class="links"><a href="student_guide.html">Read the student guide</a><a class="ghost" href="#list">Browse simulations</a></div>
+  </div>
+</header>
+<main id="main" class="wrap">
+  <section class="box" aria-labelledby="h-how">
+    <h2 id="h-how">How each simulation works</h2>
+    <ol class="steps">
+      <li><b>1. Predict</b>Choose what you think will happen. A wrong guess is fine.</li>
+      <li><b>2. Observe</b>Move sliders and buttons. Watch the graphs and numbers.</li>
+      <li><b>3. Check</b>Answer short questions. Wrong answers get an explanation.</li>
+      <li><b>4. Reflect</b>Explain the idea in your own words. Then you reach 100%.</li>
+    </ol>
+  </section>
+  <section class="box" id="resume" aria-labelledby="resumeH">
+    <h2 id="resumeH">Start with these</h2>
+    <div class="pwrap"><span>Your progress</span>
+      <div class="pbar" id="pBar" role="progressbar" aria-label="Completed simulations" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="pfill" id="pFill"></div></div>
+      <span id="pTxt">0 / 10 (0%)</span></div>
+    <div class="rgrid" id="rGrid"></div>
+  </section>
+  <section class="box" aria-labelledby="h-find">
+    <h2 id="h-find">Find a simulation</h2>
+    <div class="tools">
+      <label class="sr" for="q">Search</label>
+      <input type="search" id="q" placeholder="Search: pH, buffer, solubility, fertilizer…" autocomplete="off">
+      <label class="sr" for="fCh">Chapter</label>
+      <select id="fCh"><option value="">All chapters</option><option value="3">Chapter 3 · Stoichiometry</option><option value="4">Chapter 4 · Reactions in water</option><option value="13">Chapter 13 · Solutions</option><option value="16">Chapter 16 · Acids and bases</option><option value="17">Chapter 17 · Aqueous equilibria</option><option value="18">Chapter 18 · Environmental chemistry</option></select>
+      <button type="button" data-reset>Clear</button>
+    </div>
+    <div class="chips" role="group" aria-label="Engine type"><button type="button" class="fb" data-ax="e" data-v="E1" aria-pressed="false">E1 Particles <span class="n"></span></button><button type="button" class="fb" data-ax="e" data-v="E2" aria-pressed="false">E2 Equations <span class="n"></span></button><button type="button" class="fb" data-ax="e" data-v="E3" aria-pressed="false">E3 Data and diagrams <span class="n"></span></button></div>
+    <p id="rmsg" role="status" aria-live="polite"></p>
+  </section>
+  <div id="list"><section class="chap" data-c="3" aria-labelledby="h-ch3"><h2 id="h-ch3"><span class="cn">Chapter 3</span> Stoichiometry <span class="cm"></span></h2><div class="grid"><article class="card" data-s="ch03/3-NH3_%ED%98%BC%ED%95%A9%EC%83%81%EC%9E%90_%ED%95%9C%EA%B3%84%EB%B0%98%EC%9D%91%EB%AC%BC_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" data-c="3" data-e="E1" data-x="Ammonia synthesis for nitrogen fertilizer Stoichiometry"><div class="tags"><span class="tag eng">E1 · Particles</span><span class="st" aria-live="off">Not started</span></div><h3><a href="ch03/3-NH3_%ED%98%BC%ED%95%A9%EC%83%81%EC%9E%90_%ED%95%9C%EA%B3%84%EB%B0%98%EC%9D%91%EB%AC%BC_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html">Limiting Reactant — N₂ + 3H₂ → 2NH₃ Mixing Box</a></h3><p class="lo">Explain, with a reason, whether the limiting reactant is decided by the number of molecules or by the coefficient ratio.</p><p class="agri"><span class="k">Field link</span> Ammonia synthesis for nitrogen fertilizer</p><a class="go" href="ch03/3-NH3_%ED%98%BC%ED%95%A9%EC%83%81%EC%9E%90_%ED%95%9C%EA%B3%84%EB%B0%98%EC%9D%91%EB%AC%BC_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" aria-label="Start: Limiting Reactant — N₂ + 3H₂ → 2NH₃ Mixing Box">Start</a></article></div></section><section class="chap" data-c="4" aria-labelledby="h-ch4"><h2 id="h-ch4"><span class="cn">Chapter 4</span> Reactions in water <span class="cm"></span></h2><div class="grid"><article class="card" data-s="ch04/4-%EC%B9%A8%EC%A0%84%EB%B0%98%EC%9D%91_%EC%9D%B4%EC%98%A8_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" data-c="4" data-e="E1" data-x="Precipitation in soil and irrigation water Reactions in water"><div class="tags"><span class="tag eng">E1 · Particles</span><span class="st" aria-live="off">Not started</span></div><h3><a href="ch04/4-%EC%B9%A8%EC%A0%84%EB%B0%98%EC%9D%91_%EC%9D%B4%EC%98%A8_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html">Precipitation Reaction — Ions Combining</a></h3><p class="lo">Explain that the amount of precipitate is not an input but emerges from binding.</p><p class="agri"><span class="k">Field link</span> Precipitation in soil and irrigation water</p><a class="go" href="ch04/4-%EC%B9%A8%EC%A0%84%EB%B0%98%EC%9D%91_%EC%9D%B4%EC%98%A8_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" aria-label="Start: Precipitation Reaction — Ions Combining">Start</a></article></div></section><section class="chap" data-c="13" aria-labelledby="h-ch13"><h2 id="h-ch13"><span class="cn">Chapter 13</span> Solutions <span class="cm"></span></h2><div class="grid"><article class="card" data-s="ch13/13-%EA%B8%B0%EC%B2%B4%EC%9A%A9%ED%95%B4%EB%8F%84_Henry_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" data-c="13" data-e="E1" data-x="Oxygen and CO₂ in paddy water and nutrient solutions Solutions"><div class="tags"><span class="tag eng">E1 · Particles</span><span class="tag">About 15 min</span><span class="st" aria-live="off">Not started</span></div><h3><a href="ch13/13-%EA%B8%B0%EC%B2%B4%EC%9A%A9%ED%95%B4%EB%8F%84_Henry_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html">Gas Solubility and Henry&#x27;s Law</a></h3><p class="lo">Explain that dissolving a gas is a dynamic equilibrium of particles going in and coming out at the surface.</p><p class="agri"><span class="k">Field link</span> Oxygen and CO₂ in paddy water and nutrient solutions</p><a class="go" href="ch13/13-%EA%B8%B0%EC%B2%B4%EC%9A%A9%ED%95%B4%EB%8F%84_Henry_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" aria-label="Start: Gas Solubility and Henry&#x27;s Law">Start</a></article><article class="card" data-s="ch13/13-%EC%9A%A9%ED%95%B4%EB%8F%84%EA%B3%A1%EC%84%A0_%EB%83%89%EA%B0%81%EC%84%9D%EC%B6%9C_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" data-c="13" data-e="E3" data-x="Solubility curves of fertilizer salts such as KNO₃ Solutions"><div class="tags"><span class="tag eng">E3 · Data and diagrams</span><span class="tag">About 20 min</span><span class="st" aria-live="off">Not started</span></div><h3><a href="ch13/13-%EC%9A%A9%ED%95%B4%EB%8F%84%EA%B3%A1%EC%84%A0_%EB%83%89%EA%B0%81%EC%84%9D%EC%B6%9C_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html">Solubility Curves and Crystallization on Cooling</a></h3><p class="lo">Read the solubility at a given temperature from a solubility curve and decide the state of the solution (unsaturated / saturated / supersaturated).</p><p class="agri"><span class="k">Field link</span> Solubility curves of fertilizer salts such as KNO₃</p><a class="go" href="ch13/13-%EC%9A%A9%ED%95%B4%EB%8F%84%EA%B3%A1%EC%84%A0_%EB%83%89%EA%B0%81%EC%84%9D%EC%B6%9C_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" aria-label="Start: Solubility Curves and Crystallization on Cooling">Start</a></article></div></section><section class="chap" data-c="16" aria-labelledby="h-ch16"><h2 id="h-ch16"><span class="cn">Chapter 16</span> Acids and bases <span class="cm"></span></h2><div class="grid"><article class="card" data-s="ch16/16-%EB%AC%BC%EC%9D%98%EC%9D%B4%EC%98%A8%EA%B3%B1_Kw_pH_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" data-c="16" data-e="E2" data-x="The basis of soil pH Acids and bases"><div class="tags"><span class="tag eng">E2 · Equations</span><span class="tag">About 15 min</span><span class="st" aria-live="off">Not started</span></div><h3><a href="ch16/16-%EB%AC%BC%EC%9D%98%EC%9D%B4%EC%98%A8%EA%B3%B1_Kw_pH_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html">Ion-Product of Water K_w and pH</a></h3><p class="lo">Use Kw = [H⁺][OH⁻] to calculate [H⁺] from [OH⁻] and the other way round.</p><p class="agri"><span class="k">Field link</span> The basis of soil pH</p><a class="go" href="ch16/16-%EB%AC%BC%EC%9D%98%EC%9D%B4%EC%98%A8%EA%B3%B1_Kw_pH_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" aria-label="Start: Ion-Product of Water K_w and pH">Start</a></article><article class="card" data-s="ch16/16-%EC%82%B0%EC%97%BC%EA%B8%B0%EC%A7%80%EC%8B%9C%EC%95%BD_%EC%A0%84%EC%9D%B4%EA%B5%AC%EA%B0%84_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" data-c="16" data-e="E3" data-x="Indicator tests for soil pH Acids and bases"><div class="tags"><span class="tag eng">E3 · Data and diagrams</span><span class="tag">About 15 min</span><span class="st" aria-live="off">Not started</span></div><h3><a href="ch16/16-%EC%82%B0%EC%97%BC%EA%B8%B0%EC%A7%80%EC%8B%9C%EC%95%BD_%EC%A0%84%EC%9D%B4%EA%B5%AC%EA%B0%84_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html">Acid–Base Indicator Transition Ranges</a></h3><p class="lo">Explain that an indicator changes color only inside its own transition range of about 2 pH units.</p><p class="agri"><span class="k">Field link</span> Indicator tests for soil pH</p><a class="go" href="ch16/16-%EC%82%B0%EC%97%BC%EA%B8%B0%EC%A7%80%EC%8B%9C%EC%95%BD_%EC%A0%84%EC%9D%B4%EA%B5%AC%EA%B0%84_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" aria-label="Start: Acid–Base Indicator Transition Ranges">Start</a></article><article class="card" data-s="ch16/16-%EB%8B%A4%EC%96%91%EC%84%B1%EC%9E%90%EC%82%B0_%EC%9D%B8%EC%82%B0_%ED%99%94%ED%95%99%EC%A2%85%EB%B6%84%EC%9C%A8_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" data-c="16" data-e="E2" data-x="Phosphate fertilizer species at different pH Acids and bases"><div class="tags"><span class="tag eng">E2 · Equations</span><span class="tag">About 20 min</span><span class="st" aria-live="off">Not started</span></div><h3><a href="ch16/16-%EB%8B%A4%EC%96%91%EC%84%B1%EC%9E%90%EC%82%B0_%EC%9D%B8%EC%82%B0_%ED%99%94%ED%95%99%EC%A2%85%EB%B6%84%EC%9C%A8_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html">Polyprotic Acids: Stepwise Ionization and Species Fractions of Phosphoric Acid</a></h3><p class="lo">Write the stepwise ionization of a polyprotic acid as equations with Ka1, Ka2 and Ka3.</p><p class="agri"><span class="k">Field link</span> Phosphate fertilizer species at different pH</p><a class="go" href="ch16/16-%EB%8B%A4%EC%96%91%EC%84%B1%EC%9E%90%EC%82%B0_%EC%9D%B8%EC%82%B0_%ED%99%94%ED%95%99%EC%A2%85%EB%B6%84%EC%9C%A8_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" aria-label="Start: Polyprotic Acids: Stepwise Ionization and Species Fractions of Phosphoric Acid">Start</a></article></div></section><section class="chap" data-c="17" aria-labelledby="h-ch17"><h2 id="h-ch17"><span class="cn">Chapter 17</span> Aqueous equilibria <span class="cm"></span></h2><div class="grid"><article class="card" data-s="ch17/17-%EC%99%84%EC%B6%A9%EC%9E%91%EC%9A%A9_%EA%B0%95%EC%97%BC%EA%B8%B0%EC%B2%A8%EA%B0%80_%EB%B9%84%EA%B5%90_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" data-c="17" data-e="E2" data-x="Soil buffer capacity Aqueous equilibria"><div class="tags"><span class="tag eng">E2 · Equations</span><span class="tag">About 15 min</span><span class="st" aria-live="off">Not started</span></div><h3><a href="ch17/17-%EC%99%84%EC%B6%A9%EC%9E%91%EC%9A%A9_%EA%B0%95%EC%97%BC%EA%B8%B0%EC%B2%A8%EA%B0%80_%EB%B9%84%EA%B5%90_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html">Buffer Action — Adding a Strong Base</a></h3><p class="lo">Explain, from the reactions of the components, the difference in pH change when the same OH⁻ is added to a buffer and to water.</p><p class="agri"><span class="k">Field link</span> Soil buffer capacity</p><a class="go" href="ch17/17-%EC%99%84%EC%B6%A9%EC%9E%91%EC%9A%A9_%EA%B0%95%EC%97%BC%EA%B8%B0%EC%B2%A8%EA%B0%80_%EB%B9%84%EA%B5%90_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" aria-label="Start: Buffer Action — Adding a Strong Base">Start</a></article><article class="card" data-s="ch17/17-pH%EC%9A%A9%ED%95%B4%EB%8F%84_PbF2_PbI2_%EB%B9%84%EA%B5%90_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" data-c="17" data-e="E2" data-x="How pH controls heavy-metal solubility Aqueous equilibria"><div class="tags"><span class="tag eng">E2 · Equations</span><span class="tag">About 15 min</span><span class="st" aria-live="off">Not started</span></div><h3><a href="ch17/17-pH%EC%9A%A9%ED%95%B4%EB%8F%84_PbF2_PbI2_%EB%B9%84%EA%B5%90_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html">Salt Solubility and pH — PbF₂ vs PbI₂</a></h3><p class="lo">Decide, with reasons, which of PbF₂ and PbI₂ is the salt whose solubility changes in acid.</p><p class="agri"><span class="k">Field link</span> How pH controls heavy-metal solubility</p><a class="go" href="ch17/17-pH%EC%9A%A9%ED%95%B4%EB%8F%84_PbF2_PbI2_%EB%B9%84%EA%B5%90_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" aria-label="Start: Salt Solubility and pH — PbF₂ vs PbI₂">Start</a></article></div></section><section class="chap" data-c="18" aria-labelledby="h-ch18"><h2 id="h-ch18"><span class="cn">Chapter 18</span> Environmental chemistry <span class="cm"></span></h2><div class="grid"><article class="card" data-s="ch18/18-%EB%B9%97%EB%AC%BCpH_CO2_SO2_%EC%82%B0%EC%84%B1%EB%B9%84_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" data-c="18" data-e="E2" data-x="Acid rain and soil acidification Environmental chemistry"><div class="tags"><span class="tag eng">E2 · Equations</span><span class="tag">About 20 min</span><span class="st" aria-live="off">Not started</span></div><h3><a href="ch18/18-%EB%B9%97%EB%AC%BCpH_CO2_SO2_%EC%82%B0%EC%84%B1%EB%B9%84_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html">Rainwater pH — Natural Acidity (CO₂) and Acid Rain (SO₂)</a></h3><p class="lo">Find and explain the pH of unpolluted rainwater from the dissolution of CO₂ (Henry&#x27;s law) and the ionization of carbonic acid.</p><p class="agri"><span class="k">Field link</span> Acid rain and soil acidification</p><a class="go" href="ch18/18-%EB%B9%97%EB%AC%BCpH_CO2_SO2_%EC%82%B0%EC%84%B1%EB%B9%84_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html" aria-label="Start: Rainwater pH — Natural Acidity (CO₂) and Acid Rain (SO₂)">Start</a></article></div></section><p class="empty" id="empty" hidden>No simulation matches. Press Clear to see all.</p></div>
+  <section class="box" style="margin-top:22px" aria-labelledby="h-mine">
+    <details class="mine"><summary id="h-mine">My learning record (backup)</summary>
+      <p class="sm">Your progress is saved only in this browser. Nothing is sent to a server and no name or e-mail is collected. If you clear browser data or change device, it is lost, so save a backup file.</p>
+      <div class="row"><button type="button" class="pri" id="bExp">Save backup file</button>
+        <label class="btn" style="display:inline-flex;align-items:center">Load backup file<input type="file" accept=".json,application/json" class="sr" id="bImp"></label></div>
+      <p id="mineMsg" role="status" aria-live="polite" class="sm"></p>
+    </details>
+  </section>
+</main>
+<footer><div class="wrap">KBS Lab · General Chemistry Simulations · English pilot for IPB University · works offline · no personal data collected · build 2026-10-14</div></footer>
+<script>
+(function(){
+"use strict";
+var NS="genchem.en.",STARTERS=["16-%EB%AC%BC%EC%9D%98%EC%9D%B4%EC%98%A8%EA%B3%B1_Kw_pH_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html", "13-%EA%B8%B0%EC%B2%B4%EC%9A%A9%ED%95%B4%EB%8F%84_Henry_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html", "17-%EC%99%84%EC%B6%A9%EC%9E%91%EC%9A%A9_%EA%B0%95%EC%97%BC%EA%B8%B0%EC%B2%A8%EA%B0%80_%EB%B9%84%EA%B5%90_%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98.html"],N=10;
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function jget(k,d){try{var v=JSON.parse(lsGet(NS+k));return v==null?d:v;}catch(e){return d;}}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function norm(s){return (s||"").toLowerCase().replace(/[\s\[\]\(\)·,.\-_—:/]+/g,"");}
+var CARDS=[].slice.call(document.querySelectorAll("#list .card")),ITEMS=[],BYB={};
+CARDS.forEach(function(el,i){var a=el.querySelector("h3 a"),p=el.getAttribute("data-s"),b=decodeURIComponent(p.split("/").pop());
+  var it={el:el,i:i,b:b,c:el.getAttribute("data-c"),e:el.getAttribute("data-e"),title:a.textContent,href:a.getAttribute("href"),
+    txt:norm(el.textContent+" "+(el.getAttribute("data-x")||"")),st:"n"};
+  ITEMS.push(it);BYB[b]=it;
+  [].forEach.call(el.querySelectorAll("a"),function(x){x.addEventListener("click",function(){opened(b);});});});
+function hist(){var h=jget("history",[]);return Array.isArray(h)?h:[];}
+function opened(b){var o=jget("opened",{});if(!o||typeof o!=="object")o={};o[b]=new Date().toISOString();lsSet(NS+"opened",JSON.stringify(o));}
+var DONE={},PROG={};
+function loadState(){DONE={};PROG={};hist().forEach(function(r){if(r&&r.completed&&r.sim)DONE[r.sim]=r.ts||"1";});
+  var o=jget("opened",{}),g=jget("lgc",{});
+  if(o&&typeof o==="object")Object.keys(o).forEach(function(b){PROG[b]=o[b];});
+  if(g&&typeof g==="object")Object.keys(g).forEach(function(b){var d=g[b]||{};if((d.reason||d.cloze||d.problem)&&!PROG[b])PROG[b]="1";});
+  ITEMS.forEach(function(it){it.st=DONE[it.b]?"d":(PROG[it.b]?"p":"n");});}
+function rcard(it,lab,main){return '<a class="rcard'+(main?' main':'')+'" href="'+it.href+'" data-b="'+encodeURIComponent(it.b)+'"><small>'+esc(lab)+'</small><b>'+esc('Chapter '+it.c+' · '+it.title)+'</b></a>';}
+function renderResume(){
+  var dn=ITEMS.filter(function(it){return it.st==="d";}).length,pct=N?Math.round(100*dn/N):0;
+  document.getElementById("pTxt").textContent=dn+" / "+N+" ("+pct+"%)";
+  document.getElementById("pFill").style.width=pct+"%";document.getElementById("pBar").setAttribute("aria-valuenow",pct);
+  var G=document.getElementById("rGrid"),H=document.getElementById("resumeH"),h="",used={};
+  var any=ITEMS.some(function(it){return it.st!=="n";});
+  if(any){
+    var prim=null,lab="Continue";
+    var op=ITEMS.filter(function(it){return it.st==="p"&&PROG[it.b]!=="1";}).sort(function(a,b){return PROG[a.b]<PROG[b.b]?1:-1;});
+    if(op.length){prim=op[0];lab="Continue · last opened";}
+    else{for(var j=0;j<ITEMS.length;j++){if(ITEMS[j].st!=="d"){prim=ITEMS[j];lab="Next up";break;}}}
+    if(prim){used[prim.b]=1;h+=rcard(prim,lab,true);}
+    for(var k=0,n=0;k<ITEMS.length&&n<2;k++){var c=ITEMS[k];if(c.st!=="d"&&!used[c.b]){used[c.b]=1;n++;h+=rcard(c,"Not finished yet",false);}}
+    H.textContent=prim?"Continue":"You have completed all "+N+" simulations";
+    if(!h)h='<p class="sm">Well done. You can repeat any simulation at a higher level (Advanced).</p>';
+  }else{
+    H.textContent="New here? Start with these";
+    STARTERS.forEach(function(b,i){var it=BYB[decodeURIComponent(b)];if(it)h+=rcard(it,i===0?"Recommended first":"Good next step",i===0);});
+  }
+  G.innerHTML=h;
+  [].forEach.call(G.querySelectorAll("a[data-b]"),function(a){a.addEventListener("click",function(){opened(decodeURIComponent(a.getAttribute("data-b")));});});
+}
+var F={c:"",e:""},Q=[],STL={n:"Not started",p:"In progress",d:"Completed"},GOL={n:"Start",p:"Continue",d:"Do it again"};
+var SEL=document.getElementById("fCh"),FBS=[].slice.call(document.querySelectorAll(".fb"));
+function ok(it,skip){if(skip!=="c"&&F.c&&it.c!==F.c)return false;if(skip!=="e"&&F.e&&it.e!==F.e)return false;
+  for(var j=0;j<Q.length;j++)if(it.txt.indexOf(Q[j])<0)return false;return true;}
+function apply(){var vis=0,secN={},secD={},secT={},cntE={};
+  ITEMS.forEach(function(it){if(ok(it,"e"))cntE[it.e]=(cntE[it.e]||0)+1;
+    var show=ok(it,null);it.el.hidden=!show;it.el.setAttribute("data-st",it.st);
+    it.el.querySelector(".st").textContent=STL[it.st];
+    var go=it.el.querySelector(".go");go.textContent=GOL[it.st];go.setAttribute("aria-label",GOL[it.st]+": "+it.title);
+    secT[it.c]=(secT[it.c]||0)+1;if(it.st==="d")secD[it.c]=(secD[it.c]||0)+1;if(show){vis++;secN[it.c]=(secN[it.c]||0)+1;}});
+  [].forEach.call(document.querySelectorAll("#list .chap"),function(s){var c=s.getAttribute("data-c");s.hidden=!secN[c];
+    s.querySelector(".cm").textContent="completed "+(secD[c]||0)+" of "+(secT[c]||0);});
+  FBS.forEach(function(b){var v=b.getAttribute("data-v"),n=cntE[v]||0;b.querySelector(".n").textContent="("+n+")";
+    b.setAttribute("aria-pressed",F.e===v?"true":"false");});
+  document.getElementById("empty").hidden=vis>0;
+  var filt=Q.length||F.c||F.e;
+  document.getElementById("rmsg").textContent=vis?(filt?vis+" found":"Showing all "+ITEMS.length+" simulations"):"No simulation matches";}
+var tq;document.getElementById("q").addEventListener("input",function(){var v=this.value;clearTimeout(tq);tq=setTimeout(function(){
+  Q=v.split(/\s+/).map(norm).filter(Boolean);apply();},120);});
+SEL.addEventListener("change",function(){F.c=this.value;apply();});
+FBS.forEach(function(b){b.addEventListener("click",function(){var v=b.getAttribute("data-v");F.e=(F.e===v)?"":v;apply();});});
+document.querySelector("[data-reset]").addEventListener("click",function(){F.c="";F.e="";Q=[];SEL.value="";document.getElementById("q").value="";apply();});
+function msg(t){document.getElementById("mineMsg").textContent=t;}
+document.getElementById("bExp").addEventListener("click",function(){var p=jget("path",null);
+  var b=new Blob([JSON.stringify({app:"genchem",lang:"en",v:2,exported:new Date().toISOString(),history:hist(),path:p},null,2)],{type:"application/json"});
+  var u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="genchem_en_brain_"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);
+  lsSet(NS+"backupAt",new Date().toISOString());msg("Backup file saved.");});
+document.getElementById("bImp").addEventListener("change",function(){var inp=this,f=inp.files&&inp.files[0];if(!f)return;var fr=new FileReader();
+  fr.onload=function(){var n=-1;try{var o=JSON.parse(fr.result),i=(o&&o.history)||o;if(Array.isArray(i)){var a=hist(),s={};n=0;
+      a.forEach(function(r){s[r.ts+"|"+r.sim]=1;});i.forEach(function(r){if(r&&r.ts&&r.sim&&!s[r.ts+"|"+r.sim]){a.push(r);s[r.ts+"|"+r.sim]=1;n++;}});
+      lsSet(NS+"history",JSON.stringify(a));}}catch(e){n=-1;}
+    inp.value="";render();msg(n<0?"Could not read this file. Choose a genchem_en_brain backup file.":n+" record(s) added.");};fr.readAsText(f);});
+function render(){loadState();renderResume();apply();}
+window.addEventListener("focus",render);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)render();});
+window.addEventListener("storage",function(e){if(e.key&&e.key.indexOf(NS)===0)render();});
+render();
+})();
+</script>
+</body>
+</html>

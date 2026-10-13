@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="sim-tier" content="core">
+<title>Gas Solubility and Henry's Law · Simulation (self-directed learning · teacher edition)</title>
+<meta name="description" content="Interactive simulation: push a piston to change the partial pressure of a gas above water and measure how gas solubility follows Henry's law, S_g = kP_g.">
+<meta name="curriculum-univ" content="University general chemistry · Solutions · factors affecting solubility · pressure effect · Henry's law S_g = kP_g">
+<meta name="curriculum-2022" content="General Chemistry">
+<meta name="school-level" content="University general chemistry">
+<meta name="engine-class" content="E1-particle-MD + E2-answer(S=kP)">
+<meta name="misconception-id" content="MC-sol-01: doubling the pressure doubles the Henry's law constant k / MC-sol-02: gas solubility is a fixed property of the substance, independent of pressure">
+<style>
+  :root{
+    --ink:#0B0F17; --ink-700:#1A2030; --ink-600:#222a3d; --ink-400:#8C98B3;
+    --paper:#F4F1EA; --paper-2:#E8E3D6;
+    --accent:#A7BCEC; --accent-2:#E8C275;
+    --gas:#E8C275; --warn:#E36B5B; --good:#7FB98A; --bond:#A7BCEC;
+    --font-serif:Georgia,'Times New Roman',serif;
+    --font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--paper);font-family:var(--font-sans);
+    min-height:100vh;word-break:keep-all;line-break:strict;overflow-wrap:break-word}
+  body{padding:40px 28px 80px;line-height:1.6}
+  .wrap{max-width:1120px;margin:0 auto}
+
+  header{border-bottom:1px solid var(--ink-700);padding-bottom:26px;margin-bottom:24px}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:5px;color:var(--accent);text-transform:uppercase}
+  h1{font-family:var(--font-serif);font-weight:600;letter-spacing:-1.2px;font-size:44px;margin-top:14px;line-height:1.08}
+  h1 em{color:var(--accent-2);font-style:normal}
+  .lede{font-family:var(--font-serif);font-size:18px;color:var(--ink-400);margin-top:16px;max-width:760px}
+
+  .card{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:20px;margin-top:20px}
+  .kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .kicker .num{background:#2a3350;color:var(--accent-2);border-radius:6px;padding:2px 8px;font-size:12px}
+
+  .lo-goals{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+  .lo-goals .g{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--paper-2)}
+  .lo-goals .chk{width:18px;height:18px;border:1.5px solid var(--ink-400);border-radius:5px;flex:0 0 auto;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink)}
+  .lo-goals .g.done .chk{background:var(--good);border-color:var(--good)}
+  .lo-goals .g.done .chk::after{content:"✓"}
+  .progress{height:12px;border-radius:7px;background:#10162260;border:1px solid #2a3144;overflow:hidden}
+  .progress > span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5E6B85,var(--accent-2));transition:width .4s}
+  .progress-lab{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px;text-align:right}
+
+  .stage{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px}
+  .box{background:var(--ink-700);border:1px solid #2a3144;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px}
+  .box .tag{display:flex;align-items:center;justify-content:space-between}
+  .box .tag h2{font-family:var(--font-serif);font-size:22px;font-weight:600}
+  .box.real .tag h2{color:var(--accent-2)}
+  .box .sub{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);letter-spacing:1px}
+  canvas.sim{width:100%;height:auto;display:block;background:#0d1320;border:1px solid #2a3144;border-radius:10px}
+  .gauge .row{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .gauge .row b{color:var(--paper);font-size:15px;font-weight:600}
+  .bar{height:10px;border-radius:6px;background:#10162260;overflow:hidden;border:1px solid #2a3144;margin-top:6px}
+  .bar > span{display:block;height:100%;transition:width .12s linear}
+  .box.ideal .bar > span{background:linear-gradient(90deg,#5E6B85,#A7BCEC)}
+  .box.real .bar > span{background:linear-gradient(90deg,#8a6a2c,#E8C275)}
+
+  .choices{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+  .choice{font-family:var(--font-sans);font-size:14px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:10px 16px;cursor:pointer}
+  .choice:hover{border-color:var(--accent)}
+  .choice.sel{background:#2a3350;border-color:var(--accent-2)}
+  .conf-row{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-bottom:12px}
+  .conf-row input{flex:1;accent-color:var(--accent-2)}
+  .gate-msg{font-size:14px;color:var(--paper-2);margin-top:8px;min-height:1.4em}
+  .gate-msg.refute{color:var(--warn)} .gate-msg.hit{color:var(--good)}
+
+  .verdict{margin-top:20px;padding:20px 22px;border-radius:14px;border:1px solid #2a3144;background:#0d1320;position:relative;transition:filter .3s}
+  .verdict.locked{filter:blur(7px);pointer-events:none;user-select:none}
+  .verdict .lockbadge{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;color:var(--accent);background:#0d1320cc;border-radius:14px;filter:none}
+  .verdict.locked + .lockbadge{display:flex}
+  .vwrap{position:relative}
+  .verdict .z{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .verdict .z .big{font-family:var(--font-serif);font-size:38px;color:var(--accent-2);letter-spacing:-1px}
+  .verdict .z .lab{font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .verdict p{font-family:var(--font-serif);font-size:16px;color:var(--paper-2);margin-top:10px;min-height:2.4em}
+  .verdict p b{color:var(--accent-2)}
+
+  .panel{margin-top:20px;background:linear-gradient(180deg,#0d1320,#0B0F17);border:1px solid #2a3144;border-radius:16px;padding:22px}
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+  .ctrl label{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:8px}
+  .ctrl .val{color:var(--paper);font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--accent-2);cursor:pointer}
+  .ctrl .ends{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:4px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button,.toggle{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:9px 14px;cursor:pointer}
+  button:hover,.toggle:hover{border-color:var(--accent)}
+  .toggle.on{background:#2a3350;border-color:var(--accent)}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .legend i{display:inline-block;width:18px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+
+  .notes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+  .note{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:22px}
+  .note h3{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .note p{font-size:14px;color:var(--paper-2);line-height:1.7}
+  .note .eq{font-family:var(--font-serif);font-style:italic;font-size:19px;color:var(--paper);text-align:center;margin:14px 0 6px;padding:12px;background:#0d1320;border-radius:10px;border:1px solid #2a3144}
+  .note .eqsub{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);text-align:center}
+
+  .q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed #2a3144}
+  .q:last-child{border-bottom:none;margin-bottom:0}
+  .q .qtext{font-size:15px;color:var(--paper);margin-bottom:10px}
+  .q .qtext .qn{color:var(--accent-2);font-family:var(--font-mono);margin-right:8px}
+  .fb{font-size:13px;margin-top:8px;min-height:1.2em}
+  .fb.ok{color:var(--good)} .fb.no{color:var(--warn)} .fb.hint{color:var(--accent)}
+  .num-in{font-family:var(--font-mono);background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:8px 10px;width:120px}
+  .mission{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px}
+  .mission b{color:var(--accent-2)}
+  details.hintbox{margin-top:8px}
+  details.hintbox summary{font-family:var(--font-mono);font-size:12px;color:var(--accent);cursor:pointer}
+  details.hintbox p{font-size:13px;color:var(--ink-400);margin-top:6px}
+
+  .reflect textarea{width:100%;min-height:64px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical}
+  .self-check{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+  .self-check label{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--paper-2);cursor:pointer}
+  .self-check input{margin-top:4px;accent-color:var(--good)}
+  .stamp{display:none;margin-top:14px;text-align:center;font-family:var(--font-serif);font-size:22px;color:var(--good);border:2px dashed var(--good);border-radius:12px;padding:14px}
+  .stamp.on{display:block}
+
+  .teacher{margin-top:24px;border-top:2px solid #2a3144;padding-top:6px}
+  details.tguide summary{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);cursor:pointer;padding:12px 0}
+  .tguide-body{background:var(--ink-700);border:1px solid #2a3144;border-radius:12px;padding:20px;font-size:14px;color:var(--paper-2)}
+  .tguide-body h4{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent);margin:14px 0 6px}
+  .tguide-body ul{margin-left:18px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .badge{font-family:var(--font-mono);font-size:12px;background:#0d1320;border:1px solid #2a3144;border-radius:20px;padding:5px 12px;color:var(--paper-2)}
+  .badge.verify{color:var(--good);border-color:var(--good)}
+  .teacher-bar{display:none;background:#2a3350;border:1px solid var(--accent);border-radius:12px;padding:14px;margin-top:18px}
+  .teacher-bar.on{display:block}
+  .teacher-bar .tb-title{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);margin-bottom:10px}
+
+  footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--ink-700);font-family:var(--font-mono);font-size:12px;color:var(--ink-400);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  footer b{color:var(--paper-2);font-weight:500}
+
+  @media(max-width:780px){ h1{font-size:32px} .stage{grid-template-columns:1fr} .notes{grid-template-columns:1fr} }
+
+  @media print{ body{background:#fff;color:#000} .no-print{display:none!important} }
+  body.worksheet .no-print{display:none}
+  body.worksheet{background:#fff;color:#111}
+  body.worksheet .ws-only{display:block}
+  .ws-only{display:none}
+  .ws{border:1px solid #999;border-radius:8px;padding:16px;margin-top:14px;color:#111}
+  .ws h3{margin-bottom:8px} .ws .line{border-bottom:1px solid #bbb;height:28px;margin:8px 0}
+
+body:not(.mode-teacher) .teacher-only{display:none!important}
+body:not(.predicted):not(.reveal) .post-pred{display:none!important}
+body.predicted .pre-pred,body.reveal .pre-pred{display:none!important}
+body.worksheet #lgcPanel{display:none!important}
+body.worksheet .stage{display:none!important}
+@media print{.stage{display:none!important}}
+@media print{.limit-box{display:none!important}} body.worksheet .limit-box{display:none!important}
+
+  .meta-line{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:10px}
+  .scale-note{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:10px}
+  .limit-box p b{color:var(--accent-2)}
+  #gasBtns .toggle{padding:7px 11px}
+  body.worksheet .ws svg{background:#fff}
+  @media print{ .ws-only{display:block!important} .ws{color:#000} }
+
+html:has(body.worksheet){background:#fff!important}
+body.worksheet *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#111!important;border-color:#888!important;box-shadow:none!important;text-shadow:none!important}
+body.worksheet canvas{filter:grayscale(1) contrast(1.1)}
+@media print{html{background:#fff!important}
+ body *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#000!important;border-color:#666!important;box-shadow:none!important;text-shadow:none!important}
+ canvas{filter:grayscale(1)}}
+  a{color:var(--accent)} a:visited{color:var(--accent)}
+  .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.verdict.locked{display:none!important}
+.vwrap .lockbadge{display:none}
+.verdict.locked + .lockbadge{position:static!important;display:block!important;padding:14px 16px;border:1px dashed #556;border-radius:12px;text-align:center;background:transparent}
+input[type=range]{min-height:24px}
+</style>
+<script id="gc-announce">
+(G=>{
+const D=G.document,T=()=>Date.now();
+const st={el:null,delay:400,gap:5000,win:1000,mode:'debounce',gate:null,pre:'',summary:null,timer:null,at:null,pend:null,last:null,lastW:-1e9,ui:-1e9,count:0};
+function ensure(id){if(st.el&&st.el.isConnected!==false)return st.el;let el=D&&D.getElementById(id||'statusLive');
+  if(!el&&D){el=D.createElement('div');el.id=id||'statusLive';(D.body||D.documentElement).appendChild(el);
+    el.setAttribute('style','position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0');}
+  if(el){el.setAttribute('role','status');el.setAttribute('aria-live','polite');el.setAttribute('aria-atomic','true');}
+  st.el=el;return el;}
+function write(t){if(typeof t==='function')t=t();t=String(t==null?'':t).replace(/\s+/g,' ').trim();if(!t||t===st.last)return false;
+  const el=ensure();if(!el)return false;el.textContent=t;st.last=t;st.lastW=T();st.count++;return true;}
+const open=()=>!st.gate||!!st.gate();
+function input(){st.ui=T();}
+if(D&&D.addEventListener)['input','change','click','keydown','pointerdown'].forEach(e=>D.addEventListener(e,input,true));
+function flush(){st.at=null;const w=st.lastW+st.gap-T();if(w>0){st.at=setTimeout(flush,w);return;}const t=st.pend;st.pend=null;if(t!=null&&open())write(t);}
+function auto(t){const n=T();if(st.ui>st.lastW&&n-st.ui<=3000&&n-st.lastW>=1000){clearTimeout(st.at);st.at=null;st.pend=null;return write(t);}
+  st.pend=t;if(st.at)return true;if(n-st.lastW>=st.gap){st.pend=null;return write(t);}st.at=setTimeout(flush,st.lastW+st.gap-n);return true;}
+function route(t,o){if(o&&o.now){clearTimeout(st.timer);return write(t);}
+  if(T()-st.ui<=st.win){clearTimeout(st.timer);st.timer=setTimeout(()=>{st.timer=null;if(open())write(t);},st.delay);return true;}return auto(t);}
+function attach(o){o=o||{};for(const k of ['delay','gap','win','mode','gate','pre','summary'])if(o[k]!=null)st[k]=o[k];
+  ensure(o.id);if(!open()&&st.pre)write(st.pre);return GCAnnounce;}
+function say(text,o){o=o||{};if(st.mode==='block'&&!o.force)return false;if(!open())return st.pre?write(st.pre):false;return route(text,o);}
+function update(){if(!st.summary)return false;return say(()=>st.summary());}
+function blockEnd(text,o){if(!open())return false;return route(text,o);}
+function reset(){clearTimeout(st.timer);clearTimeout(st.at);st.at=null;st.pend=null;st.last=null;if(st.el)st.el.textContent='';if(!open()&&st.pre)write(st.pre);}
+const GCAnnounce={version:2,attach,say,update,blockEnd,reset,input,get last(){return st.last;},get count(){return st.count;},get mode(){return st.mode;}};
+G.GCAnnounce=GCAnnounce;
+})(typeof window!=='undefined'?window:globalThis);
+</script>
+</head>
+<body>
+<script>
+window.R2={
+  unlock:function(){document.body.classList.add('predicted');
+    document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.remove('locked');v.removeAttribute('aria-hidden');v.removeAttribute('inert');v.inert=false;});},
+  relock:function(){document.body.classList.remove('predicted');
+    document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.add('locked');v.setAttribute('aria-hidden','true');v.setAttribute('inert','');});},
+  on:function(){return document.body.classList.contains('predicted');}
+};
+(function(){var was=false;
+  window.addEventListener('beforeprint',function(){was=document.body.classList.contains('worksheet');document.body.classList.add('worksheet');});
+  window.addEventListener('afterprint',function(){if(!was)document.body.classList.remove('worksheet');});})();
+</script>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">General Chemistry · Solutions · GAS SOLUBILITY · HENRY'S LAW</div>
+  <h1>Gas Solubility and Pressure —<br><em>Henry's Law S<sub>g</sub> = kP<sub>g</sub></em></h1>
+  <p class="lede">The concentration of dissolved gas is not an input. It <em>settles by itself</em> from the balance of <em>particles going in and coming out</em> at the surface.
+    First <b>predict</b>, then push the piston and <b>observe</b>, and finally <b>check yourself</b>.</p>
+  <p class="meta-line">Estimated time 15–20 min · Prerequisites: partial pressure, molarity, dynamic equilibrium</p>
+</header>
+
+<div class="card no-print" id="loCard">
+  <div class="kicker"><span class="num">Learning objectives</span> After this activity you can …</div>
+  <div class="lo-goals">
+    <div class="g" id="lo1"><span class="chk"></span><span>explain that dissolving a gas is a <b>dynamic equilibrium of particles going in and coming out</b> at the surface.</span></div>
+    <div class="g" id="lo2"><span class="chk"></span><span>predict <b>how</b> the solubility S<sub>g</sub> at the new equilibrium changes when the partial pressure P<sub>g</sub> changes, and confirm it by measurement.</span></div>
+    <div class="g" id="lo3"><span class="chk"></span><span><span class="pre-pred">find out, by changing conditions and measuring, which conditions change the Henry's law constant <b>k</b>.</span><span class="post-pred">recognize that the Henry's law constant <b>k is set by the gas, the solvent and the temperature, not by the pressure</b>.</span></span></div>
+  </div>
+  <div class="progress"><span id="prog"></span></div>
+  <div class="progress-lab" id="progLab">Progress 0% · Predict → Observe → Check → Complete</div>
+  <div class="btns no-print" style="margin-top:12px;align-items:center">
+    <span class="lvl-lab" style="font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--ink-400)">Level</span>
+    <a class="toggle" id="lvlBasic" data-lvl="basic" href="?level=basic">Basic</a>
+    <a class="toggle" id="lvlStandard" data-lvl="standard" href="?level=standard">Standard</a>
+    <a class="toggle" id="lvlAdvanced" data-lvl="advanced" href="?level=advanced">Advanced</a>
+  </div>
+  <details class="hintbox" id="sumBox" open><summary>Key summary</summary>
+    <p>1. Gas molecules keep entering the liquid at the surface (dissolving) and leaving it (escaping). Equilibrium is reached when the two rates are equal.<br>
+    2. The concentration of dissolved gas at equilibrium is the solubility S<sub>g</sub> under those conditions. The gas side is described by the partial pressure P<sub>g</sub>.<br>
+    <span class="pre-pred">3. The Henry's law constant k links S<sub>g</sub> and P<sub>g</sub>. In the activity you find out yourself which change alters k.</span><span class="post-pred">3. The Henry's law constant k is the proportionality constant between S<sub>g</sub> and P<sub>g</sub>. It depends on the kind of gas, the solvent and the temperature.</span></p>
+    <p class="pre-pred" style="color:var(--ink-400)">The result summary (what happens to S<sub>g</sub> and k when the pressure is doubled) opens after you lock in a prediction.</p>
+    <p class="post-pred">Result: S<sub>g</sub> = kP<sub>g</sub> — when P<sub>g</sub> doubles, S_g also doubles at the new equilibrium, and k (the slope) stays the same. When the temperature rises, k for a gas becomes smaller.</p></details>
+</div>
+
+<div class="stage">
+  <div class="box ideal">
+    <div class="tag"><h2>Piston cylinder</h2><span class="sub">PARTICLES</span></div>
+    <canvas class="sim" id="cvCyl" width="320" height="380" role="img" aria-label="Gas and water under a piston. Particle simulation of gas particles dissolving into and escaping from the water surface"></canvas>
+    <div class="gauge">
+      <div class="row"><span>Partial pressure P_g</span><b id="pG">—</b></div>
+      <div class="row"><span>Measured solubility S_g (dissolved particles → mM)</span><b id="sG">—</b></div>
+      <div class="row"><span>Dissolving ↓ / escaping ↑ rate (per s)</span><b id="rates">—</b></div>
+      <div class="bar"><span id="barS"></span></div></div>
+  </div>
+  <div class="box real">
+    <div class="tag"><h2>Solubility–pressure graph</h2><span class="sub">S_g vs P_g</span></div>
+    <canvas class="sim" id="cvGraph" width="320" height="380" role="img" aria-label="Graph with partial pressure in kPa on the x-axis and solubility in mM on the y-axis. Measured point and Henry's law line"></canvas>
+    <div class="gauge">
+      <div class="row"><span>Measured ratio S_g / P_g</span><b id="kMeas">—</b></div>
+      <div class="row"><span>State</span><b id="eqState">—</b></div></div>
+  </div>
+</div>
+
+<div class="card no-print" id="entryCard">
+  <div class="kicker"><span class="num">Entry check</span> Before you start — prerequisites and key terms</div>
+  <p style="font-size:15px;margin-bottom:6px">At constant temperature, you compress the same amount of gas to half its volume. How does the number of gas molecules hitting the liquid surface per unit time change?</p>
+  <div class="choices" id="entryChoices" role="group" aria-label="Entry check">
+    <span class="choice" data-v="up">It increases (about 2 times)</span><span class="choice" data-v="down">It decreases</span><span class="choice" data-v="same">It does not change</span></div>
+  <div class="fb" id="fbEntry"></div>
+  <details class="hintbox" id="entryGloss"><summary>Key terms</summary>
+    <p><b>Partial pressure P<sub>g</sub></b>: the pressure exerted by one gas in a gas mixture. ·
+    <b>Solubility S<sub>g</sub></b>: the concentration of dissolved gas at equilibrium (mM = mmol/L). ·
+    <b>Henry's law constant k</b>: the constant in S<sub>g</sub> = kP<sub>g</sub><span class="post-pred">; it depends on the solute, the solvent and the temperature</span>. ·
+    <b>Dynamic equilibrium</b>: rate of dissolving = rate of escaping.</p></details>
+</div>
+
+<div class="card no-print" id="predCard">
+  <div class="kicker"><span class="num">Predict</span> Think first, before you observe</div>
+  <p style="font-size:15px;margin-bottom:6px">At 25 ℃ you push the piston and reduce the gas volume to <b>half</b>, so P<sub>g</sub> doubles. What is true after the <b>new equilibrium</b> is reached?</p>
+  <div class="choices" id="predChoices" role="group" aria-label="Prediction choices">
+    <span class="choice" data-v="double">S<sub>g</sub> doubles and k stays the same</span>
+    <span class="choice" data-v="kdouble">k doubles, so S<sub>g</sub> also doubles</span>
+    <span class="choice" data-v="same">S<sub>g</sub> is a fixed property of the substance, so it does not change</span>
+    <span class="choice" data-v="quad">S<sub>g</sub> is proportional to P², so it becomes 4 times larger</span>
+  </div>
+  <div class="conf-row"><span>Confidence</span><input type="range" id="conf" min="0" max="100" value="50" aria-label="Confidence"><span id="confLab">Medium</span></div>
+  <button id="predSubmit">Lock in prediction</button>
+  <div class="gate-msg" id="gateMsg" aria-live="polite"></div>
+  <div class="sr-only" id="statusLive" role="status" aria-live="polite" aria-atomic="true"></div>
+</div>
+
+<div class="vwrap no-print">
+  <div class="verdict locked" id="verdict" data-lock aria-hidden="true" inert>
+    <div class="z"><span class="big" id="zVal">S_g = —</span>
+      <span class="lab" id="zLab">Henry's law S_g = k·P_g · compared with the exact value k(T)·P_g</span></div>
+    <p id="zMsg">Change the piston, the temperature or the gas. The measured solubility is compared live with the exact Henry's law value.</p>
+  </div>
+  <div class="lockbadge">The explanation opens after you lock in a prediction</div>
+</div>
+
+<div class="panel no-print">
+  <div class="controls">
+    <div class="ctrl"><label for="vol">Piston: gas volume V <span class="val" id="volLab">100%</span></label>
+      <input type="range" id="vol" min="40" max="100" step="5" value="100"><div class="ends"><span>40% (compressed)</span><span>100%</span></div></div>
+    <div class="ctrl"><label for="temp">Temperature T <span class="val" id="tempLab">25 ℃</span></label>
+      <input type="range" id="temp" min="0" max="40" step="1" value="25"><div class="ends"><span>0 ℃</span><span>40 ℃</span></div></div>
+    <div class="ctrl"><label>Gas (each has a different k)</label>
+      <div class="btns" id="gasBtns" role="group" aria-label="Gas">
+        <span class="toggle on" data-gas="O2" aria-pressed="true">O₂</span><span class="toggle" data-gas="CO" aria-pressed="false">CO</span><span class="toggle" data-gas="N2" aria-pressed="false">N₂</span><span class="toggle" data-gas="He" aria-pressed="false">He</span><span class="toggle" data-gas="CO2" aria-pressed="false">CO₂</span></div></div>
+    <div class="ctrl"><label>Controls</label>
+      <div class="btns"><button id="play">Pause</button><button id="reset">Reset</button>
+        <span class="toggle" id="tFast" aria-pressed="false">Fast-forward ×4</span><span class="toggle on" id="tHit" aria-pressed="true">Dissolve/escape arrows</span></div></div>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--gas)"></i>[●] gas particle (filled circle)</span>
+    <span><i style="background:var(--bond)"></i>[○] dissolved particle (ring)</span>
+    <span><i style="background:var(--good)"></i>[↓] dissolving (going in)</span>
+    <span><i style="background:var(--warn)"></i>[↑] escaping (coming out)</span>
+  </div>
+  <p class="scale-note" id="scaleNote"></p>
+</div>
+
+<div class="notes post-pred">
+  <div class="note"><h3>Pressure ↑ → solubility ↑</h3>
+    <p>At equilibrium, gas molecules enter the solution as fast as they leave it. When the piston halves the volume,
+      the gas pressure doubles and more molecules hit the surface (going in). The solubility then rises until the dissolved concentration is high enough for the escape rate to match again.
+      The same law applies to O₂ and CO₂ dissolved in paddy-field water and in nutrient solutions for hydroponics.</p>
+    <div class="eq">S<sub>g</sub> = k P<sub>g</sub></div>
+    <div class="eqsub">Henry's law · k depends on the solute, the solvent and the temperature</div></div>
+  <div class="note"><h3>A straight line through the origin</h3>
+    <p>A plot of solubility against partial pressure is a straight line through the origin, and its slope is k. In water at 25 ℃ the slopes are in the order
+      O₂ &gt; CO &gt; N₂ &gt; He. Example: N₂ at 79.03 kPa gives 4.75×10⁻⁴ M, k = 6.1×10⁻⁶ mol/m³·Pa.</p>
+    <div class="eq">k = S<sub>g</sub> / P<sub>g</sub></div>
+    <div class="eqsub">Changing the pressure does not change the slope (k) · temperature ↑ → k of a gas ↓</div></div>
+</div>
+<div class="card limit-box">
+  <div class="kicker"><span class="num">Limits</span> Limits of the model</div>
+  <p style="font-size:13px;color:var(--paper-2)">This is a 2D particle model. In real water, the dissolved O₂ is only a few % (or less) of the molecules in the gas phase, so this model <b>ignores depletion of the gas phase</b>
+    and draws the dissolved particles on a different scale (1 particle = a fixed number of mM). The mM value is the measured number of dissolved particles × the scale; the exact value k(T)·P<sub>g</sub> is calculated from literature constants.
+    The reaction of CO₂ with water (forming H₂CO₃) and deviations from Henry's law at high pressure or in concentrated solutions are not included.</p>
+</div>
+
+<div class="card no-print pre-pred" id="checkLocked"><div class="kicker"><span class="num">Check</span> Formative check</div><p style="font-size:14px;color:var(--ink-400)">The check and reflection open after you lock in a prediction. (They are hidden before the prediction so that the questions do not hint at the result.)</p></div>
+<div class="card no-print post-pred" id="checkCard">
+  <div class="kicker"><span class="num">Check</span> Formative check — pass all items to complete</div>
+
+  <div class="q" id="q1">
+    <div class="qtext"><span class="qn">Q1</span>The temperature stays the same, and only the partial pressure of the gas above the solution is doubled. Which statement is correct once equilibrium is reached again?</div>
+    <div class="choices" role="group" aria-label="Q1">
+      <span class="choice" data-q="1" data-v="a">The Henry's law constant has doubled</span>
+      <span class="choice" data-q="1" data-v="b">The Henry's law constant has halved</span>
+      <span class="choice" data-q="1" data-v="c">The number of gas molecules in the liquid has doubled</span>
+      <span class="choice" data-q="1" data-v="d">The number of gas molecules in the liquid has not changed</span>
+    </div>
+    <details class="hintbox"><summary>Hint</summary><p>On the graph, look separately at the direction in which the measured point moves and at whether the slope of the line changes.</p></details>
+    <div class="fb" id="fb1"></div>
+  </div>
+
+  <div class="q" id="q2">
+    <div class="qtext"><span class="qn">Q2 · Hands-on task</span>With <b id="q2gas">O₂</b> selected (25 ℃), use the piston to make P<sub>g</sub> about <b>2 times (180–225 kPa)</b>. Wait for the <b>new equilibrium</b>, then press [Check].</div>
+    <div class="mission">Now: P_g <b id="missionP">—</b> · S_g <b id="missionS">—</b> · equilibrium reached <b id="missionEq">—</b></div>
+    <button data-q="2" id="missionBtn" style="margin-top:8px">Check</button>
+    <div class="fb" id="fb2"></div>
+  </div>
+
+  <div class="q" id="q3">
+    <div class="qtext"><span class="qn">Q3 · Calculation</span><span id="q3text">—</span></div>
+    <input class="num-in" id="q3in" inputmode="decimal" placeholder="number" aria-label="Q3 answer"> <span id="q3unit" style="font-family:var(--font-mono);font-size:12px"></span>
+    <button data-q="3" id="q3btn">Check</button>
+    <details class="hintbox"><summary>Hint</summary><p id="q3hint">S_g = kP_g. Convert the units first: 1 mol/m³ = 1 mM, 1 MPa = 10⁶ Pa.</p></details>
+    <div class="fb" id="fb3"></div>
+  </div>
+
+  <div class="q" id="qc">
+    <div class="qtext"><span class="qn">Q4 · Fill in the blank</span>Fill in the blank: The Henry's law constant k depends on the solute, the solvent and the [_____], and it does not change when the gas pressure changes.</div>
+    <input class="num-in" id="qcin" placeholder="one word" style="width:180px" aria-label="Q4 blank answer"><button id="qcbtn">Check</button>
+    <details class="hintbox" id="qcHint"><summary>Hint</summary><p>Move the second slider in the panel: the slope of the line on the graph changes.</p></details>
+    <div class="fb" id="fbc"></div>
+  </div>
+
+  <div class="q" id="qho">
+    <div class="qtext"><span class="qn">Q5 · Apply (higher-order, not required for completion)</span>At 25 ℃, which dissolves more in water (in mM): <b>O₂ at 50 kPa</b> or <b>He at 100 kPa</b>? Decide from the slopes on the graph.</div>
+    <div class="choices" role="group" aria-label="Q5">
+      <span class="choice" data-q="ho" data-v="a">O₂ at 50 kPa</span>
+      <span class="choice" data-q="ho" data-v="b">He at 100 kPa (the pressure is 2 times higher)</span>
+      <span class="choice" data-q="ho" data-v="c">The same</span>
+    </div>
+    <div class="fb" id="fbho"></div>
+  </div>
+</div>
+
+<div class="card reflect no-print post-pred" id="reflectCard">
+  <div class="kicker"><span class="num">Reflect</span> Reflect — metacognition · completion</div>
+  <p style="font-size:14px;color:var(--ink-400);margin-bottom:10px">My prediction: <b id="predResult" style="color:var(--paper)">Not predicted yet</b></p>
+  <p style="font-size:14px;margin-bottom:6px">When the pressure is doubled, the solubility doubles. In <b>one sentence</b>, explain why k stays the same:</p>
+  <textarea id="selfExplain" placeholder="e.g. A higher pressure means more collisions with the surface, so more gas dissolves, but at the new equilibrium the ratio S/P …" aria-label="Self-explanation"></textarea>
+  <div class="btns" style="margin-top:8px"><button id="reflectBtn">Submit explanation</button></div><div class="fb" id="fbReflect"></div>
+  <div class="self-check">
+    <label><input type="checkbox" class="sc"> I can describe gas dissolving as a dynamic equilibrium of going in and coming out</label>
+    <label><input type="checkbox" class="sc"> I can explain why S_g doubles when P_g doubles</label>
+    <label><input type="checkbox" class="sc"> I can tell what changes k (gas, solvent, temperature) from what does not (pressure)</label>
+  </div>
+  <div class="card" style="margin-top:14px;background:#0d1320">
+    <div class="kicker"><span class="num">Apply</span> Use the idea in a new context (not required for completion)</div>
+    <p style="font-size:14px;color:var(--paper-2)">When you open a bottle of soda, bubbles rush up. A diver who comes up too fast from deep water can get decompression sickness from N₂ bubbles in the blood.
+      Explain each effect in one sentence using <b>partial pressure and Henry's law</b>.</p>
+    <textarea id="transferText" placeholder="e.g. When the cap is opened, the partial pressure of CO₂ drops, so …" aria-label="Transfer task" style="width:100%;min-height:56px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical;margin-top:8px"></textarea>
+    <div class="btns" style="margin-top:8px"><button id="transferBtn">Submit transfer task</button></div>
+    <div class="fb" id="fbTransfer"></div>
+  </div>
+  <p style="font-size:13px;color:var(--ink-400);margin-top:12px">Next up: gas solubility and temperature (solubility–temperature graph) → colligative properties (vapor-pressure lowering, Raoult's law)</p>
+  <div class="stamp" id="stamp">COMPLETE · Completed — all checks passed.</div>
+</div>
+
+<div class="ws ws-only">
+  <h3>Worksheet — Gas solubility: Henry's law S<sub>g</sub> = kP<sub>g</sub></h3>
+  <p>Name ________  Class ________  Date ________</p>
+  <svg viewBox="0 0 560 200" width="100%" style="max-width:560px;display:block;margin:10px 0" role="img" aria-label="Two black-and-white piston cylinders and empty graph axes">
+    <defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#000" stroke-width="0.8"/></pattern></defs>
+    <g fill="none" stroke="#000" stroke-width="1.5">
+      <path d="M20 30 V180 H120 V30"/><rect x="20" y="40" width="100" height="8" fill="#fff"/><line x1="70" y1="10" x2="70" y2="40"/>
+      <rect x="20" y="130" width="100" height="50" fill="url(#hatch)"/>
+      <path d="M160 30 V180 H260 V30"/><rect x="160" y="88" width="100" height="8" fill="#fff"/><line x1="210" y1="10" x2="210" y2="88"/>
+      <rect x="160" y="130" width="100" height="50" fill="url(#hatch)"/>
+      <path d="M128 110 H152" marker-end="url(#ar)"/>
+      <path d="M330 180 H540 M330 180 V20"/>
+    </g>
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#000"/></marker></defs>
+    <g fill="#000" font-size="11" font-family="sans-serif">
+      <text x="22" y="196">(1) equilibrium V</text><text x="162" y="196">(2) compressed to V/2</text>
+      <text x="58" y="125">gas</text><text x="198" y="125">gas</text><text x="34" y="160">water (hatched)</text>
+      <text x="420" y="196">P_g (kPa)</text><text x="300" y="16">S_g (mM)</text><text x="334" y="176">0</text>
+    </g>
+  </svg>
+  <p><b>1. Predict</b> — When the volume is halved, what happens to S<sub>g</sub> at the new equilibrium? And to k? ( doubles / stays the same / halves )</p>
+  <div class="line"></div>
+  <p><b>2. Observe</b> — gas ______ , 25 ℃ — V=100%: P=____ kPa, S=____ mM / V=50%: P=____ kPa, S=____ mM / S÷P = ____ , ____</p>
+  <p><b>3. Graph</b> — Plot the two measured points on the empty axes above and join them to the origin. What is the slope of the line?</p>
+  <div class="line"></div>
+  <p><b>4. Fill in the blank</b> — k depends on the solute, the solvent and the [_____].</p>
+  <p><b>5. Calculate</b> — At 25 ℃, k(CO₂) = 3.4×10⁻⁴ mol/m³·Pa (= 3.4×10⁻⁴ mol L⁻¹ kPa⁻¹) and P = 0.41 MPa. S = ______ M</p>
+  <div class="teacher-only" style="margin-top:14px;border-top:1px dashed #999;padding-top:8px;font-size:12px">
+    <b>Answer key (teacher only, separate)</b> 1. S doubles, k stays the same · 2. S/P constant · 3. k · 4. temperature · 5. 0.14 M</div>
+  <p style="font-size:12px;margin-top:10px">Simulation: Gas solubility and Henry's law (print again from [Print worksheet] on the same page)</p>
+</div>
+
+<div class="teacher no-print">
+  <details class="tguide teacher-only">
+    <summary>Teacher notes — open the lesson plan</summary>
+    <div class="tguide-body">
+      <h4>Lesson plan · 5E phase and time</h4>
+      <ul><li><b>Explore · Explain</b>. 15–20 min. Whole-class demo (<code>?mode=teacher</code>) or one device per student.</li></ul>
+      <h4>Demo in 3 steps</h4>
+      <ul><li>(1) O₂, 25 ℃, V=100%: equilibrium with similar numbers of dissolve and escape arrows, S ≈ 1.32 mM (k·101.3 kPa).</li>
+        <li>(2) V=50%: P doubles at once to 202.7 kPa → transient state (dissolving &gt; escaping) → after about 5 s, S ≈ 2.63 mM (2 times), S/P unchanged.</li>
+        <li>(3) Raise the temperature to 40 ℃ or switch to He → the slope of the line (k) changes. Temperature and the kind of gas change k; pressure does not.</li></ul>
+      <h4>3 key questions</h4>
+      <ul><li>"The moment you push the piston, does S double at once? What changes first?"</li>
+        <li>"When you doubled the pressure, the point on the graph moved. Did the line move?"</li>
+        <li>"Why does a warm soft drink go flat faster?"</li></ul>
+      <h4>Common misconceptions</h4>
+      <ul><li>MC-sol-01: "Doubling the pressure doubles the Henry's law constant k" → k is the slope; the pressure is the position on the line. Changing P only moves the point along the line.</li>
+        <li>MC-sol-02: "Solubility is a fixed property of the substance and does not depend on pressure" → roughly true for solids and liquids, but gas solubility is directly proportional to the partial pressure.</li></ul>
+      <h4>Answer key</h4>
+      <ul><li>Prediction: S doubles, k stays the same · Q1 (c) · Q2 V 50–55% at equilibrium · Q4 temperature · Q5 O₂. Q3 by level is shown in the teacher bar.</li></ul>
+      <h4>Sources of values</h4>
+      <ul><li>N₂ k = 6.1×10⁻⁶ mol/m³·Pa (25 ℃), CO₂ k = 3.4×10⁻⁴ mol/m³·Pa (= 3.4×10⁻⁴ mol L⁻¹ kPa⁻¹) (25 ℃).</li>
+        <li>Literature values: O₂ 1.3×10⁻⁵, CO 9.7×10⁻⁶, He 3.8×10⁻⁶ mol/m³·Pa (25 ℃); temperature dependence k(T) = k₂₉₈·exp[C(1/T − 1/298.15)],
+          C = O₂ 1500, CO 1300, N₂ 1300, He 92, CO₂ 2400 K. Sources: R. Sander, Compilation of Henry's law constants for water as solvent — henrys-law.org (v5.0.0: <i>Atmos. Chem. Phys.</i> 23, 10901–12440 (2023); earlier edition 15, 4399–4981 (2015)) and the NIST Chemistry WebBook (SRD 69) Henry's law tables.
+          O₂ 1500 K = recommended by henrys-law.org (Burkholder et al. 2019, type L) and NIST (method L); He 92 K = NIST (method L, k°H 0.00038 mol/(kg·bar)) and Wilhelm et al. (1977) as listed in henrys-law.org. An earlier He value of 230 K had no literature support and was replaced (correction of k at 0 ℃ from +7.3% to +2.9%).
+          (At 100 kPa these give O₂ ≈1.3, CO ≈1.0, N₂ ≈0.65, He ≈0.38 mM. For N₂, Sander gives 6.4×10⁻⁶, about 5% different — the reference value is used.)</li></ul>
+      <h4>Model description</h4>
+      <ul><li>150 gas particles (fixed) hit the surface and form dissolved particles with probability p_in ∝ k(T)·T; dissolved particles escape at the surface with probability 0.5.
+        The equilibrium number of dissolved particles <b>emerges</b> in proportion to the collision frequency (∝ P). In external checks (long headless averages) it agrees with the exact value kP within ±3% on average, and a single snapshot agrees within about ±5% (mission tolerance: Basic 20%, Standard 15%, Advanced 10%). Revision r2 (2026-10-03): the mission is not judged from a snapshot. After compression, 1200 steps are discarded; the mission succeeds when the whole 95% confidence interval of the mean of 8–10 blocks of 600 steps lies within kP ± tolerance (E1 confidence-interval test, false-negative test with 200 seeds).</li></ul>
+      <h4>Note on the N₂ constant</h4>
+      <ul><li>The often-quoted relation "(4.75×10⁻⁴ mol/L)/79.03 kPa = 6.1×10⁻⁶ mol/m³·Pa" is slightly off: 0.475 mol/m³ ÷ 79,030 Pa = <b>6.0×10⁻⁶</b> (6.01×10⁻⁶). It probably comes from converting 6.1×10⁻⁴ M/atm. The simulation uses 6.1×10⁻⁶, so 79.03 kPa gives 0.482 mM (1.5% above 0.475 mM). A student who uses 0.475 is still within the tolerance for Basic Q3.</li>
+        <li>The literature N₂ value is 6.4×10⁻⁶ (henrys-law.org).</li></ul>
+    </div>
+  </details>
+
+  <div class="badges">
+    <span class="badge">University general chemistry · Solutions</span>
+    <span class="badge">General Chemistry</span>
+    <span class="badge">Engine E1 particles + E2 answer function S=kP</span>
+    <span class="badge verify">Self-check: multi-point Python comparison (2026-10-01)</span>
+  </div>
+
+  <div class="btns">
+    <button id="btnTeacher" class="teacher-only">Teacher mode (show/hide bar)</button>
+    <button id="btnWorksheet">Print worksheet</button>
+  </div>
+
+  <div class="teacher-bar teacher-only" id="teacherBar">
+    <div class="tb-title">Teacher mode — class controls</div>
+    <div class="btns">
+      <button id="tRevealToggle">Answer/explanation lock: on</button>
+      <button data-preset="base">Baseline: O₂ 25 ℃ V=100%</button>
+      <button data-preset="half">Compress: V=50%</button>
+      <button data-preset="soda">Soft drink: CO₂ 5 ℃ V=40%</button>
+      <button data-preset="warm">Temperature 40 ℃</button>
+      <button id="tBig">Large demo mode</button>
+    </div>
+    <p style="font-size:12px;margin-top:10px;color:var(--paper-2)" id="tAnswers"></p>
+  </div>
+</div>
+
+<footer>
+  <div><b>General Chemistry</b> · Gas solubility · Henry's law · self-directed learning and teacher edition · 2D particle model + exact values from literature k</div>
+  <div><b>KBS Lab</b> · General Chemistry Simulations · works offline · no personal data collected · report errors: bkim@gnu.ac.kr · k source: Sander (2015)</div>
+</footer>
+
+</div>
+
+<script>
+"use strict";
+(function(){
+  const GASES={
+    O2: {lab:'O₂', k25:1.3e-2, C:1500, set:'A', src:'henrys-law.org (Sander), recommended Burkholder 2019 · NIST: 1.3×10⁻⁵ mol/m³·Pa, 1500 K'},
+    CO: {lab:'CO', k25:9.7e-3, C:1300, set:'A', src:'henrys-law.org (Sander) · NIST: 9.7×10⁻⁶ mol/m³·Pa, 1300 K'},
+    N2: {lab:'N₂', k25:6.1e-3, C:1300, set:'A', src:'6.1×10⁻⁶ mol/m³·Pa'},
+    He: {lab:'He', k25:3.8e-3, C:92,   set:'A', src:'NIST WebBook · henrys-law.org (Wilhelm 1977): 3.8×10⁻⁶ mol/m³·Pa, 92 K'},
+    CO2:{lab:'CO₂',k25:3.4e-1, C:2400, set:'B', src:'3.4×10⁻⁴ mol/m³·Pa (= 3.4×10⁻⁴ mol L⁻¹ kPa⁻¹)'}
+  };
+  const P0=101.325, T0=298.15;
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
+  const SEED0=(function(){const v=parseInt((new URLSearchParams(location.search)).get('seed'),10);return Number.isFinite(v)?v:20261003;})();
+  let rng=mulberry32(SEED0);
+  function kOf(g,Tc){const G=GASES[g];return G.k25*Math.exp(G.C*(1/(Tc+273.15)-1/T0));}
+  function henryS(g,P,Tc){return kOf(g,Tc)*P;}
+  function presOf(Vf,Tc){return P0/Vf*((Tc+273.15)/T0);}
+  const DOT={A:1.3e-2*P0/130, B:3.4e-1*P0/100};
+  const NREF=150, X0=40, X1=280, YL=262, HG0=200, HL=100, R=2.4, POUT=0.5, VG0=1.5, VLR=0.6, TAU=500;
+  const GEOM=(NREF/VLR*HL)/(HG0*POUT);
+  function dotOf(g){return DOT[GASES[g].set];}
+  function pinOf(g,Tc){
+    const nL25=GASES[g].k25*P0/dotOf(g);return Math.min(1,nL25/GEOM*(kOf(g,Tc)/GASES[g].k25)*((Tc+273.15)/T0));}
+  const E={gas:'O2',Tc:25,Vf:1,parts:[],diss:[],nLa:0,since:0,flash:[],t:0};
+  function yP(){return YL-HG0*E.Vf;}
+  function rnd(a,b){return a+rng()*(b-a);}
+  function unit(){const a=rng()*Math.PI*2;return [Math.cos(a),Math.sin(a)];}
+  function nLeq(){return henryS(E.gas,presOf(E.Vf,E.Tc),E.Tc)/dotOf(E.gas);}
+  function spawn(){E.parts=[];for(let i=0;i<NREF;i++){const a=(i+0.5)/NREF*Math.PI*2,u=[Math.cos(a),Math.sin(a)];E.parts.push({x:rnd(X0+R,X1-R),y:rnd(yP()+R,YL-R),ux:u[0],uy:u[1]});}
+    E.diss=[];const n=Math.round(nLeq());for(let i=0;i<n;i++){const u=unit();E.diss.push({x:rnd(X0+R,X1-R),y:rnd(YL+R,YL+HL-R),ux:u[0],uy:u[1]});}
+    E.nLa=E.diss.length;E.since=0;E.flash=[];}
+  function setVf(v){const old=E.Vf;if(v===old)return;for(const p of E.parts){p.y=YL-(YL-p.y)*v/old;}E.Vf=v;E.since=0;}
+  function step(){const TK=E.Tc+273.15,vg=VG0*Math.sqrt(TK/T0),vl=vg*VLR,pin=pinOf(E.gas,E.Tc),top=yP()+R;
+    for(const p of E.parts){if(rng()<0.05){const j=(rng()-0.5)*0.6,c=Math.cos(j),s=Math.sin(j),ux=p.ux*c-p.uy*s;p.uy=p.ux*s+p.uy*c;p.ux=ux;}p.x+=p.ux*vg;p.y+=p.uy*vg;
+      if(p.x<X0+R){p.x=2*(X0+R)-p.x;p.ux=Math.abs(p.ux);}else if(p.x>X1-R){p.x=2*(X1-R)-p.x;p.ux=-Math.abs(p.ux);}
+      if(p.y<top){p.y=Math.min(2*top-p.y,YL-R);p.uy=Math.abs(p.uy);}
+      else if(p.y>YL){p.y=2*YL-p.y;const uy=p.uy;p.uy=-Math.abs(p.uy);
+        if(rng()<pin){E.diss.push({x:p.x,y:YL+0.5,ux:p.ux,uy:Math.abs(uy)});E.flash.push({x:p.x,dir:1,life:1});}}}
+    const out=[];
+    for(const d of E.diss){const j=(rng()-0.5)*0.5,c=Math.cos(j),s=Math.sin(j),ux=d.ux*c-d.uy*s,uy=d.ux*s+d.uy*c;d.ux=ux;d.uy=uy;
+      d.x+=d.ux*vl;d.y+=d.uy*vl;
+      if(d.x<X0+R){d.x=2*(X0+R)-d.x;d.ux=Math.abs(d.ux);}else if(d.x>X1-R){d.x=2*(X1-R)-d.x;d.ux=-Math.abs(d.ux);}
+      if(d.y>YL+HL-R){d.y=2*(YL+HL-R)-d.y;d.uy=-Math.abs(d.uy);}
+      else if(d.y<YL){if(rng()<POUT){out.push(d);E.flash.push({x:d.x,dir:-1,life:1});}else{d.y=2*YL-d.y;d.uy=Math.abs(d.uy);}}}
+    if(out.length)E.diss=E.diss.filter(d=>out.indexOf(d)<0);
+    E.nLa+=(E.diss.length-E.nLa)/TAU;E.since++;E.t++;}
+  function readS(){return E.nLa*dotOf(E.gas);}
+  E.inA=0;E.outA=0;
+  const BURN=1200,BS=600,NBMIN=8,NBMAX=10,ZLO=2.26;let blocks=[],bAcc=0,bc=0,blkNew=false;
+  function blockReset(){blocks=[];bAcc=0;bc=0;}
+  function blockTick(){if(E.since<=1)blockReset();if(E.since<=BURN)return;bAcc+=E.diss.length;
+    if(++bc===BS){blocks.push(bAcc/BS*dotOf(E.gas));if(blocks.length>NBMAX)blocks.shift();bAcc=0;bc=0;blkNew=true;}}
+  function blockStats(){const nb=blocks.length;if(nb<2)return nb?{nb,mean:blocks[0],lo:null,hi:null}:null;let s=0;for(const b of blocks)s+=b;const m=s/nb;
+    let v=0;for(const b of blocks)v+=(b-m)*(b-m);const se=Math.sqrt(v/(nb-1)/nb);return {nb,mean:m,se,lo:m-ZLO*se,hi:m+ZLO*se};}
+  const _step=step;
+  function stepAll(){const n0=E.flash.length;_step();let i=0,o=0;for(let k=n0;k<E.flash.length;k++){if(E.flash[k].dir>0)i++;else o++;}
+    blockTick();E.inA+=(i-E.inA)/300;E.outA+=(o-E.outA)/300;for(const f of E.flash)f.life-=0.03;if(E.flash.length>160||E.t%4===0)E.flash=E.flash.filter(f=>f.life>0);}
+
+  const cvC=document.getElementById('cvCyl'),cvG=document.getElementById('cvGraph');
+  const ctxC=cvC.getContext('2d'),ctxG=cvG.getContext('2d');
+  const LW=320,LH=380;let dpr=Math.min(window.devicePixelRatio||1,2),scC=1,scG=1;
+  function resize(){for(const cv of [cvC,cvG]){const w=cv.clientWidth||320,h=w*(LH/LW);cv.width=w*dpr;cv.height=h*dpr;}
+    scC=cvC.width/LW;scG=cvG.width/LW;}
+  const VIS={showHit:true};
+  function drawCyl(){const ctx=ctxC;ctx.setTransform(scC,0,0,scC,0,0);ctx.clearRect(0,0,LW,LH);
+    const yp=yP();
+    ctx.fillStyle='rgba(120,160,230,0.16)';ctx.fillRect(X0,YL,X1-X0,HL);
+    ctx.strokeStyle='rgba(167,188,236,0.6)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(X0,YL);ctx.lineTo(X1,YL);ctx.stroke();
+    ctx.strokeStyle='#8a94a8';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(X0-2,20);ctx.lineTo(X0-2,YL+HL+2);ctx.lineTo(X1+2,YL+HL+2);ctx.lineTo(X1+2,20);ctx.stroke();
+    ctx.fillStyle='#5E6B85';ctx.fillRect(X0,yp-10,X1-X0,10);ctx.fillRect((X0+X1)/2-5,0,10,yp-10);
+    ctx.fillStyle='#F4F1EA';ctx.font='11px ui-monospace,Menlo,monospace';ctx.fillText('piston',X1-48,yp-14);
+    for(const p of E.parts){ctx.fillStyle='#E8C275';ctx.beginPath();ctx.arc(p.x,p.y,R,0,Math.PI*2);ctx.fill();}
+    ctx.strokeStyle='#A7BCEC';ctx.lineWidth=1.3;
+    for(const d of E.diss){ctx.beginPath();ctx.arc(d.x,d.y,R,0,Math.PI*2);ctx.stroke();}
+    ctx.fillStyle='rgba(13,19,32,0.85)';ctx.fillRect(X1-62,YL+HL-18,58,15);ctx.fillStyle='#A7BCEC';ctx.fillText('water',X1-58,YL+HL-7);
+    if(VIS.showHit)for(const f of E.flash){if(f.life<=0)continue;const down=f.dir>0;
+      ctx.strokeStyle=down?'rgba(127,185,138,'+f.life.toFixed(2)+')':'rgba(227,107,91,'+f.life.toFixed(2)+')';ctx.fillStyle=ctx.strokeStyle;
+      ctx.lineWidth=2;const y0=down?YL-14:YL+14,y1=down?YL+2:YL-2;ctx.beginPath();ctx.moveTo(f.x,y0);ctx.lineTo(f.x,y1);ctx.stroke();
+      const s=4,dir=down?1:-1;ctx.beginPath();ctx.moveTo(f.x,y1+dir*2);ctx.lineTo(f.x-s,y1-dir*3);ctx.lineTo(f.x+s,y1-dir*3);ctx.closePath();ctx.fill();}
+  }
+  const GSTYLE={O2:[[],'#E8C275'],CO:[[6,3],'#A7BCEC'],N2:[[2,3],'#7FB98A'],He:[[8,3,2,3],'#E36B5B'],CO2:[[],'#E8C275']};
+  const trail=[];
+  function yMax(){const g=E.gas;return GASES[g].set==='B'?kOf('CO2',0)*270*1.05:kOf('O2',0)*270*1.05;}
+  function drawGraph(showLines){const ctx=ctxG;ctx.setTransform(scG,0,0,scG,0,0);ctx.clearRect(0,0,LW,LH);
+    const L=52,Rr=304,T=20,B=330,xm=270,ym=yMax();const X=p=>L+(Rr-L)*p/xm,Y=s=>B-(B-T)*s/ym;
+    ctx.strokeStyle='#2a3144';ctx.lineWidth=1;ctx.font='10px ui-monospace,Menlo,monospace';ctx.fillStyle='#8a94a8';
+    for(let p=0;p<=250;p+=50){ctx.beginPath();ctx.moveTo(X(p),T);ctx.lineTo(X(p),B);ctx.stroke();ctx.fillText(String(p),X(p)-8,B+14);}
+    const st=ym>40?20:ym>4?1:0.5;for(let s=0;s<=ym;s+=st){ctx.beginPath();ctx.moveTo(L,Y(s));ctx.lineTo(Rr,Y(s));ctx.stroke();ctx.fillText(s.toFixed(st<1?1:0),L-30,Y(s)+3);}
+    ctx.strokeStyle='#8a94a8';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,B);ctx.lineTo(Rr,B);ctx.stroke();
+    ctx.fillStyle='#F4F1EA';ctx.fillText('partial pressure P_g (kPa)',L+70,B+30);
+    ctx.save();ctx.translate(14,(T+B)/2+40);ctx.rotate(-Math.PI/2);ctx.fillText('solubility S_g (mM)',0,0);ctx.restore();
+    if(showLines){const set=GASES[E.gas].set;
+      for(const g of Object.keys(GASES)){if(GASES[g].set!==set)continue;const k=kOf(g,E.Tc),st2=GSTYLE[g],sel=g===E.gas;
+        ctx.setLineDash(st2[0]);ctx.strokeStyle=st2[1];ctx.globalAlpha=sel?1:0.45;ctx.lineWidth=sel?2.4:1.4;
+        let pe=xm;if(k*pe>ym)pe=ym/k;ctx.beginPath();ctx.moveTo(X(0),Y(0));ctx.lineTo(X(pe),Y(k*pe));ctx.stroke();
+        ctx.setLineDash([]);ctx.fillStyle=st2[1];ctx.fillText(GASES[g].lab+(sel?' (selected)':''),Math.min(X(pe)-30,Rr-60),Y(k*pe)+(Y(k*pe)<T+12?12:-4));}
+      ctx.globalAlpha=1;ctx.setLineDash([]);}
+    else{ctx.fillStyle='#5E6B85';ctx.fillText('Henry lines (exact) shown after prediction',L+10,T+16);}
+    if(!showLines){ctx.fillStyle='#E8C275';ctx.fillText('Measured point shown after prediction',L+10,T+32);return;}
+    for(let i=0;i<trail.length;i++){const q=trail[i];ctx.fillStyle='rgba(244,241,234,'+(0.08+0.4*i/trail.length).toFixed(2)+')';ctx.fillRect(X(q[0])-1.5,Y(Math.min(q[1],ym))-1.5,3,3);}
+    const P=presOf(E.Vf,E.Tc),S=readS();ctx.fillStyle='#F4F1EA';ctx.strokeStyle='#0B0F17';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(X(P),Y(Math.min(S,ym)),6,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#F4F1EA';ctx.fillText('measured',X(P)-46,Y(Math.min(S,ym))+16);
+  }
+
+  const $=id=>document.getElementById(id);
+  const S={running:true,fast:false};
+  const LV=(new URLSearchParams(location.search)).get('level')||'standard';
+  const LEVELS={
+    basic:{label:'Basic',hints:true,bank:'choose: temperature / pressure / volume',tol:0.20,mission:{gas:'CO2'},
+      q3:{text:'At 25 ℃ the solubility of N₂ in water is 0.475 mM at 79.03 kPa. If the partial pressure of N₂ is doubled (158.06 kPa), what is the solubility in mM?',
+        unit:'mM',calc:function(){return 0.475/79.03*158.06;},rel:0.03,hint:'S_g ∝ P_g: if the pressure doubles, the solubility also doubles.'}},
+    standard:{label:'Standard',hints:true,bank:'one word',tol:0.15,mission:{gas:'N2'},
+      q3:{text:'At 25 ℃ a soft drink is filled with CO₂ at a partial pressure of 0.41 MPa. What is the CO₂ concentration in M? k(CO₂) = 3.4×10⁻⁴ mol/m³·Pa (= 3.4×10⁻⁴ mol L⁻¹ kPa⁻¹)',
+        unit:'M',calc:function(){return henryS('CO2',410,25)/1000;},rel:0.05,hint:'k = 3.4×10⁻⁴ mol/m³·Pa = 0.34 mM/kPa, and 0.41 MPa = 410 kPa. Give the answer in M (= 1000 mM).'}},
+    advanced:{label:'Advanced',hints:false,bank:'exact term',tol:0.10,mission:{gas:'O2'},
+      q3:{text:'Water at 25 ℃ is at equilibrium with air (O₂ mole fraction 0.21, total pressure 101.325 kPa). What is the dissolved O₂ concentration in mM? k(O₂) = 1.3×10⁻⁵ mol/m³·Pa',
+        unit:'mM',calc:function(){return henryS('O2',0.21*101.325,25);},rel:0.05,hint:'Partial pressure = mole fraction × total pressure.'}}
+  };
+  const CFG=LEVELS[LV]||LEVELS.standard;
+  function applyLevel(){var q=new URLSearchParams(location.search);
+    function href(lv){q.set('level',lv);return '?'+q.toString();}
+    ['Basic','Standard','Advanced'].forEach(function(C){var lv=C.toLowerCase();var a=$('lvl'+C);if(a){a.href=href(lv);a.classList.toggle('on',lv===(LEVELS[LV]?LV:'standard'));}});
+    $('q3text').textContent=CFG.q3.text;$('q3unit').textContent=CFG.q3.unit;$('q3hint').textContent=CFG.q3.hint;
+    if(!CFG.hints){document.querySelectorAll('details.hintbox').forEach(function(d){if(d.id!=='entryGloss'&&d.id!=='sumBox')d.style.display='none';});}
+    var ph=$('qcin');if(ph)ph.placeholder=CFG.bank;$('q2gas').textContent=GASES[CFG.mission.gas].lab;}
+  function scaleNote(){const g=GASES[E.gas];$('scaleNote').textContent='Scale: 150 gas particles (fixed) · 1 dissolved particle = '+dotOf(E.gas).toFixed(g.set==='B'?3:4)+' mM'+(g.set==='B'?' (CO₂ dissolves about 26 times better than the other gases, so it has its own scale)':' (common scale for O₂, CO, N₂, He)');}
+  function setVol(v){setVf(v/100);$('volLab').textContent=v+'%';}
+  function setTemp(v){E.Tc=v;E.since=0;$('tempLab').textContent=v+' ℃';}
+  function setGas(g){E.gas=g;document.querySelectorAll('#gasBtns .toggle').forEach(b=>{const on=b.dataset.gas===g;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on?'true':'false');});spawn();trail.length=0;scaleNote();}
+  function annText(){const P=presOf(E.Vf,E.Tc),b=blockStats(),dig=v=>v<10?3:1;
+    return GASES[E.gas].lab+' '+E.Tc+' ℃, P_g '+P.toFixed(1)+' kPa, '+(b?'mean of '+b.nb+' blocks S_g '+b.mean.toFixed(dig(b.mean))+' mM':'moving to the new equilibrium, current S_g '+readS().toFixed(dig(readS()))+' mM');}
+  function touch(){GCAnnounce.say(annText,{force:true});}
+  $('vol').addEventListener('input',e=>{setVol(+e.target.value);touch();});
+  $('temp').addEventListener('input',e=>{setTemp(+e.target.value);touch();});
+  document.querySelectorAll('#gasBtns .toggle').forEach(b=>b.addEventListener('click',()=>{setGas(b.dataset.gas);touch();}));
+  $('play').addEventListener('click',e=>{S.running=!S.running;e.target.textContent=S.running?'Pause':'Play';});
+  $('reset').addEventListener('click',()=>{spawn();trail.length=0;});
+  $('tFast').addEventListener('click',e=>{S.fast=!S.fast;e.target.classList.toggle('on',S.fast);e.target.setAttribute('aria-pressed',S.fast?'true':'false');});
+  $('tHit').addEventListener('click',e=>{VIS.showHit=!VIS.showHit;e.target.classList.toggle('on',VIS.showHit);e.target.setAttribute('aria-pressed',VIS.showHit?'true':'false');});
+  window.addEventListener('resize',resize);
+
+  const ST={predicted:false,observed:false,passed:false,prediction:null,checks:{entry:false,q1:false,q2:false,q3:false,cloze:false,reflect:false},
+    revealLock:true};
+  function pct(){let p=0;if(ST.predicted)p+=25;if(ST.observed)p+=25;
+    const c=Object.values(ST.checks).filter(Boolean).length;p+=Math.round(c/Object.keys(ST.checks).length*40);
+    if(ST.passed)p+=10;return Math.min(100,p);}
+  function updateProgress(){const p=pct();$('prog').style.width=p+'%';
+    $('progLab').textContent='Progress '+p+'% · Predict → Observe → Check → Complete';
+    $('lo1').classList.toggle('done',ST.observed);
+    $('lo2').classList.toggle('done',ST.predicted&&ST.observed);
+    $('lo3').classList.toggle('done',ST.checks.q1&&ST.checks.cloze);
+    if(ST.passed){$('stamp').classList.add('on');}}
+  function linesShown(){return ST.predicted||!ST.revealLock;}
+
+  let predSel=null;
+  $('predChoices').addEventListener('click',e=>{const c=e.target.closest('.choice');if(!c)return;
+    [...$('predChoices').children].forEach(x=>x.classList.remove('sel'));c.classList.add('sel');predSel=c.dataset.v;});
+  $('conf').addEventListener('input',e=>{const v=+e.target.value;$('confLab').textContent=v<33?'Low':v<66?'Medium':'High';});
+  const PRED_FB={
+    double:['hit','Good prediction. Lower the piston to 50% and check whether the measured point moves up along the line and whether the S/P ratio stays the same.'],
+    kdouble:['refute','Many students think this (a common misconception). k is the <b>slope</b> of the graph. Check yourself whether changing the pressure changes the slope, or whether the point just moves along the line.'],
+    same:['refute','The solubility of solids and liquids depends little on pressure, but <b>gases</b> are different. Watch whether the ↓ arrows (dissolving) increase when you push the piston.'],
+    quad:['refute','If the pressure doubles, the surface collision frequency also roughly doubles. Is there any reason for the solubility to grow more than that? Check with the measurement.']};
+  $('predSubmit').addEventListener('click',()=>{if(ST.predicted)return;
+    if(!predSel){$('gateMsg').textContent='First choose one of the options.';$('gateMsg').className='gate-msg refute';return;}
+    ST.predicted=true;Object.defineProperty(ST,'prediction',{value:predSel,writable:false,configurable:false,enumerable:true});R2.unlock();
+    const f=PRED_FB[predSel];$('gateMsg').innerHTML=f[1];$('gateMsg').className='gate-msg '+f[0];
+    $('predResult').textContent=(predSel==='double')?'Correct (S doubles, k unchanged)':'Needs review — compare with what you observe';
+    updateReadout();updateProgress();GCAnnounce.reset();touch();});
+
+  const Q1FB={a:'k is the slope of the line on the graph. Did the slope change when you changed the pressure? Compare with changing the temperature or the gas.',
+    b:'k does not grow or shrink with pressure. What changed with pressure is the position of the measured point on the line.',
+    d:'After pushing the piston, count the dissolved particles (rings) again. Did their number stay the same at the new equilibrium?'};
+  document.querySelectorAll('[data-q="1"]').forEach(c=>c.addEventListener('click',e=>{
+    const el=e.target.closest('.choice'),v=el.dataset.v;[...el.parentElement.children].forEach(x=>x.classList.remove('sel'));el.classList.add('sel');
+    if(v==='c'){$('fb1').textContent='Correct — in S_g = kP_g, k is constant, so when P_g doubles the dissolved gas (number of molecules and concentration) also doubles.';$('fb1').className='fb ok';ST.checks.q1=true;}
+    else{$('fb1').textContent='Try again — '+Q1FB[v]+' (answer not revealed)';$('fb1').className='fb no';}
+    updateProgress();}));
+
+  const EQ_STEPS=1500;let pressedMin=1;
+  function missionStat(){const b=blockStats(),P=presOf(E.Vf,E.Tc),Se=henryS(E.gas,P,E.Tc);if(!b||b.nb<NBMIN||b.lo==null)return b?{nb:b.nb,P,Se,ready:false}:{nb:0,P,Se,ready:false};
+    return {nb:b.nb,P,Se,mean:b.mean,lo:b.lo,hi:b.hi,ready:true};}
+  function missionPass(){const m=missionStat();if(E.gas!==CFG.mission.gas||pressedMin>0.6||m.P<180||m.P>225||!m.ready)return false;return m.lo>=m.Se*(1-CFG.tol)&&m.hi<=m.Se*(1+CFG.tol);}
+  $('missionBtn').addEventListener('click',()=>{updateReadout();const m=missionStat();
+    if(E.gas!==CFG.mission.gas){$('fb2').textContent='First select the gas '+GASES[CFG.mission.gas].lab+'.';$('fb2').className='fb no';}
+    else if(pressedMin>0.6){$('fb2').textContent='First reduce the gas volume with the piston slider to raise the pressure.';$('fb2').className='fb no';}
+    else if(m.P<180||m.P>225){$('fb2').textContent='Now P_g = '+m.P.toFixed(1)+' kPa. Adjust the volume (and temperature) to make it about 2 times (180–225 kPa).';$('fb2').className='fb no';}
+    else if(!m.ready){$('fb2').textContent='Measuring — after a change, the first '+BURN+' steps (approach to equilibrium) are discarded; wait until '+NBMIN+' blocks ('+(BURN+NBMIN*BS)+' steps) are collected (blocks now: '+m.nb+'; you can use fast-forward).';$('fb2').className='fb hint';}
+    else if(missionPass()){$('fb2').textContent='Correct — at P_g = '+m.P.toFixed(1)+' kPa, mean S_g of '+m.nb+' blocks = '+m.mean.toFixed(m.mean<10?3:1)+' mM (95% interval '+m.lo.toFixed(3)+'–'+m.hi.toFixed(3)+'), measured S/P = '+(m.mean/m.P).toPrecision(2)+' mM/kPa. Compare it with the slope at the start.';$('fb2').className='fb ok';ST.checks.q2=true;}
+    else{$('fb2').textContent='Not decided yet — the 95% interval of the block mean ('+m.lo.toFixed(3)+'–'+m.hi.toFixed(3)+' mM) is not yet fully inside the target range. Wait for more blocks, then check again.';$('fb2').className='fb hint';}
+    updateProgress();});
+
+  $('q3btn').addEventListener('click',()=>{const x=parseFloat(($('q3in').value||'').replace(',','.')),ans=CFG.q3.calc();
+    if(!isNaN(x)&&Math.abs(x-ans)<=CFG.q3.rel*ans){$('fb3').textContent='Correct — S_g = kP_g = '+ans.toPrecision(3)+' '+CFG.q3.unit+'.';$('fb3').className='fb ok';ST.checks.q3=true;}
+    else if(!isNaN(x)&&ans>0&&[1000,0.001,1e6,1e-6].some(f=>Math.abs(x/f-ans)<=CFG.q3.rel*ans)){$('fb3').textContent='Try again — the power of ten is wrong. Check the unit conversions (Pa↔kPa↔MPa, mM↔M). (answer not revealed)';$('fb3').className='fb no';}
+    else if(!isNaN(x)&&Math.abs(x*2-ans)<=CFG.q3.rel*ans){$('fb3').textContent='Try again — this is half the value. Did you use the value after the pressure change? (answer not revealed)';$('fb3').className='fb no';}
+    else{$('fb3').textContent='Try again — put the values into S_g = k × P_g with matching units. (answer not revealed)';$('fb3').className='fb no';}
+    updateProgress();});
+
+  const CLOZE_OK=['temperature','thetemperature','temperatures','temp','temperature(t)','t(temperature)','solutiontemperature','temperatureofthesolution','temperatureofthesolvent'];
+  $('qcbtn').addEventListener('click',()=>{var raw=($('qcin').value||'');var x=raw.trim().toLowerCase().replace(/\s/g,'').replace(/[.。]$/,'');
+    if(CLOZE_OK.includes(x)){$('fbc').textContent='Correct — temperature. For a gas, k becomes smaller as the temperature rises.';$('fbc').className='fb ok';ST.checks.cloze=true;}
+    else if(['pressure','partialpressure','thepressure','gaspressure','p','volume'].includes(x)){$('fbc').textContent='Try again — pressure (and volume) do not change k; they only change the position on the line. Move a different slider. (answer not revealed)';$('fbc').className='fb no';}
+    else{$('fbc').textContent=CFG.hints?'Hint: move the second slider in the panel and the slope of the line changes.':'Try again — enter one word.';$('fbc').className='fb '+(CFG.hints?'hint':'no');}
+    updateProgress();});
+
+  document.querySelectorAll('#entryChoices .choice').forEach(c=>c.addEventListener('click',e=>{
+    const el=e.target.closest('.choice');[...el.parentElement.children].forEach(x=>x.classList.remove('sel'));el.classList.add('sel');
+    var v=el.dataset.v,ok=v==='up';
+    $('fbEntry').textContent=ok?'Right — the same number of molecules in half the volume means double the density, so about twice as many surface collisions (Boyle: P doubles).'
+      :(v==='down'?'Try again — it is the other way round. A smaller volume packs the molecules closer, so they hit the surface more often. Read the key terms below and think again.'
+      :'Try again — the number of molecules is the same, but in half the volume the density doubles. The collision frequency is proportional to the density. Check the key terms below.');
+    $('fbEntry').className='fb '+(ok?'ok':'hint');
+    var g=$('entryGloss');if(g)g.open=true;if(ok)ST.checks.entry=true;updateProgress();}));
+
+  var REFLECT_CONCEPTS=/\b(partial pressures?|pressures?|Henry\w*|equilibri\w*|rates?|collisions?|collid\w*|slopes?|proportional\w*|constants?|temperatures?)\b/i;
+  $('reflectBtn').addEventListener('click',()=>{var t=($('selfExplain').value||'').trim();
+    if(t.length<40){$('fbReflect').textContent='Not quite — explain it in one sentence (40+ characters).';$('fbReflect').className='fb hint';}
+    else if(!REFLECT_CONCEPTS.test(t)){$('fbReflect').textContent='Not quite — a key concept is missing. Use at least one of pressure, equilibrium, collision rate, slope (constant) or temperature.';$('fbReflect').className='fb hint';}
+    else if(!/\b(because|since|therefore|so|thus|hence|due to|as a result|which means|this means|when|if)\b/i.test(t)){$('fbReflect').textContent='Not quite — you only listed key words. Link cause and effect with words such as "because", "if" or "so".';$('fbReflect').className='fb hint';}
+    else{$('fbReflect').textContent='Recorded — explaining it yourself makes the idea stick.';$('fbReflect').className='fb ok';ST.checks.reflect=true;}
+    updateProgress();});
+
+  document.querySelectorAll('[data-q="ho"]').forEach(c=>c.addEventListener('click',e=>{
+    const el=e.target.closest('.choice'),v=el.dataset.v;[...el.parentElement.children].forEach(x=>x.classList.remove('sel'));el.classList.add('sel');
+    const sO=henryS('O2',50,25),sH=henryS('He',100,25);
+    if(v==='a'){$('fbho').textContent='Correct — O₂ at 50 kPa: '+sO.toFixed(2)+' mM > He at 100 kPa: '+sH.toFixed(2)+' mM. The slope (k) is about 3.4 times larger, which beats the 2 times higher pressure.';$('fbho').className='fb ok';}
+    else if(v==='b'){$('fbho').textContent='Try again — by pressure alone He is 2 times higher, but S = kP, so you must also multiply by k (the slope). Look at the ratio of the two slopes on the graph. (answer not revealed)';$('fbho').className='fb no';}
+    else{$('fbho').textContent='Try again — calculate both values with S = kP and compare. They would be equal only if the ratio of k were exactly 2. (answer not revealed)';$('fbho').className='fb no';}}));
+  $('transferBtn').addEventListener('click',()=>{var t=($('transferText').value||'').trim();
+    if(t.length>=40&&/\b(pressures?|Henry\w*|solubility|dissolv\w*)\b/i.test(t)){$('fbTransfer').textContent='Good — when the partial pressure drops, the solubility falls according to S = kP, and the dissolved gas comes out as bubbles.';$('fbTransfer').className='fb ok';}
+    else{$('fbTransfer').textContent='Not quite — in one sentence (40+ characters), apply what happens to the solubility when the partial pressure changes (Henry\'s law).';$('fbTransfer').className='fb hint';}});
+
+  function applyMode(){const q=new URLSearchParams(location.search);
+    if(q.get('mode')==='teacher'){$('teacherBar').classList.add('on');
+      $('tAnswers').textContent='Answer key: prediction = S doubles, k unchanged / Q1 = (c) / Q2 = '+GASES[CFG.mission.gas].lab+' V 50·55% at equilibrium / Q3 ('+CFG.label+') = '+CFG.q3.calc().toPrecision(3)+' '+CFG.q3.unit+' / Q4 = temperature / Q5 = O₂';}
+    if(q.get('worksheet')==='1'){document.body.classList.add('worksheet');}}
+  $('btnTeacher').addEventListener('click',()=>$('teacherBar').classList.toggle('on'));
+  $('btnWorksheet').addEventListener('click',()=>{document.body.classList.toggle('worksheet');window.scrollTo(0,0);});
+  $('tRevealToggle').addEventListener('click',e=>{ST.revealLock=!ST.revealLock;document.body.classList.toggle('reveal',!ST.revealLock);
+    e.target.textContent='Answer/explanation lock: '+(ST.revealLock?'on':'off');
+    if(ST.revealLock&&!ST.predicted)R2.relock();else R2.unlock();updateReadout();});
+  function preset(gas,Tc,v){if(gas!==E.gas)setGas(gas);setTemp(Tc);$('temp').value=Tc;setVol(v);$('vol').value=v;}
+  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',e=>{const p=e.target.dataset.preset;
+    if(p==='base'){preset('O2',25,100);spawn();}
+    if(p==='half'){setVol(50);$('vol').value=50;}
+    if(p==='soda'){preset('CO2',5,40);}
+    if(p==='warm'){setTemp(40);$('temp').value=40;}}));
+  let big=false;$('tBig').addEventListener('click',()=>{big=!big;document.querySelector('.wrap').style.zoom=big?'1.4':'1';});
+
+  document.querySelectorAll('.choice,.toggle').forEach(function(el){
+    if(!el.hasAttribute('tabindex'))el.setAttribute('tabindex','0');
+    if(!el.hasAttribute('role'))el.setAttribute('role','button');
+    el.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();el.click();}});});
+
+  const SPS=60*6;let annT=0;
+  function updateReadout(){const P=presOf(E.Vf,E.Tc),Sm=readS(),k=kOf(E.gas,E.Tc),Se=k*P,dig=Sm<10?3:1;
+    pressedMin=Math.min(pressedMin,E.Vf);
+    const eqM=E.since>=EQ_STEPS&&Math.abs(Sm/Se-1)<CFG.tol;
+    const bs=blockStats(),mv=(bs&&isFinite(bs.mean))?bs.mean:null;
+    window.__sim.metric={type:'S_g',value:mv,unit:'mM',exact:isFinite(Se)?Se:null,inst:isFinite(Sm)?Sm:null,settled:eqM,blocks:bs?bs.nb:0};
+    $('pG').textContent=P.toFixed(1)+' kPa';$('sG').textContent=Sm.toFixed(dig)+' mM';
+    $('rates').textContent='↓ '+(E.inA*SPS).toFixed(0)+' / ↑ '+(E.outA*SPS).toFixed(0);
+    $('barS').style.width=Math.min(100,Sm/(yMax())*100)+'%';
+    $('kMeas').textContent=(Sm/P).toPrecision(3)+' mM/kPa';
+    const r=Sm/Se,eq=E.since>=EQ_STEPS&&Math.abs(r-1)<CFG.tol;
+    $('eqState').textContent=E.since<EQ_STEPS&&Math.abs(r-1)>=0.08?(r<1?'Transient: dissolving > escaping (S rising)':'Transient: escaping > dissolving (S falling)'):'Equilibrium (dissolving ≈ escaping)';
+    $('missionP').textContent=P.toFixed(1)+' kPa';$('missionS').textContent=Sm.toFixed(dig)+' mM';$('missionEq').textContent=eq?'yes':'no';
+    $('zVal').textContent='S_g = '+Sm.toFixed(dig)+' mM';
+    $('zLab').textContent='Exact value kP = '+k.toPrecision(3)+' mM/kPa × '+P.toFixed(1)+' kPa = '+Se.toFixed(dig)+' mM ('+GASES[E.gas].lab+', '+E.Tc+' ℃)';
+    let msg;
+    if(Math.abs(r-1)>=0.08&&E.since<EQ_STEPS)msg=r<1?'<b>Transient state</b> — the pressure went up, so more molecules hit the surface (↓ dissolving), but the dissolved amount has not caught up yet. S increases until escaping (↑) equals dissolving.'
+      :'<b>Transient state</b> — the pressure went down, so escaping (↑) is faster than dissolving (↓). As when a soda bottle is opened, gas comes out and S decreases.';
+    else msg='<b>Equilibrium</b> — measured S/P = '+(Sm/P).toPrecision(3)+' mM/kPa ≈ k = '+k.toPrecision(3)+'. When you change the pressure, the measured point moves <b>along the same line</b> and k stays the same. What changes k is <b>the temperature and the kind of gas</b>.';
+    $('zMsg').innerHTML=msg;
+    if(!linesShown()){['sG','kMeas','eqState','missionS','missionEq'].forEach(function(id){$(id).textContent='shown after prediction';});$('barS').style.width='0%';
+      $('zVal').textContent='S_g = ?';$('zLab').textContent='Shown after you lock in a prediction';$('zMsg').textContent='After you lock in a prediction, the measured solubility and the explanation are shown.';}
+    if(blkNew&&linesShown()&&bs&&(bs.nb===NBMIN||performance.now()-annT>4000)){blkNew=false;annT=performance.now();GCAnnounce.blockEnd(annText());}
+    if(ST.predicted&&!ST.observed&&E.Vf<=0.6&&E.since>=EQ_STEPS*0.8){ST.observed=true;updateProgress();}
+    if(ST.predicted&&ST.observed&&Object.keys(ST.checks).every(function(k){return ST.checks[k];})&&!ST.passed){ST.passed=true;updateProgress();}
+  }
+  function condSet(c){if(c.gas!==E.gas){E.gas=c.gas;document.querySelectorAll('#gasBtns .toggle').forEach(b=>{const on=b.dataset.gas===c.gas;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on?'true':'false');});scaleNote();}
+    setTemp(c.T);$('temp').value=c.T;E.Vf=1;$('vol').value=100;$('volLab').textContent='100%';spawn();trail.length=0;
+    setVol(c.V);$('vol').value=c.V;pressedMin=Math.min(1,c.V/100);blockReset();}
+  const MG=CFG.mission.gas,MISSION={set:{gas:MG,T:25,V:50},near:[{label:'V=60% (P≈169 kPa, not compressed enough)',gas:MG,T:25,V:60},{label:'V=40% (P≈253 kPa, over-compressed)',gas:MG,T:25,V:40},{label:'other gas (He) V=50%',gas:'He',T:25,V:50}]};
+  const nn=v=>(typeof v==='number'&&isFinite(v))?v:null;
+  window.__sim={E,ST,metric:null,GASES,kOf,henryS,presOf,readS,updateReadout,LEVELS,level:(LEVELS[LV]?LV:'standard'),
+    answer:function(g,P,Tc){return henryS(g,P,Tc);},
+    pump(n){n=Math.max(0,n|0);for(let i=0;i<n;i++)stepAll();updateReadout();return window.__sim.metric;},
+    seed(k){rng=mulberry32((k>>>0)||1);spawn();blockReset();updateReadout();return k;},
+    missionState(){condSet(MISSION.set);return {gas:E.gas,T:E.Tc,V:E.Vf,P:presOf(E.Vf,E.Tc)};},
+    initState(){condSet(MISSION.set);return {desc:'mission condition t=0: '+GASES[MG].lab+' 25 ℃, just compressed from equilibrium at V=100% to V=50% (block 0)',gas:E.gas,T:E.Tc,V:E.Vf};},
+    nearStates(){return MISSION.near.map(c=>({label:c.label,apply(){condSet(c);return {gas:c.gas,T:c.T,V:c.V};}}));},
+    judge(){return missionPass();},missionStat,blockStats,
+    key(n){return n==='pred'?'double':(n==='cloze'?CLOZE_OK.slice():(n==='q1'?'c':(n==='q3'?CFG.q3.calc():null)));},
+    domain:{controls:[{sel:'#vol',kind:'range'},{sel:'#temp',kind:'range'},{sel:'#gasBtns .toggle',kind:'toggle'}],
+      metric:{min:0,max:200,nullable:true},eqSteps:7200,mission:{kind:'explore',note:'use the piston to make P_g about 2 times (180–225 kPa, the two settings V 50 and 55%); success when the 95% interval of the equilibrium block mean is within kP ±tol (E1)'}},
+    leakTokens:{answer:['S_g also doubles','k stays the same','k (the slope) stays the same','not by the pressure','doubles and k stays'],
+      rationale:['does not change the slope','along the same line','proportional to the collision frequency','directly proportional'],
+      misconception:['k doubles','a fixed property of the substance','becomes 4 times larger']},
+    fn:{S(g,P,Tc){return GASES[g]&&isFinite(P)&&isFinite(Tc)?nn(henryS(g,P,Tc)):null;},k(g,Tc){return GASES[g]&&isFinite(Tc)?nn(kOf(g,Tc)):null;},P(Vf,Tc){return Vf>0&&isFinite(Tc)?nn(presOf(Vf,Tc)):null;}}};
+
+  let frame=0;
+  function loop(){if(S.running){const n=6*(S.fast?4:1);for(let i=0;i<n;i++)stepAll();}frame++;
+    if(frame%6===0){updateReadout();if(frame%12===0){trail.push([presOf(E.Vf,E.Tc),readS()]);if(trail.length>90)trail.shift();}}
+    drawCyl();drawGraph(linesShown());requestAnimationFrame(loop);}
+  GCAnnounce.attach({mode:'block',gate:()=>R2.on(),pre:'After you lock in a prediction, the measured solubility is read aloud.'});
+  resize();applyMode();applyLevel();spawn();scaleNote();updateReadout();updateProgress();loop();
+})();
+</script>
+
+<script>/[?&]mode=teacher(&|$)/.test(location.search)&&document.body.classList.add('mode-teacher')</script>
+<script id="gc-record">(function(){
+"use strict";
+var K='genchem.en.history',OK=/^https:\/\/(lab\.jinuchem\.com|jinu-kbs\.github\.io)$|^http:\/\/localhost(:\d+)?$/;
+function load(){try{return JSON.parse(localStorage.getItem(K))||[];}catch(e){return[];}}
+function put(a){try{localStorage.setItem(K,JSON.stringify(a));}catch(e){}}
+function up(m){try{if(window.parent!==window)window.parent.postMessage(m,'*');}catch(e){}}
+function merge(inc){var a=load(),s={},n=0;a.forEach(function(r){s[r.ts+'|'+r.sim]=1;});
+ inc.forEach(function(r){if(r&&r.ts&&r.sim&&!s[r.ts+'|'+r.sim]){a.push(r);s[r.ts+'|'+r.sim]=1;n++;}});put(a);return n;}
+var GC={
+ save:function(r){r.ts=r.ts||new Date().toISOString();var a=load();a.push(r);put(a);up({type:'genchem:record',v:1,rec:r});return r;},
+ all:load, clear:function(){put([]);},
+ export:function(){var p=null;try{p=JSON.parse(localStorage.getItem('genchem.en.path'));}catch(e){}
+  var b=new Blob([JSON.stringify({app:'genchem',v:2,exported:new Date().toISOString(),history:load(),path:p},null,2)],{type:'application/json'});
+  var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='genchem_en_brain.json';a.click();URL.revokeObjectURL(u);
+  try{localStorage.setItem('genchem.en.backupAt',new Date().toISOString());}catch(e){}},
+ import:function(t){try{var o=JSON.parse(t),i=(o&&o.history)||o||[];if(!Array.isArray(i))return -1;var n=merge(i);
+  if(o&&o.path){try{localStorage.setItem('genchem.en.path',JSON.stringify(o.path));}catch(e){}}return n;}catch(e){return -1;}},
+ _meta:function(){var p=location.pathname.split('/').filter(Boolean),f=decodeURIComponent(p[p.length-1]||''),d=decodeURIComponent(p[p.length-2]||'');
+  var c=(f.match(/^(\d+)/)||[])[1]||d.replace(/[^0-9]/g,''),q=function(n){var m=document.querySelector('meta[name="'+n+'"]');return m?m.content:'';};
+  return{sim:f,path:(/^ch\d\d$/.test(d)?d+'/':'')+f,chapter:c?+c:null,level:(new URLSearchParams(location.search)).get('level')||'standard',
+   standard:q('curriculum-2022'),engine:q('engine-class'),title:document.title};},
+ autoInit:function(){var done=false,m=GC._meta();up({type:'genchem:hello',v:1,sim:m.path});
+  var iv=setInterval(function(){var s=window.__sim,st=s&&s.ST;if(!st||!st.passed||done)return;done=true;var k=null;
+   try{k=typeof s.key==='function'?s.key('pred'):null;}catch(e){}
+   GC.save({ts:new Date().toISOString(),sim:m.sim,path:m.path,title:m.title,chapter:m.chapter,standard:m.standard,engine:m.engine,level:m.level,
+    predicted:st.prediction||null,predict_correct:(k==null||st.prediction==null)?null:String(st.prediction)===String(k),check:st.checks||{},completed:true});},1000);
+  setTimeout(function(){clearInterval(iv);},1800000);}
+};
+window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='genchem:restore'||!OK.test(e.origin)||!Array.isArray(d.history))return;
+ up({type:'genchem:restored',v:1,added:merge(d.history)});});
+window.GCRecord=GC;
+if(document.readyState!=='loading')GC.autoInit();else document.addEventListener('DOMContentLoaded',GC.autoInit);
+})();
+</script>
+<script id="lgc-inject">
+(function(){
+  "use strict";
+  if(document.getElementById('lgcPanel')) return;
+  var KEY='genchem.en.lgc';
+  function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function simId(){ return decodeURIComponent(location.pathname.split('/').pop()||''); }
+  function loadAll(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+  function saveAll(o){ try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){} }
+
+  var id=simId(), all=loadAll(), data=all[id]||{reason:'',cloze:'',problem:''};
+  window.__sim = window.__sim || {};
+  window.__sim.LGC = { data:data, save:function(){ all[id]=data; saveAll(all); } };
+
+  var stl=document.createElement('style');
+  stl.textContent='#lgcPanel{margin:22px auto;max-width:980px;border:1px solid rgba(127,127,127,.35);border-radius:12px;padding:16px 18px;font-family:inherit;line-height:1.6}'
+    +'#lgcPanel h3{font-size:16px;margin:0 0 4px}'
+    +'#lgcPanel .lgc-sub{font-size:12px;opacity:.7;margin-bottom:10px}'
+    +'#lgcPanel label{display:block;font-size:13px;font-weight:600;margin:12px 0 4px}'
+    +'#lgcPanel textarea{width:100%;min-height:54px;border:1px solid rgba(127,127,127,.4);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;background:transparent;color:inherit;resize:vertical}'
+    +'#lgcPanel .lgc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}'
+    +'#lgcPanel button{font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid rgba(127,127,127,.5);background:transparent;color:inherit;cursor:pointer}'
+    +'#lgcPanel button:hover{border-color:currentColor}'
+    +'#lgcPanel .lgc-out{margin-top:10px;font-size:13px;white-space:pre-wrap;opacity:.92}'
+    +'#lgcPanel .lgc-shared{margin-top:12px;border-top:1px dashed rgba(127,127,127,.4);padding-top:10px;font-size:13px}'
+    +'@media print{#lgcPanel{display:none}}';
+  document.head.appendChild(stl);
+
+  var sec=document.createElement('section');
+  sec.id='lgcPanel'; sec.setAttribute('aria-label','My own notes and questions');
+  sec.innerHTML=''
+    +'<h3>My own notes and questions <span style="font-weight:400;font-size:12px">(learner-generated · not graded)</span></h3>'
+    +'<div class="lgc-sub">Explain in your own words, make your own fill-in-the-blank question, and write a question for a classmate. This space is for deeper understanding.</div>'
+    +'<label for="lgcReason">1. Explain my prediction and conclusion in my own words (with reasons)</label>'
+    +'<textarea id="lgcReason"></textarea>'
+    +'<label for="lgcCloze">2. Hide key words in my explanation with [square brackets] to make a fill-in-the-blank question</label>'
+    +'<textarea id="lgcCloze" placeholder="e.g. How much gas dissolves in a liquid is its [solubility]; on the gas side we describe it by the [partial pressure]."></textarea>'
+    +'<div class="lgc-btns"><button type="button" id="lgcClozePrev">Preview my question</button></div>'
+    +'<div class="lgc-out" id="lgcClozeOut" aria-live="polite"></div>'
+    +'<label for="lgcProblem">3. A question for a classmate (include the answer)</label>'
+    +'<textarea id="lgcProblem"></textarea>'
+    +'<div class="lgc-btns">'
+    +'<button type="button" id="lgcExport">Save my notes (JSON file)</button>'
+    +'<button type="button" id="lgcShare">Copy share link</button>'
+    +'</div>'
+    +'<div class="lgc-shared" id="lgcShared" style="display:none"></div>';
+  var anchor=document.querySelector('footer');
+  if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(sec,anchor);
+  else document.body.appendChild(sec);
+
+  var $=function(i){return document.getElementById(i);};
+  $('lgcReason').value=data.reason||''; $('lgcCloze').value=data.cloze||''; $('lgcProblem').value=data.problem||'';
+  function persist(){ data.reason=$('lgcReason').value; data.cloze=$('lgcCloze').value; data.problem=$('lgcProblem').value; window.__sim.LGC.save(); }
+  $('lgcReason').addEventListener('input',persist);
+  $('lgcCloze').addEventListener('input',persist);
+  $('lgcProblem').addEventListener('input',persist);
+
+  $('lgcClozePrev').addEventListener('click',function(){
+    var t=$('lgcCloze').value||'', n=0, ans=[];
+    var q=t.replace(/\[([^\]]+)\]/g,function(m,w){ n++; ans.push(w); return '____('+n+')'; });
+    $('lgcClozeOut').textContent = n ? ('Question: '+q+'\nAnswer: '+ans.join(', ')) : 'Put key words in [square brackets] to turn them into blanks.';
+  });
+
+  function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(s){ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+
+  $('lgcExport').addEventListener('click',function(){
+    persist();
+    var payload={app:'genchem',kind:'lgc',sim:id,exported:new Date().toISOString(),lgc:data};
+    var b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u; a.download='genchem_lgc_'+id.replace(/\.html$/,'')+'.json'; a.click(); URL.revokeObjectURL(u);
+  });
+  $('lgcShare').addEventListener('click',function(){
+    persist();
+    var link=location.origin+location.pathname+location.search+'#share='+enc({sim:id,lgc:data});
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link).then(function(){ alert('Share link copied. Send it to a classmate.'); },
+        function(){ prompt('Copy the link below:', link); });
+    } else prompt('Copy the link below:', link);
+  });
+
+  (function(){
+    var m=(location.hash||'').match(/share=([^&]+)/); if(!m) return;
+    try{
+      var o=dec(m[1]), L=o.lgc||{}, html='<b>Shared by a classmate</b>';
+      if(L.reason)  html+='<div>· Explanation: '+esc(L.reason)+'</div>';
+      if(L.cloze)   html+='<div>· Fill-in-the-blank text: '+esc(L.cloze)+'</div>';
+      if(L.problem) html+='<div>· Question: '+esc(L.problem)+'</div>';
+      var sh=$('lgcShared'); sh.innerHTML=html; sh.style.display='block';
+    }catch(e){}
+  })();
+})();
+</script>
+<script id="gc-reflectguard">
+(function(){"use strict";
+function go(){var ta=document.getElementById('selfExplain'),b=document.getElementById('reflectBtn');if(!ta||!b)return;
+var ex=(ta.getAttribute('placeholder')||'').replace(/^(?:e\.g\.|example)\s*[:：]?\s*/i,''),fb=document.getElementById('fbReflect')||document.getElementById('fb2');if(!fb)return;
+ta.setAttribute('placeholder','In your own words: "I observed (what), and because (principle), (result)."');
+var n=0,last='',nm=function(x){return x.replace(/[\s.…,·"'()]/g,'');};
+b.addEventListener('click',function(e){var t=nm(ta.value),x=nm(ex);
+ if(x.length>8&&t.length>=8&&(x.indexOf(t)>=0||t.indexOf(x.slice(0,Math.ceil(x.length*.8)))>=0)){e.stopImmediatePropagation();
+  fb.textContent='This looks copied from the example. Recall what you observed and write it again in your own words.';fb.className='fb hint';last=fb.textContent;}},true);
+new MutationObserver(function(){var c=fb.className,t=fb.textContent;if(t===last)return;
+ if(/hint/.test(c)&&/^Not quite/.test(t)){n++;fb.textContent=n<2?'Not quite — write one sentence (40+ characters) that says what you observed and why, e.g. "Because …, …". If it is still not enough, you will get a clue.':t.replace(/^Not quite\s*—\s*/,'Clue: ');}
+ else if(/ok/.test(c)&&ex&&t.indexOf('Compare it with')<0)fb.textContent=t+' Compare it with the example explanation: '+ex;
+ last=fb.textContent;}).observe(fb,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});}
+if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);})();
+</script>
+</body>
+</html>

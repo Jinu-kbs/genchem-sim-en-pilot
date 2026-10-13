@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="sim-tier" content="core">
+<title>Ion-Product of Water K_w and pH · Simulation (self-directed learning · teacher edition)</title>
+<meta name="description" content="Interactive simulation: add HCl or NaOH, change the temperature, and see how [H⁺] and [OH⁻] stay linked by K_w = [H⁺][OH⁻] and why neutral pH changes with temperature.">
+<meta name="curriculum-univ" content="University general chemistry · Acid–base equilibria · autoionization of water · ion-product constant K_w · neutral, acidic, basic · temperature dependence of K_w">
+<meta name="curriculum-2022" content="General Chemistry">
+<meta name="school-level" content="University general chemistry">
+<meta name="engine-class" content="E2-equation-driven">
+<meta name="misconception-id" content="MC-kw-01: an acidic solution contains no OH- at all / MC-kw-02: pure water at 37 °C has pH 6.8, so it is acidic">
+<style>
+  :root{--ink:#0B0F17;--ink-700:#1A2030;--ink-600:#222a3d;--ink-400:#8C98B3;
+    --paper:#F4F1EA;--paper-2:#E8E3D6;--accent:#A7BCEC;--accent-2:#E8C275;
+    --warn:#E36B5B;--good:#7FB98A;
+    --font-serif:Georgia,'Times New Roman',serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard',sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--paper);font-family:var(--font-sans);min-height:100vh;word-break:keep-all;overflow-wrap:break-word}
+  body{padding:40px 28px 80px;line-height:1.6}
+  .wrap{max-width:1120px;margin:0 auto}
+  header{border-bottom:1px solid var(--ink-700);padding-bottom:26px;margin-bottom:24px}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:5px;color:var(--accent);text-transform:uppercase}
+  h1{font-family:var(--font-serif);font-weight:600;letter-spacing:-1.2px;font-size:44px;margin-top:14px;line-height:1.08}
+  h1 em{color:var(--accent-2);font-style:normal}
+  .lede{font-family:var(--font-serif);font-size:18px;color:var(--ink-400);margin-top:16px;max-width:760px}
+  .card{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:20px;margin-top:20px}
+  .kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .kicker .num{background:#2a3350;color:var(--accent-2);border-radius:6px;padding:2px 8px}
+  .lo-goals{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+  .lo-goals .g{display:flex;gap:10px;font-size:15px;color:var(--paper-2)}
+  .lo-goals .chk{width:18px;height:18px;border:1.5px solid var(--ink-400);border-radius:5px;flex:0 0 auto;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink)}
+  .lo-goals .g.done .chk{background:var(--good);border-color:var(--good)} .lo-goals .g.done .chk::after{content:"✓"}
+  .progress{height:12px;border-radius:7px;background:#10162260;border:1px solid #2a3144;overflow:hidden}
+  .progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5E6B85,var(--accent-2));transition:width .4s}
+  .progress-lab{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px;text-align:right}
+  .stage{display:grid;grid-template-columns:0.8fr 1.2fr;gap:20px;margin-top:8px}
+  .box{background:var(--ink-700);border:1px solid #2a3144;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}
+  .box h2{font-family:var(--font-serif);font-size:20px;color:var(--accent-2)}
+  canvas{width:100%;height:auto;display:block;background:#0d1320;border:1px solid #2a3144;border-radius:10px}
+  .ph-read{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .ph-read b{color:var(--paper);font-size:20px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+  .choice{font-size:14px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:10px 16px;cursor:pointer}
+  .choice:hover{border-color:var(--accent)} .choice.sel{background:#2a3350;border-color:var(--accent-2)}
+  .conf-row{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-bottom:12px}
+  .conf-row input{flex:1;accent-color:var(--accent-2)}
+  .gate-msg{font-size:14px;margin-top:8px;min-height:1.4em} .gate-msg.refute{color:var(--warn)} .gate-msg.hit{color:var(--good)}
+  .verdict{margin-top:20px;padding:20px 22px;border-radius:14px;border:1px solid #2a3144;background:#0d1320;transition:filter .3s}
+  .verdict.locked{display:none}
+  .vwrap{position:relative} .lockbadge{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;color:var(--accent)}
+  .verdict.locked + .lockbadge{display:flex}
+  .verdict .big{font-family:var(--font-serif);font-size:30px;color:var(--accent-2)}
+  .verdict p{font-family:var(--font-serif);font-size:16px;color:var(--paper-2);margin-top:10px;min-height:2.4em} .verdict p b{color:var(--accent-2)}
+  .panel{margin-top:20px;background:linear-gradient(180deg,#0d1320,#0B0F17);border:1px solid #2a3144;border-radius:16px;padding:22px}
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+  .ctrl label{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:8px}
+  .ctrl .val{color:var(--paper);font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--accent-2);cursor:pointer}
+  .ctrl .ends{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:4px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button,.toggle{font-family:var(--font-mono);font-size:12px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:9px 14px;cursor:pointer}
+  button:hover,.toggle:hover{border-color:var(--accent)} .toggle.on{background:#2a3350;border-color:var(--accent-2)}
+  .notes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+  .note{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:22px}
+  .note h3{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .note p{font-size:14px;color:var(--paper-2)} .note .eq{font-family:var(--font-serif);font-style:italic;font-size:18px;text-align:center;margin:14px 0 6px;padding:12px;background:#0d1320;border-radius:10px;border:1px solid #2a3144}
+  .q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed #2a3144} .q:last-child{border-bottom:none;margin-bottom:0}
+  .q .qtext{font-size:15px;margin-bottom:10px} .q .qtext .qn{color:var(--accent-2);font-family:var(--font-mono);margin-right:8px}
+  .fb{font-size:13px;margin-top:8px;min-height:1.2em} .fb.ok{color:var(--good)} .fb.no{color:var(--warn)} .fb.hint{color:var(--accent)}
+  .num-in{font-family:var(--font-mono);background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:8px 10px;width:120px}
+  .mission{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px} .mission b{color:var(--accent-2)}
+  details.hintbox summary{font-family:var(--font-mono);font-size:12px;color:var(--accent);cursor:pointer} details.hintbox p{font-size:13px;color:var(--ink-400);margin-top:6px}
+  .reflect textarea{width:100%;min-height:64px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical}
+  .self-check{display:flex;flex-direction:column;gap:8px;margin:12px 0} .self-check label{display:flex;gap:10px;font-size:14px;color:var(--paper-2);cursor:pointer} .self-check input{margin-top:4px;accent-color:var(--good)}
+  .stamp{display:none;margin-top:14px;text-align:center;font-family:var(--font-serif);font-size:22px;color:var(--good);border:2px dashed var(--good);border-radius:12px;padding:14px} .stamp.on{display:block}
+  .teacher{margin-top:24px;border-top:2px solid #2a3144;padding-top:6px}
+  details.tguide summary{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);cursor:pointer;padding:12px 0}
+  .tguide-body{background:var(--ink-700);border:1px solid #2a3144;border-radius:12px;padding:20px;font-size:14px;color:var(--paper-2)} .tguide-body h4{font-family:var(--font-mono);font-size:12px;color:var(--accent);margin:14px 0 6px} .tguide-body ul{margin-left:18px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0} .badge{font-family:var(--font-mono);font-size:12px;background:#0d1320;border:1px solid #2a3144;border-radius:20px;padding:5px 12px;color:var(--paper-2)} .badge.verify{color:var(--good);border-color:var(--good)}
+  .teacher-bar{display:none;background:#2a3350;border:1px solid var(--accent);border-radius:12px;padding:14px;margin-top:18px} .teacher-bar.on{display:block} .teacher-bar .tb-title{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);margin-bottom:10px}
+  footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--ink-700);font-family:var(--font-mono);font-size:12px;color:var(--ink-400);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px} footer b{color:var(--paper-2);font-weight:500}
+  @media(max-width:780px){h1{font-size:32px}.stage{grid-template-columns:1fr}.notes{grid-template-columns:1fr}}
+  @media print{body{background:#fff;color:#000}.no-print{display:none!important}}
+  body.worksheet .no-print{display:none} body.worksheet{background:#fff;color:#111} body.worksheet .ws-only{display:block}
+  .ws-only{display:none} .ws{border:1px solid #999;border-radius:8px;padding:16px;margin-top:14px;color:#111} .ws .line{border-bottom:1px solid #bbb;height:28px;margin:8px 0}
+
+body:not(.mode-teacher) .teacher-only{display:none!important}
+
+  @media print{.ws-only{display:block!important}.stage{display:none}}
+  input:disabled{opacity:.45}
+
+html:has(body.worksheet){background:#fff!important}
+body.worksheet *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#111!important;border-color:#888!important;box-shadow:none!important;text-shadow:none!important}
+body.worksheet canvas{filter:grayscale(1) contrast(1.1)}
+@media print{html{background:#fff!important}
+ body *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#000!important;border-color:#666!important;box-shadow:none!important;text-shadow:none!important}
+ canvas{filter:grayscale(1)}}
+
+.verdict.locked{display:none}
+body:not(.predicted) .post-pred{display:none!important}
+body.predicted .pre-pred{display:none!important}
+.pre-pred{font-size:13px;color:var(--ink-400)}
+body.worksheet .notes,body.worksheet .pre-pred{display:none!important}
+@media print{.notes,.pre-pred{display:none!important}}
+
+body:not(.predicted) .post-pred{display:none!important}
+body.predicted .pp-wait{display:none!important}
+.pp-wait{font-size:13px;border:1px dashed #556;border-radius:10px;padding:10px 12px}
+.verdict.locked{display:none!important}
+.verdict.locked + .lockbadge{position:static!important;display:block!important;padding:14px 16px;border:1px dashed #556;border-radius:12px;text-align:center;background:transparent}
+.lockbadge{display:none}
+body.predicted .lockbadge,body.predicted .verdict + .lockbadge{display:none!important}
+.sum3 ol{margin:4px 0 0 20px;font-size:14px;line-height:1.75}
+.ws-key{margin-top:12px;border-top:1px dashed #777;padding-top:8px;font-size:13px}
+body.worksheet .stage,body.worksheet canvas,body.worksheet .notes,body.worksheet .panel,body.worksheet .vwrap,body.worksheet .teacher-bar,body.worksheet #lgcPanel,body.worksheet .limit,body.worksheet .no-print{display:none!important}
+body.worksheet .ws,body.worksheet .ws-only{display:block!important}
+body.worksheet .ws svg *{fill:none!important;stroke:#000!important}
+body.worksheet .ws svg text{fill:#000!important;stroke:none!important}
+@media print{
+ .stage,canvas,.notes,.panel,.vwrap,.teacher-bar,#lgcPanel,.limit,.no-print,#predCard,.lockbadge{display:none!important}
+ .ws,.ws-only{display:block!important}
+ body:not(.mode-teacher) .teacher-only{display:none!important}
+ .ws svg *{fill:none!important;stroke:#000!important}
+ .ws svg text{fill:#000!important;stroke:none!important}
+}
+span.pp-wait{border:0;padding:0}
+</style>
+<style id="r4fix"> .sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}input[type=range]{min-height:24px}button,.toggle,.choice{min-height:24px}a{color:var(--accent)}a:visited{color:var(--accent-2)}#lgcPanel .lgc-sub,#lgcPanel .lgc-out{opacity:1!important}@media print{a,a:visited{color:#000}}</style>
+<script id="gc-announce">
+(G=>{
+const D=G.document,T=()=>Date.now();
+const st={el:null,delay:400,gap:5000,win:1000,mode:'debounce',gate:null,pre:'',summary:null,timer:null,at:null,pend:null,last:null,lastW:-1e9,ui:-1e9,count:0};
+function ensure(id){if(st.el&&st.el.isConnected!==false)return st.el;let el=D&&D.getElementById(id||'statusLive');
+  if(!el&&D){el=D.createElement('div');el.id=id||'statusLive';(D.body||D.documentElement).appendChild(el);
+    el.setAttribute('style','position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0');}
+  if(el){el.setAttribute('role','status');el.setAttribute('aria-live','polite');el.setAttribute('aria-atomic','true');}
+  st.el=el;return el;}
+function write(t){if(typeof t==='function')t=t();t=String(t==null?'':t).replace(/\s+/g,' ').trim();if(!t||t===st.last)return false;
+  const el=ensure();if(!el)return false;el.textContent=t;st.last=t;st.lastW=T();st.count++;return true;}
+const open=()=>!st.gate||!!st.gate();
+function input(){st.ui=T();}
+if(D&&D.addEventListener)['input','change','click','keydown','pointerdown'].forEach(e=>D.addEventListener(e,input,true));
+function flush(){st.at=null;const w=st.lastW+st.gap-T();if(w>0){st.at=setTimeout(flush,w);return;}const t=st.pend;st.pend=null;if(t!=null&&open())write(t);}
+function auto(t){const n=T();if(st.ui>st.lastW&&n-st.ui<=3000&&n-st.lastW>=1000){clearTimeout(st.at);st.at=null;st.pend=null;return write(t);}
+  st.pend=t;if(st.at)return true;if(n-st.lastW>=st.gap){st.pend=null;return write(t);}st.at=setTimeout(flush,st.lastW+st.gap-n);return true;}
+function route(t,o){if(o&&o.now){clearTimeout(st.timer);return write(t);}
+  if(T()-st.ui<=st.win){clearTimeout(st.timer);st.timer=setTimeout(()=>{st.timer=null;if(open())write(t);},st.delay);return true;}return auto(t);}
+function attach(o){o=o||{};for(const k of ['delay','gap','win','mode','gate','pre','summary'])if(o[k]!=null)st[k]=o[k];
+  ensure(o.id);if(!open()&&st.pre)write(st.pre);return GCAnnounce;}
+function say(text,o){o=o||{};if(st.mode==='block'&&!o.force)return false;if(!open())return st.pre?write(st.pre):false;return route(text,o);}
+function update(){if(!st.summary)return false;return say(()=>st.summary());}
+function blockEnd(text,o){if(!open())return false;return route(text,o);}
+function reset(){clearTimeout(st.timer);clearTimeout(st.at);st.at=null;st.pend=null;st.last=null;if(st.el)st.el.textContent='';if(!open()&&st.pre)write(st.pre);}
+const GCAnnounce={version:2,attach,say,update,blockEnd,reset,input,get last(){return st.last;},get count(){return st.count;},get mode(){return st.mode;}};
+G.GCAnnounce=GCAnnounce;
+})(typeof window!=='undefined'?window:globalThis);
+</script>
+</head>
+<body>
+<script>
+window.R2={
+  unlock:function(){document.body.classList.add('predicted');
+    document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.remove('locked');v.removeAttribute('aria-hidden');v.removeAttribute('inert');v.inert=false;});},
+  relock:function(){document.body.classList.remove('predicted');
+    document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.add('locked');v.setAttribute('aria-hidden','true');v.setAttribute('inert','');});},
+  on:function(){return document.body.classList.contains('predicted');}
+};
+(function(){var was=false;
+  window.addEventListener('beforeprint',function(){was=document.body.classList.contains('worksheet');document.body.classList.add('worksheet');});
+  window.addEventListener('afterprint',function(){if(!was)document.body.classList.remove('worksheet');});})();
+(function(){
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('.choice,.toggle').forEach(function(el){
+      if(el.hasAttribute('tabindex')||el.tagName==='A'||el.tagName==='BUTTON')return;
+      el.setAttribute('tabindex','0');if(!el.hasAttribute('role'))el.setAttribute('role','button');
+      el.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();el.click();}});});});})();
+(function(){
+  document.addEventListener('DOMContentLoaded',function(){
+    var b=document.getElementById('predSubmit'),pc=document.getElementById('predChoices');
+    if(b)b.addEventListener('click',function(){var S=window.__sim&&window.__sim.ST;if(!S||!S.predicted||R2._pl)return;R2._pl=1;
+      var sel=pc&&pc.querySelector('.choice.sel,[data-v].sel');var v=(S.prediction!=null)?S.prediction:(sel?sel.dataset.v:null);
+      try{Object.defineProperty(S,'prediction',{value:v,writable:false,configurable:false,enumerable:true});}catch(e){}
+      b.disabled=true;b.textContent='Prediction locked (cannot change)';
+      if(pc){pc.querySelectorAll('.choice,[data-v]').forEach(function(c){c.setAttribute('aria-disabled','true');c.style.pointerEvents='none';if(c.dataset.v!==v)c.style.borderStyle='dashed';});
+        pc.addEventListener('click',function(e){e.stopImmediatePropagation();e.preventDefault();},true);
+        pc.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.stopImmediatePropagation();e.preventDefault();}},true);}});
+    document.querySelectorAll('.toggle[aria-pressed]').forEach(function(el){
+      new MutationObserver(function(){var on=el.classList.contains('on')?'true':'false';if(el.getAttribute('aria-pressed')!==on)el.setAttribute('aria-pressed',on);}).observe(el,{attributes:true,attributeFilter:['class']});});});})();
+</script>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">General Chemistry · Acid–Base Equilibria · ION-PRODUCT OF WATER</div>
+  <h1>Ion-Product of Water <em>K<sub>w</sub></em> and pH</h1>
+  <p class="lede">Water ionizes by itself (autoionization, 2H₂O ⇌ H₃O⁺ + OH⁻). If you add an acid or a base and change <b>[H⁺]</b>,
+    what happens to <b>[OH⁻]</b>? If you heat pure water, what is its pH? Every value is calculated by <em>solving exactly</em> the charge balance and
+    K<sub>w</sub> = [H⁺][OH⁻] (no approximation).</p>
+  <p class="lede" style="font-size:14px;margin-top:8px">Estimated time 15 min · Prerequisites: equilibrium-constant expressions, Brønsted–Lowry acids and bases</p>
+</header>
+
+<div class="card no-print">
+  <div class="kicker"><span class="num">Learning objectives</span> After this activity you can …</div>
+  <div class="lo-goals">
+    <div class="g" id="lo1"><span class="chk"></span><span>use <b>K<sub>w</sub> = [H⁺][OH⁻]</b> to calculate [H⁺] from [OH⁻] and the other way round.</span></div>
+    <div class="g" id="lo2"><span class="chk"></span><span>explain that [OH⁻] gets smaller when [H⁺] gets larger, and that <b>OH⁻ is present even in an acidic solution</b>.</span></div>
+    <div class="g" id="lo3"><span class="chk"></span><span>judge the <b>change of neutral pH with temperature</b> and the <b>definition of neutral</b>.</span></div>
+  </div>
+  <div class="progress"><span id="prog"></span></div>
+  <div class="progress-lab" id="progLab">Progress 0% · Predict → Observe → Check → Complete</div>
+  <div class="btns no-print" style="margin-top:12px;align-items:center">
+    <span class="lvl-lab" style="font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--ink-400)">Level</span>
+    <a class="toggle" id="lvlBasic" data-lvl="basic" href="?level=basic">Basic</a>
+    <a class="toggle" id="lvlStandard" data-lvl="standard" href="?level=standard">Standard</a>
+    <a class="toggle" id="lvlAdvanced" data-lvl="advanced" href="?level=advanced">Advanced</a>
+  </div>
+  <div class="hintbox summary" id="sum3" style="margin-top:10px"><b style="font-family:var(--font-mono);font-size:12px;color:var(--accent)">Key summary · KEY IDEAS</b>
+    <p style="font-size:13px;margin-top:6px">1) In every aqueous solution, [H⁺][OH⁻] = K<sub>w</sub> (1.0×10⁻¹⁴ at 25 °C). 2) <span class="pre-pred">If the concentration of one ion goes up, predict what happens to the other.</span><span class="post-pred">If one goes up 10 times, the other goes down to 1/10 — neither ever becomes 0.</span>
+    3) Neutral is defined as [H⁺] = [OH⁻], not as pH = 7. <span class="pre-pred">Does neutral pH change when the temperature changes?</span><span class="post-pred">When the temperature rises, K<sub>w</sub> becomes larger, so neutral pH = ½pK<sub>w</sub> becomes smaller than 7.</span></p></div>
+</div>
+
+<div class="stage no-print">
+  <div class="box">
+    <h2>[H⁺]–[OH⁻] seesaw (log bars)</h2>
+    <canvas id="cvBars" width="300" height="320" tabindex="0" role="application" aria-roledescription="bar chart with temperature control" aria-describedby="cvHelp" aria-label="Log bar chart of H+ and OH- concentrations"></canvas>
+    <p class="sr-only" id="cvHelp">Focus the graph. Up or right arrow raises the temperature by 1 °C; down or left arrow lowers it. The result is read aloud in the live region.</p>
+    <div class="ph-read"><span>[H⁺]</span><b id="hNow">—</b></div>
+    <div class="ph-read"><span>[OH⁻]</span><b id="ohNow">—</b></div>
+    <div class="ph-read"><span>[H⁺][OH⁻] = K<sub>w</sub></span><span id="prodNow">—</span></div>
+  </div>
+  <div class="box">
+    <h2>Temperature and neutral pH (½pK<sub>w</sub>)</h2>
+    <canvas id="cvKw" width="460" height="320" tabindex="0" role="application" aria-roledescription="graph with temperature control" aria-describedby="cvHelp" aria-label="Curve of the neutral pH of pure water against temperature"></canvas>
+    <div class="ph-read"><span>Current pH · acidic/neutral/basic</span><b id="phNow">—</b></div>
+    <div class="ph-read"><span>K<sub>w</sub>(T) · neutral pH</span><span id="kwNow">—</span></div>
+  </div>
+</div>
+
+<div class="card no-print" id="entryCard">
+  <div class="kicker"><span class="num">Entry check</span> Before you start — prerequisites and key terms</div>
+  <p style="font-size:15px;margin-bottom:6px">What do we call an aqueous solution in which [H⁺] &gt; [OH⁻]?</p>
+  <div class="choices" id="entryChoices" role="group" aria-label="Entry check">
+    <span class="choice" data-v="acid">Acidic</span><span class="choice" data-v="neutral">Neutral</span><span class="choice" data-v="base">Basic</span></div>
+  <div class="fb" id="fbEntry" aria-live="polite"></div>
+  <details class="hintbox" id="entryGloss"><summary>Key terms</summary>
+    <p><b>Autoionization (self-ionization) of water</b>: water molecules pass a proton between them, forming H₃O⁺ and OH⁻. ·
+    <b>Ion-product constant K<sub>w</sub></b>: K<sub>w</sub> = [H⁺][OH⁻], 1.0×10⁻¹⁴ at 25 °C. ·
+    <b>Neutral</b>: [H⁺] = [OH⁻]. Acidic means [H⁺] &gt; [OH⁻]; basic means [OH⁻] &gt; [H⁺]. ·
+    <b>pH</b> = −log[H⁺] (common, base-10 logarithm).</p></details>
+</div>
+
+<div class="card no-print" id="predCard">
+  <div class="kicker"><span class="num">Predict</span> Think first, before you observe</div>
+  <p style="font-size:15px;margin-bottom:6px"><b>Pure water</b> at body temperature (37 °C) has a pH of about 6.8. What is this water?</p>
+  <div class="choices" id="predChoices" role="group" aria-label="Prediction">
+    <span class="choice" data-v="acid">pH &lt; 7, so it is acidic</span>
+    <span class="choice" data-v="neutral">It is pure water, so it is still neutral</span>
+    <span class="choice" data-v="base">Heating makes more OH⁻, so it is basic</span>
+  </div>
+  <div class="conf-row"><span>Confidence</span><input type="range" id="conf" min="0" max="100" value="50" aria-label="Confidence"><span id="confLab">Medium</span></div>
+  <button id="predSubmit">Lock in prediction</button>
+  <div class="gate-msg" id="gateMsg" aria-live="polite"></div>
+</div>
+
+<div class="vwrap no-print">
+  <div class="verdict locked" id="verdict" data-lock aria-hidden="true" inert>
+    <div class="big" id="phBig">pH = —</div>
+    <p id="phMsg">Change the solute and the temperature and observe [H⁺] and [OH⁻].</p>
+  </div>
+  <div class="lockbadge">The explanation opens after you lock in a prediction</div>
+</div>
+
+<div class="panel no-print">
+  <div class="controls">
+    <div class="ctrl"><label>Solute (three reagent bottles) <span class="val" id="kindLab">pure water</span></label>
+      <div class="btns" role="group" aria-label="Choose a solute"><span class="toggle" id="tHCl" aria-pressed="false">hydrochloric acid HCl</span><span class="toggle on" id="tW" aria-pressed="true">water H₂O</span><span class="toggle" id="tNaOH" aria-pressed="false">sodium hydroxide NaOH</span></div></div>
+    <div class="ctrl"><label for="logc">Added concentration C (log scale) <span class="val" id="cLab">—</span></label>
+      <input type="range" id="logc" min="-100" max="-10" value="-20" aria-label="Concentration of added acid or base, log scale"><div class="ends"><span>1×10⁻¹⁰ M</span><span>0.10 M</span></div></div>
+    <div class="ctrl"><label for="temp">Temperature T <span class="val" id="tLab">25 °C</span></label>
+      <input type="range" id="temp" min="0" max="60" value="25" aria-label="Temperature, 0 to 60 degrees Celsius"><div class="ends"><span>0 °C</span><span>60 °C</span></div></div>
+    <div class="ctrl"><label>Controls</label>
+      <div class="btns"><button id="reset">Reset (pure water at 25 °C)</button></div></div>
+  </div>
+</div>
+
+<div class="notes">
+  <div class="note post-pred"><h3>Seesaw: the product is constant</h3>
+    <p>K<sub>w</sub> is an equilibrium constant, so it is constant at a given temperature. If HCl raises [H⁺] 10 times, the equilibrium shifts to the left and
+      [OH⁻] becomes 1/10. Even in 0.010 M HCl, OH⁻ is present at 1.0×10⁻¹² M — it is <b>not zero</b>. Soil and irrigation-water pH are measured on this same scale.</p>
+    <div class="eq">K<sub>w</sub> = [H⁺][OH⁻] = 1.0×10⁻¹⁴ (25 °C)</div></div>
+  <div class="note post-pred" id="noteTemp"><h3>Temperature: the neutral point moves</h3>
+    <p>Autoionization is an endothermic reaction, so K<sub>w</sub> increases with temperature (Le Chatelier). In pure water it is always true that
+      [H⁺] = [OH⁻] = √K<sub>w</sub>, so <b>neutral pH = ½pK<sub>w</sub></b>. At 37 °C this is about 6.8, but the water is still neutral.</p>
+    <div class="eq">Neutral: [H⁺] = [OH⁻] = √K<sub>w</sub>, pH = ½ pK<sub>w</sub></div></div>
+  <div class="note pre-pred"><h3>Explanation cards</h3><p>The explanation cards "the product is constant" and "the neutral point" and the full key summary open after you lock in a prediction.</p></div>
+</div>
+<div class="card no-print" style="font-size:13px;color:var(--ink-400)">
+  <b style="color:var(--paper-2)">Limits of the model</b> — Ideal behavior of dilute solutions is assumed (activity coefficient = 1). Near 0.1 M the real activities differ somewhat because of ionic-strength effects.
+  K<sub>w</sub>(T) is calculated from a literature interpolation formula (Harned–Robinson) for 0–60 °C. HCl and NaOH are treated as fully dissociated.
+</div>
+
+<div class="card no-print" id="checkCard">
+  <div class="kicker"><span class="num">Check</span> Formative check — pass all items to complete</div>
+  <div class="q" id="q1">
+    <div class="qtext"><span class="qn">Q1</span>Which statement about 0.010 M HCl at 25 °C is correct?</div>
+    <div class="choices" role="group" aria-label="Q1">
+      <span class="choice" data-q="1" data-v="a">It is acidic, so there is no OH⁻ at all</span>
+      <span class="choice" data-q="1" data-v="b">OH⁻ is present at 1.0×10⁻¹² M</span>
+      <span class="choice" data-q="1" data-v="c">OH⁻ is 1.0×10⁻⁷ M, the same as in pure water</span></div>
+    <details class="hintbox"><summary>Hint</summary><p>Set the solute to HCl and the concentration to 0.010 M (log = −2), then read [OH⁻].</p></details>
+    <div class="fb" id="fb1"></div>
+  </div>
+  <div class="q" id="q2">
+    <div class="qtext"><span class="qn">Q2 · Hands-on task</span>With <b>pure water</b>, move the temperature slider to reach <span id="missionGoal">—</span>, then press [Check]. Also check that [H⁺] and [OH⁻] are equal.</div>
+    <div class="mission">Now: <b id="missionNow">—</b></div>
+    <button id="missionBtn" style="margin-top:8px">Check</button>
+    <div class="fb" id="fb2"></div>
+  </div>
+  <div class="q" id="q3">
+    <div class="qtext"><span class="qn">Q3 · Calculation</span><span id="q3text">—</span></div>
+    <input class="num-in" id="q3in" style="width:200px" placeholder="e.g. 2.5e-8 or 2.5×10^-8" aria-label="Q3 answer"><button id="q3btn">Check</button>
+    <details class="hintbox"><summary>Hint</summary><p id="q3hint">—</p></details>
+    <div class="fb" id="fb3"></div>
+  </div>
+  <div class="q" id="qc">
+    <div class="qtext"><span class="qn">Q4 · Fill in the blank</span>Fill in the blank: At any temperature, a solution with [H⁺] = [OH⁻] is a [_____] solution.</div>
+    <input class="num-in" id="qcin" placeholder="one word" style="width:180px" aria-label="Q4 blank answer"><button id="qcbtn">Check</button>
+    <details class="hintbox"><summary>Hint</summary><p>It is neither acidic nor basic. It is defined by comparing the two ion concentrations, not by a pH number.</p></details>
+    <div class="fb" id="fbc"></div>
+  </div>
+
+  <div class="q" id="qho">
+    <div class="qtext"><span class="qn">Q5 · Apply (higher-order, not required for completion)</span>At 20 °C the ion product of heavy water (D₂O) is K<sub>w</sub> = 8.9×10⁻¹⁶. What is [D⁺] in neutral D₂O, in M?</div>
+    <input class="num-in" id="qhoin" style="width:200px" placeholder="e.g. 1.0e-7" aria-label="Q5 answer"><button id="qhobtn">Check</button>
+    <details class="hintbox"><summary>Hint</summary><p>If it is neutral, [D⁺] = [OD⁻] = x, and x² = K<sub>w</sub>.</p></details>
+    <div class="fb" id="fbho"></div>
+  </div>
+</div>
+
+<div class="card reflect no-print post-pred" id="reflectCard">
+  <div class="kicker"><span class="num">Reflect</span> Reflect — metacognition · completion</div>
+  <p style="font-size:14px;color:var(--ink-400);margin-bottom:10px">My prediction: <b id="predResult" style="color:var(--paper)">Not predicted yet</b></p>
+  <p style="font-size:14px;margin-bottom:6px">In one sentence, explain why pure water at 37 °C is not acidic even though its pH is 6.8:</p>
+  <textarea id="selfExplain" aria-label="Self-explanation" placeholder="e.g. When the temperature rises Kw becomes larger, but in pure water [H⁺] and [OH⁻] …"></textarea>
+  <div class="btns" style="margin-top:8px"><button id="reflectBtn">Submit explanation</button></div><div class="fb" id="fbReflect"></div>
+  <div class="self-check">
+    <label><input type="checkbox" class="sc"> I can calculate [H⁺] and [OH⁻] from each other with K<sub>w</sub></label>
+    <label><input type="checkbox" class="sc"> I can explain that OH⁻ is present even in an acidic solution</label>
+    <label><input type="checkbox" class="sc"> I know that neutral is defined as [H⁺]=[OH⁻], not as pH 7</label>
+  </div>
+  <div class="card" style="margin-top:14px;background:#0d1320">
+    <div class="kicker"><span class="num">Apply</span> Use the idea in a new context (not required for completion)</div>
+    <p style="font-size:14px;color:var(--paper-2)">Human blood is kept at about pH 7.4 at 37 °C. Compare this with the neutral pH at 37 °C (read it in the simulation).
+      Is blood acidic, neutral or basic? Is the difference larger or smaller than when you judge it against the 25 °C reference (pH 7)? Explain in one or two sentences.</p>
+    <textarea id="transferText" aria-label="Transfer task" placeholder="e.g. The neutral pH at 37 °C is about 6.8, so a blood pH of 7.4 is …" style="width:100%;min-height:56px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical;margin-top:8px"></textarea>
+    <div class="btns" style="margin-top:8px"><button id="transferBtn">Submit transfer task</button></div>
+    <div class="fb" id="fbTransfer"></div>
+  </div>
+  <div class="card" style="margin-top:14px;background:#0d1320">
+    <div class="kicker"><span class="num">Next up</span> Next up</div>
+    <p style="font-size:14px;color:var(--paper-2)">The pH scale (pH, pOH and pK<sub>w</sub>) → K<sub>a</sub> of weak acids and percent ionization → acid–base titration curves.</p>
+  </div>
+  <div class="stamp" id="stamp">COMPLETE · Completed — all checks passed.</div>
+</div>
+
+<div class="ws ws-only">
+  <h3>Worksheet — Ion-product of water K<sub>w</sub> and pH</h3>
+  <p>Name ________  Class ________  Date ________</p>
+  <svg viewBox="0 0 600 230" width="100%" role="img" aria-label="Black-and-white line diagram of three reagent bottles" style="max-width:600px;display:block;margin:10px 0">
+    <defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#000" stroke-width="1"/></pattern></defs>
+    <g fill="none" stroke="#000" stroke-width="1.5">
+      <path d="M70 20 h40 v30 l25 30 v100 h-90 v-100 l25 -30 z"/>
+      <path d="M270 20 h40 v30 l25 30 v100 h-90 v-100 l25 -30 z"/>
+      <path d="M470 20 h40 v30 l25 30 v100 h-90 v-100 l25 -30 z"/>
+    </g>
+    <rect x="47" y="120" width="86" height="58" fill="url(#hatch)" stroke="none"/>
+    <rect x="247" y="150" width="86" height="28" fill="none" stroke="#000" stroke-dasharray="3 3"/>
+    <rect x="447" y="120" width="86" height="58" fill="none" stroke="#000" stroke-width="2"/>
+    <g font-size="13" fill="#000" text-anchor="middle" font-family="sans-serif">
+      <text x="90" y="200">hydrochloric acid HCl(aq)</text><text x="290" y="200">water H₂O</text><text x="490" y="200">NaOH(aq)</text>
+      <text x="90" y="222">[H⁺] (  ) [OH⁻]</text><text x="290" y="222">[H⁺] (  ) [OH⁻]</text><text x="490" y="222">[H⁺] (  ) [OH⁻]</text>
+    </g>
+  </svg>
+  <p style="font-size:12px">Write &gt;, = or &lt; in each bracket. For all three bottles at 25 °C, [H⁺][OH⁻] = [_______].</p>
+  <p><b>1. Predict</b> — Is pure water at 37 °C (pH about 6.8) acidic, neutral or basic? Why?</p><div class="line"></div>
+  <p><b>2. Observe</b> — 0.010 M HCl: [OH⁻] = ________ M · pure water at 37 °C: K<sub>w</sub> = ________, neutral pH = ______</p>
+  <p><b>3. Calculate</b> — At 25 °C, a solution has [OH⁻] = 1.8×10⁻⁹ M. [H⁺] = ________ M; acidic, neutral or basic: ______</p>
+  <p><b>4. Fill in the blank</b> — At any temperature, a solution with [H⁺] = [OH⁻] is a [_____] solution.</p>
+  <p><b>5. Conclusion</b> — Why does neutral pH become smaller than 7 when the temperature rises?</p><div class="line"></div><div class="line"></div>
+  <p style="margin-top:14px;border-top:1px solid #999;padding-top:8px"><b>Self-check answers</b> (mark your own work after solving) &nbsp; 1.____ 2.____ 3.____ 4.____ 5.____</p>
+  <div class="teacher-only" style="font-size:12px;margin-top:8px">[Answer key — teacher] bottles: &gt;, =, &lt; · product 1.0×10⁻¹⁴ · 1 neutral ([H⁺]=[OH⁻]) · 2 1.0×10⁻¹² M; K<sub>w</sub>≈2.4×10⁻¹⁴ (literature), neutral pH≈6.81 · 3 5.6×10⁻⁶ M, acidic · 4 neutral · 5 autoionization is endothermic, so K<sub>w</sub> increases and √K<sub>w</sub> increases</div>
+</div>
+
+<div class="teacher no-print">
+  <details class="tguide teacher-only"><summary>Teacher notes — open the lesson plan</summary>
+    <div class="tguide-body">
+      <h4>Lesson plan · 5E phase and time</h4><ul><li><b>Explore · Explain</b> stage, 15 min. Works right after autoionization of water, before or after the pH scale is introduced.</li></ul>
+      <h4>Demo in 3 steps</h4><ul><li>(1) Water at 25 °C → HCl 0.010 M: [OH⁻]=1.0×10⁻¹² M (not zero).</li><li>(2) Raise the HCl concentration 10 times at each step and watch [OH⁻] fall to 1/10 each time (seesaw; the product does not change).</li><li>(3) Go back to pure water and change the temperature 0→60 °C: neutral pH 7.47→6.51, yet [H⁺]=[OH⁻].</li></ul>
+      <h4>3 key questions</h4><ul><li>"Is there no OH⁻ at all in an acidic solution?"</li><li>"If [H⁺] goes up 100 times, what happens to [OH⁻]?"</li><li>"Can we call water with pH 6.8 acidic? What was the definition of neutral?"</li></ul>
+      <h4>Common misconceptions</h4><ul><li>MC-kw-01: "An acidic solution has no OH⁻" → K<sub>w</sub> is constant, so [OH⁻]=K<sub>w</sub>/[H⁺] &gt; 0.</li><li>MC-kw-02: "Water at 37 °C has pH 6.8, so it is acidic" → neutral is defined as [H⁺]=[OH⁻]; neutral pH = ½pK<sub>w</sub>(T).</li></ul>
+      <h4>Answer key</h4><ul><li>Prediction: neutral · Q1: b · Q2: target by level (pure water, change the temperature) · Q3: Basic 1.0×10⁻¹² / Standard 5.6×10⁻⁶ / Advanced 1.4×10⁻⁷ M · Q4: neutral · Q5: 3.0×10⁻⁸ M.</li></ul>
+      <h4>Sources of values · cautions (check by PI)</h4><ul>
+        <li>Reference values: K<sub>w</sub> = 1.0×10⁻¹⁴ (25 °C), K<sub>w</sub> = 2.1×10⁻¹⁴ at 37 °C (a value often given in exercises), D₂O 8.9×10⁻¹⁶.</li>
+        <li><b>Two values for K<sub>w</sub> at 37 °C</b>: 2.1×10⁻¹⁴ and 2.4×10⁻¹⁴ are both found in teaching materials. The literature value (Harned–Robinson, CRC) is 2.4×10⁻¹⁴ (pK<sub>w</sub> 13.62), and the K<sub>w</sub>(T) curve in this simulation also gives 2.40×10⁻¹⁴. Advanced Q3 uses 2.1×10⁻¹⁴ as given data — point out in class why the two values differ.</li>
+        <li>K<sub>w</sub>(T) curve: Harned &amp; Robinson (1940) interpolation log K<sub>w</sub> = −4470.99/T + 6.0875 − 0.01706T (T in K, 0–60 °C). 25 °C 1.01×10⁻¹⁴ (shown as 1.0×10⁻¹⁴, 2 significant figures), 37 °C 2.40×10⁻¹⁴, 60 °C 9.6×10⁻¹⁴. Agrees with the CRC Handbook ion-product table.</li>
+        <li>Difference: 2.1×10⁻¹⁴ at 37 °C (neutral pH 6.84) is smaller than the literature 2.4×10⁻¹⁴ (6.81). Both give "about 6.8", so the learning conclusion is the same. Advanced Q3 gives the reference value as problem data.</li></ul>
+      <h4>Prerequisites</h4><ul><li>Equilibrium-constant expressions (pure liquids omitted), Le Chatelier's principle, calculations with powers of ten and logarithms.</li></ul>
+    </div>
+  </details>
+  <div class="badges"><span class="badge">University general chemistry · Acid–base equilibria</span><span class="badge">General Chemistry</span><span class="badge">Engine E2 equation-driven</span><span class="badge verify">Verified: answers checked with an external Python solver (2026-10-01)</span></div>
+  <div class="btns"><button id="btnTeacher" class="teacher-only">Teacher mode</button><button id="btnWorksheet">Print worksheet</button></div>
+  <div class="teacher-bar teacher-only" id="teacherBar">
+    <div class="tb-title">Teacher mode — class controls</div>
+    <div class="btns"><button id="tReveal">Unlock answer/explanation</button>
+      <button data-preset="acid">Example: 0.010 M HCl</button><button data-preset="base">Example: 0.010 M NaOH</button><button data-preset="body">Example: pure water at 37 °C</button><button data-preset="hot">Example: pure water at 60 °C</button></div>
+  </div>
+</div>
+
+<footer>
+  <div><b>General Chemistry</b> · Ion-product of water K<sub>w</sub> and pH · self-directed learning and teacher edition · exact charge-balance solution (no approximation) · K<sub>w</sub>(T): Harned–Robinson (1940)</div>
+  <div><b>KBS Lab</b> · General Chemistry Simulations · works offline · no personal data collected · report errors: bkim@gnu.ac.kr</div>
+</footer>
+</div>
+
+<script>
+"use strict";
+(function(){
+  const $=id=>document.getElementById(id);
+  const LV=(new URLSearchParams(location.search)).get('level')||'standard';
+  const LEVELS={
+    basic:{label:'Basic',hints:true,
+      q3:{text:'At 25 °C a solution has [OH⁻] = 0.010 M. What is [H⁺] in M?',given:0.010,kw:1.0e-14,ans:1.0e-12,
+          hint:'[H⁺] = K<sub>w</sub> ÷ [OH⁻] = 1.0×10⁻¹⁴ ÷ 0.010'},
+      mission:{kind:'pH',max:6.85,label:'neutral pH ≤ 6.85'}},
+    standard:{label:'Standard',hints:true,
+      q3:{text:'At 25 °C a solution has [OH⁻] = 1.8×10⁻⁹ M. What is [H⁺] in M?',given:1.8e-9,kw:1.0e-14,ans:1.0e-14/1.8e-9,
+          hint:'[H⁺] = K<sub>w</sub> ÷ [OH⁻]. Give 2 significant figures.'},
+      mission:{kind:'kw',min:2.0e-14,label:'K<sub>w</sub> ≥ 2.0×10⁻¹⁴'}},
+    advanced:{label:'Advanced',hints:false,
+      q3:{text:'At 37 °C, K<sub>w</sub> is given as 2.1×10⁻¹⁴. What is [H⁺] in neutral water, in M?',given:null,kw:2.1e-14,ans:Math.sqrt(2.1e-14),
+          hint:'If it is neutral, [H⁺] = [OH⁻] = x, and x² = K<sub>w</sub>.'},
+      mission:{kind:'pH',max:6.60,label:'neutral pH ≤ 6.60'}}
+  };
+  const CFG=LEVELS[LV]||LEVELS.standard;
+  function applyLevel(){
+    var q=new URLSearchParams(location.search);
+    function href(lv){q.set('level',lv);return '?'+q.toString();}
+    ['Basic','Standard','Advanced'].forEach(function(C){var lv=C.toLowerCase();var a=$('lvl'+C);if(a){a.href=href(lv);a.classList.toggle('on',lv===(LEVELS[LV]?LV:'standard'));}});
+    if(!CFG.hints){document.querySelectorAll('details.hintbox').forEach(function(d){if(d.id!=='entryGloss'&&!d.classList.contains('summary'))d.style.display='none';});}
+    $('q3text').innerHTML=CFG.q3.text;$('q3hint').innerHTML=CFG.q3.hint;$('missionGoal').innerHTML=CFG.mission.label;
+  }
+
+  function Kw(tC){const T=tC+273.15;return Math.pow(10,-4470.99/T+6.0875-0.01706*T);}
+  function pKw(tC){return -Math.log10(Kw(tC));}
+  function neutralPH(tC){return pKw(tC)/2;}
+  function solve(Ca,Cb,tC){const K=Kw(tC),D=Ca-Cb,s=Math.sqrt(D*D+4*K);
+    const h=(D>=0)?(D+s)/2:(2*K)/(s-D);const oh=K/h;
+    return {h:h,oh:oh,Kw:K,pH:-Math.log10(h),pOH:-Math.log10(oh)};}
+
+  const M={kind:'water',logC:-2.0,T:25};
+  let tMoved=false;
+  function conc(){return M.kind==='water'?0:Math.pow(10,M.logC);}
+  function state(){const c=conc();return solve(M.kind==='HCl'?c:0,M.kind==='NaOH'?c:0,M.T);}
+  function sup(n){const S={'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};return String(n).split('').map(c=>S[c]).join('');}
+  function sci(x,d){if(!(x>0))return '0';let e=Math.floor(Math.log10(x));let m=x/Math.pow(10,e);
+    if(+m.toFixed(d)>=10){m/=10;e+=1;}return m.toFixed(d)+'×10'+sup(e);}
+  function judge(r){if(M.kind==='water')return 'neutral';const lr=Math.log10(r.h/r.oh);
+    if(Math.abs(lr)<0.01)return lr>0?'nearly neutral (very slightly acidic)':'nearly neutral (very slightly basic)';return lr>0?'acidic':'basic';}
+
+  function drawBars(r){const c=$('cvBars'),ctx=c.getContext('2d');const W=c.width,H=c.height;ctx.clearRect(0,0,W,H);
+    const padT=24,padB=40,padL=44;const y=lg=>padT+(-lg/15)*(H-padT-padB);
+    ctx.font='11px ui-monospace';ctx.fillStyle='#8C98B3';ctx.strokeStyle='#1c2535';
+    for(let e=0;e<=15;e+=3){ctx.beginPath();ctx.moveTo(padL,y(-e));ctx.lineTo(W-8,y(-e));ctx.stroke();ctx.fillText('1e-'+e,4,y(-e)+3);}
+    const base=y(-15);
+    function bar(x,v,col,hatch,lab){const top=y(Math.log10(v));ctx.fillStyle=col;ctx.fillRect(x,top,70,base-top);
+      if(hatch){ctx.save();ctx.beginPath();ctx.rect(x,top,70,base-top);ctx.clip();ctx.strokeStyle='#0d1320';ctx.lineWidth=2;
+        for(let k=-300;k<300;k+=9){ctx.beginPath();ctx.moveTo(x+k,base);ctx.lineTo(x+k+300,base-300);ctx.stroke();}ctx.restore();}
+      ctx.fillStyle='#F4F1EA';ctx.font='12px ui-monospace';ctx.fillText(lab,x+16,H-22);ctx.fillText(sci(v,1),x-2,top-5);}
+    bar(padL+20,r.h,'#E36B5B',false,'[H⁺]');bar(padL+140,r.oh,'#A7BCEC',true,'[OH⁻] hatched');
+    ctx.fillStyle='#E8C275';ctx.font='12px ui-monospace';ctx.fillText(ST.predicted?'Verdict: '+judge(r):'Verdict: shown after prediction',padL+20,H-5);}
+  function drawKw(){const c=$('cvKw'),ctx=c.getContext('2d');const W=c.width,H=c.height;ctx.clearRect(0,0,W,H);
+    const padL=40,padB=28,padT=12,padR=12;const x=t=>padL+(t/60)*(W-padL-padR);const y=p=>padT+(7.6-p)/1.2*(H-padT-padB);
+    if(!ST.predicted){ctx.fillStyle='#8C98B3';ctx.font='13px ui-monospace';ctx.fillText('The temperature–neutral pH graph',padL+60,H/2-10);ctx.fillText('opens after you lock in a prediction',padL+60,H/2+12);return;}
+    ctx.strokeStyle='#1c2535';ctx.fillStyle='#8C98B3';ctx.font='11px ui-monospace';ctx.lineWidth=1;
+    for(let i=0;i<=6;i++){const p=6.4+0.2*i;ctx.beginPath();ctx.moveTo(padL,y(p));ctx.lineTo(W-padR,y(p));ctx.stroke();ctx.fillText(p.toFixed(1),6,y(p)+3);}
+    for(let t=0;t<=60;t+=10)ctx.fillText(t+'°C',x(t)-10,H-8);
+    ctx.setLineDash([4,4]);ctx.strokeStyle='#444f66';ctx.beginPath();ctx.moveTo(padL,y(7));ctx.lineTo(W-padR,y(7));ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='#8C98B3';ctx.fillText('pH 7 (25 °C neutral, dotted)',W-150,y(7)-4);
+    ctx.strokeStyle='#E8C275';ctx.lineWidth=2.5;ctx.beginPath();
+    for(let t=0;t<=60;t+=0.5){const px=x(t),py=y(neutralPH(t));if(t===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.stroke();ctx.lineWidth=1;
+    ctx.fillStyle='#E8C275';ctx.fillText('neutral pH of pure water = ½pKw (solid)',padL+6,y(7.55));
+    const p=neutralPH(M.T);ctx.fillStyle='#7FB98A';ctx.beginPath();ctx.arc(x(M.T),y(p),6,0,7);ctx.fill();
+    ctx.fillText(M.T+' °C → '+p.toFixed(2),Math.min(x(M.T)+8,W-90),y(p)-8);
+    ctx.strokeStyle='#7FB98A';ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(x(M.T),padT);ctx.lineTo(x(M.T),H-padB);ctx.stroke();ctx.setLineDash([]);}
+
+  const ST={predicted:false,observed:false,passed:false,checks:{entry:false,q1:false,q2:false,q3:false,cloze:false,reflect:false}};
+  function pct(){let p=0;if(ST.predicted)p+=25;if(ST.observed)p+=25;
+    p+=Math.round(Object.values(ST.checks).filter(Boolean).length/Object.keys(ST.checks).length*40);if(ST.passed)p+=10;return Math.min(100,p);}
+  function updateProgress(){const p=pct();$('prog').style.width=p+'%';$('progLab').textContent='Progress '+p+'% · Predict → Observe → Check → Complete';
+    $('lo1').classList.toggle('done',ST.checks.q3);$('lo2').classList.toggle('done',ST.checks.q1);$('lo3').classList.toggle('done',ST.observed&&ST.checks.q2);
+    if(ST.passed)$('stamp').classList.add('on');}
+  function update(){const r=state();window.__sim.metric=Number.isFinite(r.pH)?{type:'pH',value:r.pH,unit:''}:null;
+    $('logc').setAttribute('aria-valuetext',M.kind==='water'?'nothing added (pure water)':sci(Math.pow(10,M.logC),1)+' M');$('temp').setAttribute('aria-valuetext',M.T+' °C');
+    if(window.GCAnnounce)GCAnnounce.update();
+    const nph=neutralPH(M.T),j=judge(r);
+    $('hNow').textContent=sci(r.h,1)+' M';$('ohNow').textContent=sci(r.oh,1)+' M';
+    $('prodNow').textContent=sci(r.h*r.oh,1)+' ('+M.T+' °C)';
+    const P=ST.predicted;
+    $('phNow').textContent=r.pH.toFixed(2)+' · '+(P?j:'shown after prediction');
+    $('kwNow').textContent=sci(r.Kw,1)+' · '+(P?nph.toFixed(2):'shown after prediction');
+    $('missionNow').textContent=P?(M.T+' °C, '+(M.kind==='water'?'pure water':M.kind)+', Kw='+sci(r.Kw,1)+', neutral pH='+nph.toFixed(2)):'shown after you lock in a prediction';
+    if(!P){$('phBig').textContent='pH = —';$('phMsg').textContent='The explanation is shown after you lock in a prediction.';drawBars(r);drawKw();return;}
+    $('phBig').textContent='pH = '+r.pH.toFixed(2)+'  ('+j+')';
+    let msg;
+    if(M.kind==='water'){msg='Pure water: [H⁺] = [OH⁻] = √K<sub>w</sub> = '+sci(r.h,1)+' M. Neutral pH = ½pK<sub>w</sub> = <b>'+nph.toFixed(2)+'</b>'+
+      (nph<6.995?' — below 7 but <b>neutral, because [H⁺]=[OH⁻]</b>.':(nph>7.005?' — above 7 but still <b>neutral</b>.':' — close to 25 °C, so it is 7.'));}
+    else{msg=(M.kind==='HCl'?'HCl':'NaOH')+' '+sci(conc(),1)+' M: [H⁺] = '+sci(r.h,1)+', [OH⁻] = '+sci(r.oh,1)+' M. The product is still K<sub>w</sub> = '+sci(r.Kw,1)+
+      ' — neither is <b>zero</b>. Verdict: <b>'+j+'</b>.';}
+    $('phMsg').innerHTML=msg;
+    if(ST.predicted&&!ST.observed&&M.kind==='water'&&M.T>=35&&tMoved){ST.observed=true;updateProgress();}
+    drawBars(r);drawKw();}
+
+  function setCLab(){$('cLab').textContent=M.kind==='water'?'(nothing added)':sci(Math.pow(10,M.logC),1)+' M';}
+  function setKind(k){M.kind=k;$('tHCl').classList.toggle('on',k==='HCl');$('tW').classList.toggle('on',k==='water');$('tNaOH').classList.toggle('on',k==='NaOH');
+    $('kindLab').textContent=k==='water'?'pure water':(k==='HCl'?'hydrochloric acid HCl':'sodium hydroxide NaOH');$('logc').disabled=(k==='water');setCLab();update();}
+  $('tHCl').addEventListener('click',()=>setKind('HCl'));$('tW').addEventListener('click',()=>setKind('water'));$('tNaOH').addEventListener('click',()=>setKind('NaOH'));
+  $('logc').addEventListener('input',e=>{M.logC=(+e.target.value)/10;setCLab();update();});
+  $('logc').addEventListener('change',()=>{if(window.GCAnnounce)GCAnnounce.update();});
+  $('temp').addEventListener('input',e=>{M.T=+e.target.value;tMoved=true;$('tLab').textContent=M.T+' °C';update();});
+  function setT(t){M.T=t;$('temp').value=t;$('tLab').textContent=t+' °C';}
+  function setLogC(l){M.logC=l;$('logc').value=Math.round(l*10);setCLab();}
+  $('reset').addEventListener('click',()=>{tMoved=false;setT(25);setLogC(-2);setKind('water');});
+  $('conf').addEventListener('input',e=>{const v=+e.target.value;$('confLab').textContent=v<33?'Low':v<66?'Medium':'High';});
+
+  let predSel=null;
+  $('predChoices').addEventListener('click',e=>{const c=e.target.closest('.choice');if(!c)return;
+    [...$('predChoices').children].forEach(x=>x.classList.remove('sel'));c.classList.add('sel');predSel=c.dataset.v;});
+  $('predSubmit').addEventListener('click',()=>{if(ST.predicted)return;if(!predSel){$('gateMsg').textContent='Choose one of the options.';$('gateMsg').className='gate-msg refute';return;}
+    ST.predicted=true;Object.defineProperty(ST,'prediction',{value:predSel,writable:false,configurable:false,enumerable:true});tMoved=false;R2.unlock();
+    $('predSubmit').disabled=true;$('predSubmit').textContent='Prediction locked (cannot change)';[...$('predChoices').children].forEach(x=>{x.style.pointerEvents='none';x.setAttribute('aria-disabled','true');});
+    if(predSel==='neutral'){$('gateMsg').innerHTML='Good prediction! Keep pure water and raise <b>the temperature to 37 °C or more</b>, then compare [H⁺] and [OH⁻] yourself.';$('gateMsg').className='gate-msg hit';$('predResult').textContent='Correct (you predicted neutral)';}
+    else if(predSel==='acid'){$('gateMsg').innerHTML='A common misconception. Acidic is defined as <b>[H⁺] &gt; [OH⁻]</b>, not as "pH &lt; 7". With pure water, raise the temperature to 37 °C or more and compare the two bars.';$('gateMsg').className='gate-msg refute';$('predResult').textContent='Needs review (actually neutral)';}
+    else{$('gateMsg').innerHTML='Does heating increase only OH⁻? When one water molecule ionizes, H⁺ and OH⁻ form <b>together, one of each</b>. Raise the temperature to 37 °C or more and compare the two bars.';$('gateMsg').className='gate-msg refute';$('predResult').textContent='Needs review (actually neutral)';}
+    setKind('water');updateProgress();});
+
+  document.querySelectorAll('[data-q="1"]').forEach(c=>c.addEventListener('click',e=>{const v=e.target.dataset.v;
+    [...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    if(v==='b'){$('fb1').textContent='Correct — [OH⁻] = Kw/[H⁺] = 1.0×10⁻¹⁴/0.010 = 1.0×10⁻¹² M. Small, but not zero.';$('fb1').className='fb ok';ST.checks.q1=true;}
+    else if(v==='a'){$('fb1').textContent='Try again — if [OH⁻] were 0, [H⁺][OH⁻] would be 0, which contradicts Kw. Look at the [OH⁻] bar for 0.010 M HCl in the simulation. (answer not revealed)';$('fb1').className='fb no';}
+    else{$('fb1').textContent='Try again — 1.0×10⁻⁷ M is the value for neutral water. When [H⁺] increases, the equilibrium shifts and [OH⁻] decreases. By how much? (answer not revealed)';$('fb1').className='fb no';}
+    updateProgress();}));
+
+  $('missionBtn').addEventListener('click',()=>{const r=state(),nph=neutralPH(M.T),m=CFG.mission;
+    const hit=(m.kind==='pH')?(nph<=m.max):(r.Kw>=m.min);
+    if(!ST.predicted){$('fb2').textContent='First lock in your prediction.';$('fb2').className='fb hint';return;}
+    if(M.kind!=='water'){$('fb2').textContent='First set the solute to "water H₂O" (pure water). With an acid or base added, the solution is not neutral.';$('fb2').className='fb no';}
+    else if(!tMoved){$('fb2').textContent='Move the temperature slider yourself to set the condition.';$('fb2').className='fb no';}
+    else if(hit){$('fb2').innerHTML='Correct — '+M.T+' °C: Kw = '+sci(r.Kw,1)+', [H⁺] = [OH⁻] = '+sci(r.h,1)+' M, pH = '+nph.toFixed(2)+'. pH &lt; 7, but the two concentrations are equal, so it is <b>neutral</b>.';$('fb2').className='fb ok';ST.checks.q2=true;}
+    else if(M.T<25){$('fb2').textContent='Try again — wrong direction. Lowering the temperature makes Kw smaller, so neutral pH rises above 7. Raise it.';$('fb2').className='fb no';}
+    else{$('fb2').textContent='Try again — not at the target yet (neutral pH now '+nph.toFixed(2)+'). Raise the temperature further.';$('fb2').className='fb no';}
+    updateProgress();});
+
+  function parseSci(s){s=(s||'').replace(/\s/g,'').replace(/[−–⁻]/g,'-')
+      .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g,ch=>String('⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(ch))).replace(/[×xX*]/g,'x').replace(/M$/i,'');
+    let m=s.match(/^(\d*\.?\d+)(?:e([+-]?\d+))?$/i);if(m)return parseFloat(m[1])*Math.pow(10,m[2]?+m[2]:0);
+    m=s.match(/^(\d*\.?\d+)x10\^?([+-]?\d+)$/);if(m)return parseFloat(m[1])*Math.pow(10,+m[2]);
+    m=s.match(/^10\^?([+-]?\d+)$/);if(m)return Math.pow(10,+m[1]);return NaN;}
+  const near=(x,y,tol)=>x>0&&y>0&&Math.abs(x/y-1)<=tol;
+  $('q3btn').addEventListener('click',()=>{const x=parseSci($('q3in').value),q=CFG.q3;
+    if(isNaN(x)){$('fb3').textContent='Check the number format — e.g. 2.5e-8 or 2.5×10^-8';$('fb3').className='fb hint';}
+    else if(near(x,q.ans,0.04)){$('fb3').textContent='Correct — '+sci(q.ans,1)+' M. '+(q.given?'[H⁺] = Kw/[OH⁻].':'Neutral: [H⁺] = √Kw.');$('fb3').className='fb ok';ST.checks.q3=true;}
+    else if(q.given&&near(x,q.given,0.04)){$('fb3').textContent='Try again — that is the given [OH⁻] itself. [H⁺] is found by dividing Kw by [OH⁻]. (answer not revealed)';$('fb3').className='fb no';}
+    else if(q.given&&near(x,q.kw*q.given,0.04)){$('fb3').textContent='Try again — divide, do not multiply. [H⁺][OH⁻]=Kw, so [H⁺]=Kw÷[OH⁻]. (answer not revealed)';$('fb3').className='fb no';}
+    else if(near(x,1e-7,0.04)){$('fb3').textContent='Try again — 1.0×10⁻⁷ M is the value for neutral water at 25 °C. Use the given condition (Kw or [OH⁻]). (answer not revealed)';$('fb3').className='fb no';}
+    else if(!q.given&&near(x,q.kw/1e-7,0.04)){$('fb3').textContent='Try again — if you fix [H⁺] at 1.0×10⁻⁷, then [H⁺]≠[OH⁻] and the water is not neutral. Solve x²=Kw. (answer not revealed)';$('fb3').className='fb no';}
+    else{$('fb3').textContent='Try again — check your power-of-ten calculation. Follow the formula in the hint. (answer not revealed)';$('fb3').className='fb no';}
+    updateProgress();});
+
+  const CLOZE_OK=['neutral','neutralsolution','aneutral','neutrality'];
+  $('qcbtn').addEventListener('click',()=>{const raw=($('qcin').value||'').trim().toLowerCase().replace(/\s/g,'');
+    if(CLOZE_OK.includes(raw)){$('fbc').textContent='Correct — neutral is defined as [H⁺]=[OH⁻], and the neutral pH value depends on the temperature.';$('fbc').className='fb ok';ST.checks.cloze=true;}
+    else if(['acidic','basic','alkaline','acid','base'].includes(raw)){$('fbc').textContent='Try again — acidic means [H⁺]>[OH⁻] and basic means [OH⁻]>[H⁺]. What if the two concentrations are equal?';$('fbc').className='fb no';}
+    else if(/^(ph)?=?7/.test(raw)){$('fbc').textContent='Try again — write the name of the solution type (one word), not a number.';$('fbc').className='fb no';}
+    else{$('fbc').textContent=CFG.hints?'Hint: what is the state that is neither acidic nor basic called?':'Try again — enter one word.';$('fbc').className='fb '+(CFG.hints?'hint':'no');}
+    updateProgress();});
+
+  document.querySelectorAll('#entryChoices .choice').forEach(c=>c.addEventListener('click',e=>{
+    [...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    var v=e.target.dataset.v, ok=v==='acid';
+    if(ok)$('fbEntry').textContent='Right — when there is more [H⁺], the solution is acidic. Check the terms below, then go on to the prediction.';
+    else if(v==='neutral')$('fbEntry').textContent='Try again — neutral means [H⁺]=[OH⁻]. With more [H⁺] the solution is acidic. Check the terms below.';
+    else $('fbEntry').textContent='Try again — basic means there is more [OH⁻]. With more [H⁺] the solution is acidic. Check the terms below.';
+    $('fbEntry').className='fb '+(ok?'ok':'hint');
+    var g=$('entryGloss'); if(g) g.open=true; if(ok) ST.checks.entry=true; updateProgress();}));
+  var REFLECT_CONCEPTS=/(Kw|K_w|ion[- ]product|neutral|\[H|H⁺|H\+|OH|autoioni[sz]\w*|self-ioni[sz]\w*|endothermic|temperature)/i;
+  var REFLECT_REL=/\b(because|since|therefore|so|thus|hence|due to|as a result|which means|this means|when|if)\b|→/i;
+  $('reflectBtn').addEventListener('click',()=>{var t=($('selfExplain').value||'').trim();
+    if(t.length<40){$('fbReflect').textContent='Not quite — explain it in one sentence (40+ characters).';$('fbReflect').className='fb hint';}
+    else if(!REFLECT_CONCEPTS.test(t)){$('fbReflect').textContent='Not quite — add a key concept: at least one of Kw, ion product, [H⁺]=[OH⁻], neutral or endothermic.';$('fbReflect').className='fb hint';}
+    else if(!REFLECT_REL.test(t)){$('fbReflect').textContent='Not quite — link cause and effect with words such as "because", "so" or "therefore".';$('fbReflect').className='fb hint';}
+    else{$('fbReflect').textContent='Recorded — explaining it yourself makes the idea stick.';$('fbReflect').className='fb ok';ST.checks.reflect=true;}
+    updateProgress();});
+
+  $('qhobtn').addEventListener('click',()=>{var x=parseSci($('qhoin').value),a=Math.sqrt(8.9e-16);
+    if(near(x,a,0.04)){$('fbho').textContent='Correct — [D⁺] = √(8.9×10⁻¹⁶) = 3.0×10⁻⁸ M. D₂O ionizes less than H₂O.';$('fbho').className='fb ok';}
+    else if(near(x,8.9e-16/1e-7,0.04)){$('fbho').textContent='Try again — you cannot set [OD⁻] to 1.0×10⁻⁷. If it is neutral, [D⁺]=[OD⁻]=x and x²=Kw. (answer not revealed)';$('fbho').className='fb no';}
+    else{$('fbho').textContent='Try again — find x from x² = 8.9×10⁻¹⁶ (halve the exponent). (answer not revealed)';$('fbho').className='fb no';}});
+  $('transferBtn').addEventListener('click',()=>{var t=($('transferText').value||'').trim();
+    if(t.length>=40&&/(basic|alkaline|neutral|6\.8|Kw|OH)/i.test(t)){$('fbTransfer').textContent='Good — you judged blood (7.4) against the neutral pH at 37 °C (about 6.8).';$('fbTransfer').className='fb ok';}
+    else{$('fbTransfer').textContent='Not quite — compare the neutral pH at 37 °C with the blood pH of 7.4, and write whether blood is acidic, neutral or basic (40+ characters).';$('fbTransfer').className='fb hint';}});
+
+  setInterval(()=>{if(ST.predicted&&ST.observed&&Object.keys(ST.checks).every(function(k){return ST.checks[k];})&&!ST.passed){ST.passed=true;updateProgress();}},300);
+
+  function applyMode(){const q=new URLSearchParams(location.search);
+    if(q.get('mode')==='teacher')$('teacherBar').classList.add('on');
+    if(q.get('worksheet')==='1')document.body.classList.add('worksheet');}
+  $('btnTeacher').addEventListener('click',()=>$('teacherBar').classList.toggle('on'));
+  $('btnWorksheet').addEventListener('click',()=>{document.body.classList.toggle('worksheet');window.scrollTo(0,0);});
+  $('tReveal').addEventListener('click',()=>R2.unlock());
+  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',e=>{const p=e.target.dataset.preset;
+    if(p==='acid'){setT(25);setLogC(-2);setKind('HCl');}if(p==='base'){setT(25);setLogC(-2);setKind('NaOH');}
+    if(p==='body'){setT(37);setKind('water');}if(p==='hot'){setT(60);setKind('water');}}));
+  applyMode();
+  applyLevel();
+
+  document.querySelectorAll('.choice,.toggle').forEach(function(el){
+    if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0');
+    if(!el.hasAttribute('role')) el.setAttribute('role','button');
+    el.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();el.click();}});
+  });
+  ['cvBars','cvKw'].forEach(function(id){$(id).addEventListener('keydown',function(ev){
+    if(ev.key==='ArrowUp'||ev.key==='ArrowRight'){ev.preventDefault();setT(Math.min(60,M.T+1));tMoved=true;update();}
+    if(ev.key==='ArrowDown'||ev.key==='ArrowLeft'){ev.preventDefault();setT(Math.max(0,M.T-1));tMoved=true;update();}});});
+
+  window.__sim={metric:null,ST,Kw,pKw,neutralPH,solve,
+    setState(kind,logC,T){if(logC!=null)setLogC(logC);if(T!=null){setT(T);tMoved=true;}setKind(kind||'water');},
+    pump(){update();return window.__sim.metric;},
+    LEVELS,level:(LEVELS[LV]?LV:'standard'),
+    key(n){return n==='pred'?'neutral':n==='q1'?'b':n==='q3'?CFG.q3.ans:n==='cloze'?CLOZE_OK.slice():null;},
+    clozeWrong:'acidic',
+    domain:{controls:[{sel:'#tHCl',kind:'toggle'},{sel:'#tW',kind:'toggle'},{sel:'#tNaOH',kind:'toggle'},{sel:'#logc',kind:'range'},{sel:'#temp',kind:'range'}],
+      continuous:{logC:{min:-10,max:-1},T:{min:0,max:60}},metric:{min:0,max:14},
+      mission:{kind:'explore',level:LV,goal:CFG.mission.label,note:'with pure water, raise the temperature (1 °C steps) to reach the target Kw or neutral pH — the pass window covers several steps'}},
+    fn:{Kw:t=>(Number.isFinite(t)&&t>=0&&t<=60)?Kw(t):null,
+        neutralPH:t=>(Number.isFinite(t)&&t>=0&&t<=60)?neutralPH(t):null,
+        pH:(Ca,Cb,t)=>([Ca,Cb,t].every(Number.isFinite)&&Ca>=0&&Cb>=0&&t>=0&&t<=60)?solve(Ca,Cb,t).pH:null,
+        OH:(Ca,Cb,t)=>([Ca,Cb,t].every(Number.isFinite)&&Ca>=0&&Cb>=0&&t>=0&&t<=60)?solve(Ca,Cb,t).oh:null},
+    leakTokens:{answer:['still neutral','about 6.8, but the water is still','below 7 but','not acidic even though'],
+      rationale:['½pK','[H⁺] = [OH⁻] = √K','endothermic reaction'],
+      misconception:['pH < 7, so it is acidic','Heating makes more OH⁻']}};
+  if(window.GCAnnounce)GCAnnounce.attach({gate:()=>ST.predicted,pre:'After you lock in a prediction, [H⁺], [OH⁻], pH and acidic/neutral/basic are read aloud.',
+    summary:()=>{const r=state();return M.T+' °C, '+(M.kind==='water'?'pure water (concentration setting '+sci(Math.pow(10,M.logC),1)+' M not applied)':(M.kind==='HCl'?'hydrochloric acid ':'sodium hydroxide ')+sci(conc(),1)+' M')+': [H⁺] '+sci(r.h,1)+' M, [OH⁻] '+sci(r.oh,1)+' M, pH '+r.pH.toFixed(2)+', '+judge(r)+', neutral pH '+neutralPH(M.T).toFixed(2)+'.';}});
+  ['fb1','fb2','fb3','fbc','fbho','fbReflect','fbTransfer'].forEach(function(id){const el=$(id);if(!el)return;
+    new MutationObserver(function(){const t=el.textContent;if(t&&window.GCAnnounce)GCAnnounce.say(t,{now:true});}).observe(el,{childList:true,characterData:true,subtree:true});});
+  setKind('water');updateProgress();
+})();
+</script>
+
+<script>/[?&]mode=teacher(&|$)/.test(location.search)&&document.body.classList.add('mode-teacher')</script>
+<script id="gc-record">(function(){
+"use strict";
+var K='genchem.en.history',OK=/^https:\/\/(lab\.jinuchem\.com|jinu-kbs\.github\.io)$|^http:\/\/localhost(:\d+)?$/;
+function load(){try{return JSON.parse(localStorage.getItem(K))||[];}catch(e){return[];}}
+function put(a){try{localStorage.setItem(K,JSON.stringify(a));}catch(e){}}
+function up(m){try{if(window.parent!==window)window.parent.postMessage(m,'*');}catch(e){}}
+function merge(inc){var a=load(),s={},n=0;a.forEach(function(r){s[r.ts+'|'+r.sim]=1;});
+ inc.forEach(function(r){if(r&&r.ts&&r.sim&&!s[r.ts+'|'+r.sim]){a.push(r);s[r.ts+'|'+r.sim]=1;n++;}});put(a);return n;}
+var GC={
+ save:function(r){r.ts=r.ts||new Date().toISOString();var a=load();a.push(r);put(a);up({type:'genchem:record',v:1,rec:r});return r;},
+ all:load, clear:function(){put([]);},
+ export:function(){var p=null;try{p=JSON.parse(localStorage.getItem('genchem.en.path'));}catch(e){}
+  var b=new Blob([JSON.stringify({app:'genchem',v:2,exported:new Date().toISOString(),history:load(),path:p},null,2)],{type:'application/json'});
+  var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='genchem_en_brain.json';a.click();URL.revokeObjectURL(u);
+  try{localStorage.setItem('genchem.en.backupAt',new Date().toISOString());}catch(e){}},
+ import:function(t){try{var o=JSON.parse(t),i=(o&&o.history)||o||[];if(!Array.isArray(i))return -1;var n=merge(i);
+  if(o&&o.path){try{localStorage.setItem('genchem.en.path',JSON.stringify(o.path));}catch(e){}}return n;}catch(e){return -1;}},
+ _meta:function(){var p=location.pathname.split('/').filter(Boolean),f=decodeURIComponent(p[p.length-1]||''),d=decodeURIComponent(p[p.length-2]||'');
+  var c=(f.match(/^(\d+)/)||[])[1]||d.replace(/[^0-9]/g,''),q=function(n){var m=document.querySelector('meta[name="'+n+'"]');return m?m.content:'';};
+  return{sim:f,path:(/^ch\d\d$/.test(d)?d+'/':'')+f,chapter:c?+c:null,level:(new URLSearchParams(location.search)).get('level')||'standard',
+   standard:q('curriculum-2022'),engine:q('engine-class'),title:document.title};},
+ autoInit:function(){var done=false,m=GC._meta();up({type:'genchem:hello',v:1,sim:m.path});
+  var iv=setInterval(function(){var s=window.__sim,st=s&&s.ST;if(!st||!st.passed||done)return;done=true;var k=null;
+   try{k=typeof s.key==='function'?s.key('pred'):null;}catch(e){}
+   GC.save({ts:new Date().toISOString(),sim:m.sim,path:m.path,title:m.title,chapter:m.chapter,standard:m.standard,engine:m.engine,level:m.level,
+    predicted:st.prediction||null,predict_correct:(k==null||st.prediction==null)?null:String(st.prediction)===String(k),check:st.checks||{},completed:true});},1000);
+  setTimeout(function(){clearInterval(iv);},1800000);}
+};
+window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='genchem:restore'||!OK.test(e.origin)||!Array.isArray(d.history))return;
+ up({type:'genchem:restored',v:1,added:merge(d.history)});});
+window.GCRecord=GC;
+if(document.readyState!=='loading')GC.autoInit();else document.addEventListener('DOMContentLoaded',GC.autoInit);
+})();
+</script>
+<script id="lgc-inject">
+(function(){
+  "use strict";
+  if(document.getElementById('lgcPanel')) return;
+  var KEY='genchem.en.lgc';
+  function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function simId(){ return decodeURIComponent(location.pathname.split('/').pop()||''); }
+  function loadAll(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+  function saveAll(o){ try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){} }
+
+  var id=simId(), all=loadAll(), data=all[id]||{reason:'',cloze:'',problem:''};
+  window.__sim = window.__sim || {};
+  window.__sim.LGC = { data:data, save:function(){ all[id]=data; saveAll(all); } };
+
+  var stl=document.createElement('style');
+  stl.textContent='#lgcPanel{margin:22px auto;max-width:980px;border:1px solid rgba(127,127,127,.35);border-radius:12px;padding:16px 18px;font-family:inherit;line-height:1.6}'
+    +'#lgcPanel h3{font-size:16px;margin:0 0 4px}'
+    +'#lgcPanel .lgc-sub{font-size:12px;opacity:.7;margin-bottom:10px}'
+    +'#lgcPanel label{display:block;font-size:13px;font-weight:600;margin:12px 0 4px}'
+    +'#lgcPanel textarea{width:100%;min-height:54px;border:1px solid rgba(127,127,127,.4);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;background:transparent;color:inherit;resize:vertical}'
+    +'#lgcPanel .lgc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}'
+    +'#lgcPanel button{font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid rgba(127,127,127,.5);background:transparent;color:inherit;cursor:pointer}'
+    +'#lgcPanel button:hover{border-color:currentColor}'
+    +'#lgcPanel .lgc-out{margin-top:10px;font-size:13px;white-space:pre-wrap;opacity:.92}'
+    +'#lgcPanel .lgc-shared{margin-top:12px;border-top:1px dashed rgba(127,127,127,.4);padding-top:10px;font-size:13px}'
+    +'@media print{#lgcPanel{display:none}}';
+  document.head.appendChild(stl);
+
+  var sec=document.createElement('section');
+  sec.id='lgcPanel'; sec.setAttribute('aria-label','My own notes and questions');
+  sec.innerHTML=''
+    +'<h3>My own notes and questions <span style="font-weight:400;font-size:12px">(learner-generated · not graded)</span></h3>'
+    +'<div class="lgc-sub">Explain in your own words, make your own fill-in-the-blank question, and write a question for a classmate. This space is for deeper understanding.</div>'
+    +'<label for="lgcReason">1. Explain my prediction and conclusion in my own words (with reasons)</label>'
+    +'<textarea id="lgcReason"></textarea>'
+    +'<label for="lgcCloze">2. Hide key words in my explanation with [square brackets] to make a fill-in-the-blank question</label>'
+    +'<textarea id="lgcCloze" placeholder="e.g. As the concentration of [H⁺] increases, the [pH] decreases."></textarea>'
+    +'<div class="lgc-btns"><button type="button" id="lgcClozePrev">Preview my question</button></div>'
+    +'<div class="lgc-out" id="lgcClozeOut" aria-live="polite"></div>'
+    +'<label for="lgcProblem">3. A question for a classmate (include the answer)</label>'
+    +'<textarea id="lgcProblem"></textarea>'
+    +'<div class="lgc-btns">'
+    +'<button type="button" id="lgcExport">Save my notes (JSON file)</button>'
+    +'<button type="button" id="lgcShare">Copy share link</button>'
+    +'</div>'
+    +'<div class="lgc-shared" id="lgcShared" style="display:none"></div>';
+  var anchor=document.querySelector('footer');
+  if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(sec,anchor);
+  else document.body.appendChild(sec);
+
+  var $=function(i){return document.getElementById(i);};
+  $('lgcReason').value=data.reason||''; $('lgcCloze').value=data.cloze||''; $('lgcProblem').value=data.problem||'';
+  function persist(){ data.reason=$('lgcReason').value; data.cloze=$('lgcCloze').value; data.problem=$('lgcProblem').value; window.__sim.LGC.save(); }
+  $('lgcReason').addEventListener('input',persist);
+  $('lgcCloze').addEventListener('input',persist);
+  $('lgcProblem').addEventListener('input',persist);
+
+  $('lgcClozePrev').addEventListener('click',function(){
+    var t=$('lgcCloze').value||'', n=0, ans=[];
+    var q=t.replace(/\[([^\]]+)\]/g,function(m,w){ n++; ans.push(w); return '____('+n+')'; });
+    $('lgcClozeOut').textContent = n ? ('Question: '+q+'\nAnswer: '+ans.join(', ')) : 'Put key words in [square brackets] to turn them into blanks.';
+  });
+
+  function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(s){ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+
+  $('lgcExport').addEventListener('click',function(){
+    persist();
+    var payload={app:'genchem',kind:'lgc',sim:id,exported:new Date().toISOString(),lgc:data};
+    var b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u; a.download='genchem_lgc_'+id.replace(/\.html$/,'')+'.json'; a.click(); URL.revokeObjectURL(u);
+  });
+  $('lgcShare').addEventListener('click',function(){
+    persist();
+    var link=location.origin+location.pathname+location.search+'#share='+enc({sim:id,lgc:data});
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link).then(function(){ alert('Share link copied. Send it to a classmate.'); },
+        function(){ prompt('Copy the link below:', link); });
+    } else prompt('Copy the link below:', link);
+  });
+
+  (function(){
+    var m=(location.hash||'').match(/share=([^&]+)/); if(!m) return;
+    try{
+      var o=dec(m[1]), L=o.lgc||{}, html='<b>Shared by a classmate</b>';
+      if(L.reason)  html+='<div>· Explanation: '+esc(L.reason)+'</div>';
+      if(L.cloze)   html+='<div>· Fill-in-the-blank text: '+esc(L.cloze)+'</div>';
+      if(L.problem) html+='<div>· Question: '+esc(L.problem)+'</div>';
+      var sh=$('lgcShared'); sh.innerHTML=html; sh.style.display='block';
+    }catch(e){}
+  })();
+})();
+</script>
+<script>
+(function(){var v=document.getElementById('verdict');if(!v)return;
+  function sync(){var l=v.classList.contains('locked');if(l){v.setAttribute('aria-hidden','true');v.setAttribute('inert','');}else{v.removeAttribute('aria-hidden');v.removeAttribute('inert');}}
+  sync();new MutationObserver(sync).observe(v,{attributes:true,attributeFilter:['class']});})();
+</script>
+<style>body.worksheet .ws svg [fill="url(#hatch)"],body.worksheet .ws svg [style*="url(#hatch)"]{fill:url(#hatch)!important}
+.ws svg [fill="url(#hatch)"],.ws svg [style*="url(#hatch)"]{fill:url(#hatch)!important}
+@media print{.ws svg [fill="url(#hatch)"],.ws svg [style*="url(#hatch)"]{fill:url(#hatch)!important}}</style>
+<script id="gc-reflectguard">
+(function(){"use strict";
+function go(){var ta=document.getElementById('selfExplain'),b=document.getElementById('reflectBtn');if(!ta||!b)return;
+var ex=(ta.getAttribute('placeholder')||'').replace(/^(?:e\.g\.|example)\s*[:：]?\s*/i,''),fb=document.getElementById('fbReflect')||document.getElementById('fb2');if(!fb)return;
+ta.setAttribute('placeholder','In your own words: "I observed (what), and because (principle), (result)."');
+var n=0,last='',nm=function(x){return x.replace(/[\s.…,·"'()]/g,'');};
+b.addEventListener('click',function(e){var t=nm(ta.value),x=nm(ex);
+ if(x.length>8&&t.length>=8&&(x.indexOf(t)>=0||t.indexOf(x.slice(0,Math.ceil(x.length*.8)))>=0)){e.stopImmediatePropagation();
+  fb.textContent='This looks copied from the example. Recall what you observed and write it again in your own words.';fb.className='fb hint';last=fb.textContent;}},true);
+new MutationObserver(function(){var c=fb.className,t=fb.textContent;if(t===last)return;
+ if(/hint/.test(c)&&/^Not quite/.test(t)){n++;fb.textContent=n<2?'Not quite — write one sentence (40+ characters) that says what you observed and why, e.g. "Because …, …". If it is still not enough, you will get a clue.':t.replace(/^Not quite\s*—\s*/,'Clue: ');}
+ else if(/ok/.test(c)&&ex&&t.indexOf('Compare it with')<0)fb.textContent=t+' Compare it with the example explanation: '+ex;
+ last=fb.textContent;}).observe(fb,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});}
+if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);})();
+</script>
+</body>
+</html>

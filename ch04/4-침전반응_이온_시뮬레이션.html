@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="sim-tier" content="core">
+<title>Precipitation Reaction — Ions Combining · Simulation (self-directed learning · teacher edition)</title>
+<meta name="description" content="Interactive simulation: mix Ag⁺, Cl⁻, Na⁺ and NO₃⁻ ions, watch AgCl precipitate form, and tell an insoluble pair from spectator ions.">
+<meta name="curriculum-univ" content="University general chemistry · Reactions in aqueous solution · precipitation reaction · net ionic equation">
+<meta name="curriculum-2022" content="General Chemistry">
+<meta name="school-level" content="University general chemistry">
+<meta name="engine-class" content="E1-particle-MD">
+<meta name="misconception-id" content="MC-precip-01: mixing any two solutions always gives a precipitate / MC-precip-02: spectator ions also take part in the reaction">
+<style>
+  :root{
+    --ink:#0B0F17; --ink-700:#1A2030; --ink-600:#222a3d; --ink-400:#5E6B85;
+    --paper:#F4F1EA; --paper-2:#E8E3D6;
+    --accent:#A7BCEC; --accent-2:#E8C275;
+    --cation:#E36B5B; --anion:#5BB6E3; --precip:#C9CFDA; --spectator:#7FB98A;
+    --warn:#E36B5B; --good:#7FB98A; --bond:#A7BCEC;
+    --font-serif:Georgia,'Times New Roman',serif;
+    --font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--paper);font-family:var(--font-sans);
+    min-height:100vh;word-break:keep-all;line-break:strict;overflow-wrap:break-word}
+  body{padding:40px 28px 80px;line-height:1.6}
+  .wrap{max-width:1120px;margin:0 auto}
+
+  header{border-bottom:1px solid var(--ink-700);padding-bottom:26px;margin-bottom:24px}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:5px;color:var(--accent);text-transform:uppercase}
+  h1{font-family:var(--font-serif);font-weight:600;letter-spacing:-1.2px;font-size:44px;margin-top:14px;line-height:1.08}
+  h1 em{color:var(--accent-2);font-style:normal}
+  .lede{font-family:var(--font-serif);font-size:18px;color:var(--ink-400);margin-top:16px;max-width:760px}
+
+  .card{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:20px;margin-top:20px}
+  .kicker{font-family:var(--font-mono);font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .kicker .num{background:#2a3350;color:var(--accent-2);border-radius:6px;padding:2px 8px;font-size:11px}
+
+  .lo-goals{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+  .lo-goals .g{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--paper-2)}
+  .lo-goals .chk{width:18px;height:18px;border:1.5px solid var(--ink-400);border-radius:5px;flex:0 0 auto;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink)}
+  .lo-goals .g.done .chk{background:var(--good);border-color:var(--good)}
+  .lo-goals .g.done .chk::after{content:"✓"}
+  .progress{height:12px;border-radius:7px;background:#10162260;border:1px solid #2a3144;overflow:hidden}
+  .progress > span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5E6B85,var(--accent-2));transition:width .4s}
+  .progress-lab{font-family:var(--font-mono);font-size:11px;color:var(--ink-400);margin-top:6px;text-align:right}
+
+  .stage{display:grid;grid-template-columns:1fr;gap:20px;margin-top:8px}
+  .box{background:var(--ink-700);border:1px solid #2a3144;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px}
+  .box .tag{display:flex;align-items:center;justify-content:space-between}
+  .box .tag h2{font-family:var(--font-serif);font-size:22px;font-weight:600;color:var(--accent-2)}
+  .box .sub{font-family:var(--font-mono);font-size:11px;color:var(--ink-400);letter-spacing:1px}
+  canvas.sim{width:100%;height:auto;display:block;background:#0d1320;border:1px solid #2a3144;border-radius:10px}
+  .gauge .row{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .gauge .row b{color:var(--paper);font-size:15px;font-weight:600}
+  .bar{height:10px;border-radius:6px;background:#10162260;overflow:hidden;border:1px solid #2a3144;margin-top:6px}
+  .bar > span{display:block;height:100%;transition:width .12s linear;background:linear-gradient(90deg,#6b7280,var(--precip))}
+
+  .choices{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+  .choice{font-family:var(--font-sans);font-size:14px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:10px 16px;cursor:pointer}
+  .choice:hover{border-color:var(--accent)}
+  .choice.sel{background:#2a3350;border-color:var(--accent-2)}
+  .conf-row{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-bottom:12px}
+  .conf-row input{flex:1;accent-color:var(--accent-2)}
+  .gate-msg{font-size:14px;color:var(--paper-2);margin-top:8px;min-height:1.4em}
+  .gate-msg.refute{color:var(--warn)} .gate-msg.hit{color:var(--good)}
+
+  .verdict{margin-top:20px;padding:20px 22px;border-radius:14px;border:1px solid #2a3144;background:#0d1320;position:relative;transition:filter .3s}
+  .verdict.locked{filter:blur(7px);pointer-events:none;user-select:none}
+  .verdict .lockbadge{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;color:var(--accent);background:#0d1320cc;border-radius:14px;filter:none}
+  .verdict.locked + .lockbadge{display:flex}
+  .vwrap{position:relative}
+  .verdict .z{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .verdict .z .big{font-family:var(--font-serif);font-size:38px;color:var(--accent-2);letter-spacing:-1px}
+  .verdict .z .lab{font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .verdict p{font-family:var(--font-serif);font-size:16px;color:var(--paper-2);margin-top:10px;min-height:2.4em}
+  .verdict p b{color:var(--accent-2)}
+
+  .panel{margin-top:20px;background:linear-gradient(180deg,#0d1320,#0B0F17);border:1px solid #2a3144;border-radius:16px;padding:22px}
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+  .ctrl label{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:8px}
+  .ctrl .val{color:var(--paper);font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--accent-2);cursor:pointer}
+  .ctrl .ends{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--ink-400);margin-top:4px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button,.toggle{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:9px 14px;cursor:pointer}
+  button:hover,.toggle:hover{border-color:var(--accent)}
+  .toggle.on{background:#2a3350;border-color:var(--accent)}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-family:var(--font-mono);font-size:11px;color:var(--ink-400)}
+  .legend i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .legend i.sq{border-radius:3px}
+
+  .notes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+  .note{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:22px}
+  .note h3{font-family:var(--font-mono);font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .note p{font-size:14px;color:var(--paper-2);line-height:1.7}
+  .note .eq{font-family:var(--font-serif);font-style:italic;font-size:19px;color:var(--paper);text-align:center;margin:14px 0 6px;padding:12px;background:#0d1320;border-radius:10px;border:1px solid #2a3144}
+  .note .eqsub{font-family:var(--font-mono);font-size:11px;color:var(--ink-400);text-align:center}
+
+  .q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed #2a3144}
+  .q:last-child{border-bottom:none;margin-bottom:0}
+  .q .qtext{font-size:15px;color:var(--paper);margin-bottom:10px}
+  .q .qtext .qn{color:var(--accent-2);font-family:var(--font-mono);margin-right:8px}
+  .fb{font-size:13px;margin-top:8px;min-height:1.2em}
+  .fb.ok{color:var(--good)} .fb.no{color:var(--warn)} .fb.hint{color:var(--accent)}
+  .num-in{font-family:var(--font-mono);background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:8px 10px;width:120px}
+  .mission{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px}
+  .mission b{color:var(--accent-2)}
+  details.hintbox{margin-top:8px}
+  details.hintbox summary{font-family:var(--font-mono);font-size:11px;color:var(--accent);cursor:pointer}
+  details.hintbox p{font-size:13px;color:var(--ink-400);margin-top:6px}
+
+  .reflect textarea{width:100%;min-height:64px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical}
+  .self-check{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+  .self-check label{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--paper-2);cursor:pointer}
+  .self-check input{margin-top:4px;accent-color:var(--good)}
+  .stamp{display:none;margin-top:14px;text-align:center;font-family:var(--font-serif);font-size:22px;color:var(--good);border:2px dashed var(--good);border-radius:12px;padding:14px}
+  .stamp.on{display:block}
+
+  .teacher{margin-top:24px;border-top:2px solid #2a3144;padding-top:6px}
+  details.tguide summary{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);cursor:pointer;padding:12px 0}
+  .tguide-body{background:var(--ink-700);border:1px solid #2a3144;border-radius:12px;padding:20px;font-size:14px;color:var(--paper-2)}
+  .tguide-body h4{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--accent);margin:14px 0 6px}
+  .tguide-body ul{margin-left:18px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .badge{font-family:var(--font-mono);font-size:11px;background:#0d1320;border:1px solid #2a3144;border-radius:20px;padding:5px 12px;color:var(--paper-2)}
+  .badge.verify{color:var(--good);border-color:var(--good)}
+  .teacher-bar{display:none;background:#2a3350;border:1px solid var(--accent);border-radius:12px;padding:14px;margin-top:18px}
+  .teacher-bar.on{display:block}
+  .teacher-bar .tb-title{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--accent-2);margin-bottom:10px}
+
+  footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--ink-700);font-family:var(--font-mono);font-size:12px;color:var(--ink-400);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  footer b{color:var(--paper-2);font-weight:500}
+
+  @media(max-width:780px){ h1{font-size:32px} .notes{grid-template-columns:1fr} }
+
+  @media print{ body{background:#fff;color:#000} .no-print{display:none!important} }
+  body.worksheet .no-print{display:none}
+  body.worksheet{background:#fff;color:#111}
+  body.worksheet .ws-only{display:block}
+  .ws-only{display:none}
+  .ws{border:1px solid #999;border-radius:8px;padding:16px;margin-top:14px;color:#111}
+  .ws h3{margin-bottom:8px} .ws .line{border-bottom:1px solid #bbb;height:28px;margin:8px 0}
+  .ws .symkey{font-family:var(--font-mono);font-size:13px;margin:8px 0}
+  .ws .symkey span{display:inline-block;margin-right:18px}
+
+body:not(.mode-teacher) .teacher-only{display:none!important}
+
+html:has(body.worksheet){background:#fff!important}
+body.worksheet *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#111!important;border-color:#888!important;box-shadow:none!important;text-shadow:none!important}
+body.worksheet canvas{filter:grayscale(1) contrast(1.1)}
+@media print{html{background:#fff!important}
+ body *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#000!important;border-color:#666!important;box-shadow:none!important;text-shadow:none!important}
+ canvas{filter:grayscale(1)}}
+</style>
+</head>
+<body>
+<style id="gc-r2c112">body:not(.predicted) .post-pred{display:none!important}body.predicted .pre-pred{display:none!important}
+.choice:focus-visible,.toggle:focus-visible,canvas:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+body.worksheet .stage,body.worksheet .notes,body.worksheet .panel,body.worksheet .vwrap,body.worksheet #entryCard,body.worksheet #predCard{display:none!important}
+@media print{.stage,.notes,.panel,.vwrap,#entryCard,#predCard,#lgcPanel{display:none!important}.ws-only{display:block!important}}
+</style>
+<script id="gc-r2c112-js">window.R2=window.R2||{unlock:function(){document.body.classList.add("predicted");document.querySelectorAll("[data-lock]").forEach(function(v){v.classList.remove("locked");v.removeAttribute("aria-hidden");v.removeAttribute("inert");v.inert=false;});},relock:function(){document.body.classList.remove("predicted");document.querySelectorAll("[data-lock]").forEach(function(v){v.classList.add("locked");v.setAttribute("aria-hidden","true");v.setAttribute("inert","");});},on:function(){return document.body.classList.contains("predicted");}};
+(function(){var was=false;addEventListener("beforeprint",function(){was=document.body.classList.contains("worksheet");document.body.classList.add("worksheet");});addEventListener("afterprint",function(){if(!was)document.body.classList.remove("worksheet");});})();
+</script>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">General Chemistry · Aqueous Reactions · PRECIPITATION REACTION</div>
+  <h1>Precipitation Reaction —<br><em>Ions Combining</em></h1>
+  <p class="lede">When you mix two solutions, their ions meet in one beaker. What happens depends on which ion pairs meet.
+    The amount formed is not an input: it <em>emerges</em> from the particles meeting. First <b>predict</b>, then run it and <b>observe</b>, and finally <b>check yourself</b>.</p>
+  <p class="sum3" id="sum3" style="font-size:14px;margin:10px 0 0">Key summary: (1) In a solution of an electrolyte, the ions are separated into cations and anions that move freely. (2) When two solutions are mixed, new ion pairs meet, and different pairs can behave differently. (3) The number of precipitate particles is not set by you; it is counted from the pairs that bind.</p>
+</header>
+
+<div class="card no-print" id="loCard">
+  <div class="kicker"><span class="num">Learning objectives</span> After this activity you can …</div>
+  <div class="lo-goals">
+    <div class="g" id="lo1"><span class="chk"></span><span>explain that the amount of precipitate <b>is not an input but emerges from binding</b>.</span></div>
+    <div class="g" id="lo2"><span class="chk"></span><span>predict the difference between an insoluble pair (Ag⁺·Cl⁻) and <b>spectator ions (Na⁺·NO₃⁻)</b>.</span></div>
+    <div class="g" id="lo3"><span class="chk"></span><span>identify the <b>condition for precipitation (an insoluble pair meets)</b>.</span></div>
+  </div>
+  <div class="progress"><span id="prog"></span></div>
+  <div class="progress-lab" id="progLab">Progress 0% · Predict → Observe → Check → Complete</div>
+  <div class="btns no-print" style="margin-top:12px;align-items:center">
+    <span class="lvl-lab" style="font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--ink-400)">Level</span>
+    <a class="toggle" id="lvlBasic" data-lvl="basic" href="?level=basic" aria-pressed="false">Basic</a>
+    <a class="toggle" id="lvlStandard" data-lvl="standard" href="?level=standard" aria-pressed="false">Standard</a>
+    <a class="toggle" id="lvlAdvanced" data-lvl="advanced" href="?level=advanced" aria-pressed="false">Advanced</a>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="box">
+    <div class="tag"><h2>Beaker — the two solutions mixed</h2><span class="sub">FREE IONS · BINDING · PRECIPITATE</span></div>
+    <canvas role="img" class="sim" id="cvMix" width="640" height="380" aria-label="Simulation of ion motion in a precipitation reaction"></canvas>
+    <div class="gauge"><div class="row"><span>Precipitate particles (bound pairs · measured every 2 s)</span><b id="precipVal">—</b></div>
+      <div class="bar"><span id="barPrecip"></span></div></div>
+  </div>
+</div>
+
+<div class="card no-print" id="entryCard">
+  <div class="kicker"><span class="num">Entry check</span> Before you start — prerequisites and key terms</div>
+  <p style="font-size:15px;margin-bottom:6px">An electrolyte (e.g. NaCl, AgNO₃) is dissolved in water. In what form does it mostly exist in the water?</p>
+  <div class="choices" id="entryChoices" role="group" aria-label="Entry check">
+    <span class="choice" data-v="ion">As cations and anions that move freely</span>
+    <span class="choice" data-v="molecule">As whole lumps of molecules resting on the bottom</span>
+    <span class="choice" data-v="gas">It turns into a gas and escapes</span></div>
+  <div class="fb" id="fbEntry"></div>
+  <details class="hintbox" id="entryGloss"><summary>Key terms</summary>
+    <p><b>Electrolyte · ionization</b>: a substance that dissolves in water and separates into ions. ·
+    <b>Spectator ion</b>: an ion that does not take part in the reaction and keeps moving freely. ·
+    <b>Precipitate</b>: an insoluble solid that forms when a pair with very low solubility binds and settles out.</p></details>
+</div>
+
+<div class="card no-print" id="predCard">
+  <div class="kicker"><span class="num">Predict</span> Think first, before you observe</div>
+  <p style="font-size:15px;margin-bottom:6px">What happens when <b>Ag⁺ and Cl⁻</b> are mixed in the same beaker?</p>
+  <div class="choices" id="predChoices" role="group" aria-label="Prediction choices">
+    <span class="choice" data-v="precip">A solid precipitate forms</span>
+    <span class="choice" data-v="free">They keep moving around freely</span>
+    <span class="choice" data-v="gas">A gas is given off</span>
+  </div>
+  <div class="conf-row"><span>Confidence</span><input type="range" id="conf" min="0" max="100" value="50" aria-label="Confidence"><span id="confLab">Medium</span></div>
+  <button id="predSubmit">Lock in prediction</button>
+  <div class="gate-msg" id="gateMsg"></div>
+</div>
+
+<div class="vwrap no-print">
+  <div class="verdict locked" id="verdict" data-lock aria-hidden="true" inert>
+    <div class="z"><span class="big" id="zVal">Precipitate = —</span>
+      <span class="lab">Precipitate particles = number of bound insoluble pairs (AgCl) · an emergent quantity</span></div>
+    <p id="zMsg">Change the ion concentration and switch the reacting pair on or off. Precipitate formation is analyzed live.</p>
+  </div>
+  <div class="lockbadge pre-pred">The explanation opens after you lock in a prediction</div>
+</div>
+<p id="resLive" class="post-pred no-print" role="status" aria-live="polite" style="margin:6px auto 0;max-width:1100px;padding:4px 16px;font-size:13px">—</p>
+
+<div class="panel no-print">
+  <div class="controls">
+    <div class="ctrl"><label>Ion concentration (number) <span class="val" id="concLab">Medium</span></label>
+      <input type="range" id="conc" min="0" max="100" value="55" aria-label="Ion concentration (number of ions)"><div class="ends"><span>dilute · few</span><span>concentrated · many</span></div></div>
+    <div class="ctrl"><label>Ion pairs <span class="val" id="rxnLab">Ag⁺·Cl⁻ (reacting)</span></label>
+      <div class="btns"><span class="toggle on" id="tReact" aria-pressed="true">Ag⁺·Cl⁻ (reacting)</span><span class="toggle" id="tSpect" aria-pressed="false">Na⁺·NO₃⁻ (spectator)</span></div></div>
+    <div class="ctrl"><label>Controls</label>
+      <div class="btns"><button id="play">Pause</button><button id="reset">Reset</button>
+        <span class="toggle on" id="tBond" aria-pressed="true">Show bonds</span></div></div>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--cation)"></i>Cation (Ag⁺ / Na⁺)</span>
+    <span><i style="background:var(--anion)"></i>Anion (Cl⁻ / NO₃⁻)</span>
+    <span><i class="sq" style="background:var(--precip)"></i>Precipitate particle (bound, fixed pair)</span>
+    <span><i style="background:var(--spectator);opacity:.5"></i>Spectator (keeps moving freely)</span>
+  </div>
+</div>
+
+<p class="lockbadge-pre pre-pred" style="margin:18px auto;max-width:1100px;padding:10px 16px;opacity:.85">The explanation opens after you lock in a prediction.</p>
+<div class="notes post-pred">
+  <div class="note"><h3>Precipitation reaction · net ionic equation</h3>
+    <p>Ions in solution are spread out and move freely. When two solutions are mixed and a <b>pair with very low solubility</b>
+      meets, the ions bind and settle as a solid <b>precipitate</b>. Ions that do not take part and keep moving are called
+      <b>spectator ions</b>. The same kind of reaction happens in soil and irrigation water, for example when calcium ions meet phosphate from fertilizer.</p>
+    <div class="eq">Ag⁺(aq) + Cl⁻(aq) → AgCl(s)↓</div>
+    <div class="eqsub">Net ionic equation · Na⁺ and NO₃⁻ are spectators (they cancel on both sides)</div></div>
+  <div class="note"><h3>Emergence · the amount of precipitate comes from the number of bindings</h3>
+    <p>We never set the amount of precipitate. Freely moving Ag⁺ and Cl⁻ come close and <b>bind</b>; the number of these bindings
+      adds up to the number of precipitate particles. With only spectators (Na⁺·NO₃⁻) there is no insoluble pair, so the <b>precipitate is 0</b>.</p>
+    <div class="eq">Precipitate count = Σ (bindings of insoluble pairs)</div>
+    <div class="eqsub">Reacting pair → precipitate grows | spectators only → precipitate 0</div></div>
+</div>
+
+<div class="card no-print" id="checkCard">
+  <div class="kicker"><span class="num">Check</span> Formative check — pass all items to complete</div>
+
+  <div class="q" id="q1">
+    <div class="qtext"><span class="qn">Q1</span>A beaker contains only Na⁺ and NO₃⁻. What about a precipitate?</div>
+    <div class="choices" role="group" aria-label="Q1">
+      <span class="choice" data-q="1" data-v="a">A lot of precipitate forms</span>
+      <span class="choice" data-q="1" data-v="b">No precipitate forms (both are spectators)</span>
+      <span class="choice" data-q="1" data-v="c">It escapes as a gas</span>
+    </div>
+    <details class="hintbox"><summary>Hint</summary><p>NaNO₃ is a salt that dissolves well in water. A precipitate needs an insoluble pair.</p></details>
+    <div class="fb" id="fb1"></div>
+  </div>
+
+  <div class="q" id="q2">
+    <div class="qtext"><span class="qn">Q2 · Hands-on task</span>After predicting, use the controls to reach <b id="q2txt">the target precipitate count</b>, then press [Check].</div>
+    <div class="mission">Measured precipitate now: <b id="missionZ">—</b> · target: <b id="q2goal">—</b> (hint: pair toggles and concentration slider)</div>
+    <button data-q="2" id="missionBtn" style="margin-top:8px">Check</button>
+    <div class="fb" id="fb2"></div>
+  </div>
+
+  <div class="q" id="q3">
+    <div class="qtext"><span class="qn">Q3</span><span id="q3txt">How many precipitate particles form? (enter a number)</span></div>
+    <input class="num-in" id="q3in" inputmode="numeric" placeholder="whole number" aria-label="Q3 answer">
+    <button data-q="3" id="q3btn">Check</button>
+    <details class="hintbox"><summary>Hint</summary><p>One Ag⁺ and one Cl⁻ pair up to make one precipitate particle. Spectator ions do not form pairs.</p></details>
+    <div class="fb" id="fb3"></div>
+  </div>
+
+  <div class="q" id="qc">
+    <div class="qtext"><span class="qn">Q4 · Fill in the blank</span>Fill in the blank: When an ionic compound with very low solubility forms, a [_____] forms.</div>
+    <input class="num-in" id="qcin" placeholder="one word" style="width:200px"><button id="qcbtn">Check</button>
+    <details class="hintbox" id="qcHint"><summary>Hint</summary><p>An insoluble solid that settles out of the solution.</p></details>
+    <div class="fb" id="fbc"></div>
+  </div>
+</div>
+
+<div class="card reflect no-print" id="reflectCard">
+  <div class="kicker"><span class="num">Reflect</span> Reflect — metacognition · completion</div>
+  <p style="font-size:14px;color:var(--ink-400);margin-bottom:10px">My prediction: <b id="predResult" style="color:var(--paper)">Not predicted yet</b></p>
+  <p style="font-size:14px;margin-bottom:6px">In <b>one sentence</b>, explain when a precipitate forms:</p>
+  <textarea id="selfExplain" placeholder="e.g. When an insoluble pair (Ag⁺·Cl⁻) meets and binds, a precipitate forms; with only spectator ions …"></textarea>
+  <div class="btns" style="margin-top:8px"><button id="reflectBtn">Submit explanation</button></div><div class="fb" id="fbReflect"></div>
+  <div class="self-check">
+    <label><input type="checkbox" class="sc"> I can explain that the amount of precipitate is a measured quantity that emerges from binding</label>
+    <label><input type="checkbox" class="sc"> I can tell an insoluble pair from spectator ions</label>
+    <label><input type="checkbox" class="sc"> I know the net ionic equation Ag⁺ + Cl⁻ → AgCl</label>
+  </div>
+  <details class="hintbox"><summary>Going further (optional)</summary>
+    <p>Switch off the reacting pair and keep only the spectators (Na⁺·NO₃⁻): check that the precipitate is 0. Switch both pairs on:
+      only Ag⁺·Cl⁻ bind, and Na⁺·NO₃⁻ keep moving freely to the end. This is what "spectator ion" means.</p></details>
+  <div class="stamp" id="stamp">COMPLETE · Completed — all checks passed.</div>
+</div>
+
+<div class="ws ws-only">
+  <h3>Worksheet — Precipitation reaction: ions combining (black and white)</h3>
+  <p>Name ________  Class ________  Date ________</p>
+  <div class="symkey"><b>Symbol key (no color needed):</b>
+    <span>● cation = filled circle</span>
+    <span>○ anion = open circle</span>
+    <span>■ precipitate = square (hatched)</span></div>
+  <p><b>1. Predict</b> — What happens when Ag⁺ and Cl⁻ are mixed? (precipitate forms / no change / gas given off)</p>
+  <div class="line"></div>
+  <p><b>2. Observe</b> — Write the number of precipitate particles for the reacting pair and for spectators only.</p>
+  <p>Ag⁺·Cl⁻ (reacting): precipitate = ____ · Na⁺·NO₃⁻ (spectators only): precipitate = ____</p>
+  <p><b>3. Conclusion</b> — In one line each: the condition for precipitation, and the meaning of a spectator ion.</p>
+  <div class="line"></div><div class="line"></div>
+  <p><b>4. Net ionic equation</b> — Ag⁺(aq) + ____⁻(aq) → ________(s)↓</p>
+  <p><b>5. Fill in the blank</b> — When an ionic compound with very low solubility forms, a [_____] forms.</p>
+  <p style="font-size:12px;margin-top:10px">QR / link: the address given by your teacher</p>
+</div>
+
+<div class="teacher no-print">
+  <details class="tguide teacher-only">
+    <summary>Teacher notes — open the lesson plan</summary>
+    <div class="tguide-body">
+      <h4>Lesson plan · 5E phase and time</h4>
+      <ul><li><b>Explore · Explain</b> stage. 10–15 min after the introduction.</li>
+        <li>Works as a whole-class demo (projector, <code>?mode=teacher</code>) or as individual work on one device per student.</li></ul>
+      <h4>Demo in 3 steps</h4>
+      <ul><li>(1) Spectators only (Na⁺·NO₃⁻) → precipitate 0 (free motion only).</li>
+        <li>(2) Reacting pair ON (Ag⁺·Cl⁻) → observe binding and growing precipitate.</li>
+        <li>(3) Both pairs ON → only Ag⁺·Cl⁻ precipitate; Na⁺·NO₃⁻ stay spectators to the end.</li></ul>
+      <h4>Answer key (by level)</h4>
+      <ul><li>Prediction: a solid precipitate forms. Q1: (b). Q4 blank: precipitate.</li>
+        <li>Basic: Q2 reacting pair only, precipitate ≥ 6 · Q3 0 / Standard: Q2 both pairs on, ≥ 8 · Q3 min(10, 6) = 6 / Advanced: Q2 both pairs on, ≥ 12 · Q3 min(12, 9) = 9</li>
+        <li>Q2 counts only if the student changes the controls after predicting. Common Q3 errors: adding spectators or leftover ions, or giving the larger ion count.</li></ul>
+      <h4>3 key questions</h4>
+      <ul><li>"We never set the number of precipitate particles, yet a number appears. Where does it come from?"</li>
+        <li>"Why do Ag⁺ and Cl⁻ bind, but Na⁺ and NO₃⁻ do not?"</li>
+        <li>"Does mixing two solutions always give a precipitate?"</li></ul>
+      <h4>Common misconceptions</h4>
+      <ul><li>MC-precip-01: "Mixing always gives a precipitate" → only an insoluble pair precipitates (NaNO₃ is soluble).</li>
+        <li>MC-precip-02: "Spectator ions also react" → they are onlookers that cancel on both sides and do not appear in the net ionic equation.</li></ul>
+      <h4>Prerequisites</h4>
+      <ul><li>Electrolytes and ionization (ions in aqueous solution); solubility rules (soluble / insoluble salts).</li></ul>
+    </div>
+  </details>
+
+  <div class="badges">
+    <span class="badge">University general chemistry · Aqueous reactions</span>
+    <span class="badge">General Chemistry</span>
+    <span class="badge">Engine E1 particle / MD</span>
+    <span class="badge verify">Verified: physics · learning design · teacher (3-way, 2026-06-17)</span>
+  </div>
+
+  <div class="btns">
+    <button id="btnTeacher" class="teacher-only">Teacher mode</button>
+    <button id="btnWorksheet">Print worksheet</button>
+  </div>
+
+  <div class="teacher-bar teacher-only" id="teacherBar">
+    <div class="tb-title">Teacher mode — class controls</div>
+    <div class="btns">
+      <button id="tRevealToggle">Answer/explanation lock: on</button>
+      <button data-preset="precip">Challenge: make a lot of precipitate</button>
+      <button data-preset="spect">Challenge: make zero precipitate</button>
+      <button data-preset="mixed">Challenge: mix both pairs</button>
+      <button id="tBig">Large demo mode</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div><b>General Chemistry</b> · Precipitation reaction · self-directed learning and teacher edition · 2D qualitative model (not quantitative values)</div>
+  <div><b>KBS Lab</b> · General Chemistry Simulations · works offline · no personal data collected · report errors: bkim@gnu.ac.kr</div>
+</footer>
+
+</div>
+
+<script>
+"use strict";
+(function(){
+  const S={N:30, react:true, spect:false, showBond:true, running:true};
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
+  let rng=mulberry32((function(){const v=parseInt((new URLSearchParams(location.search)).get('seed'),10);return Number.isFinite(v)?v:20260405;})());
+  const RAD=8, V=2.0, BINDR=20, W=640, H=380;
+  class Sim{
+    constructor(cv){this.cv=cv;this.ctx=cv.getContext('2d');
+      this.W=W;this.H=H;this.dpr=Math.min(window.devicePixelRatio||1,2);this.resize();
+      this.precip=0;this.spawn();}
+    resize(){const w=this.cv.clientWidth||W,h=w*(this.H/this.W);
+      this.cv.width=w*this.dpr;this.cv.height=h*this.dpr;this.scale=this.cv.width/this.W;}
+    inner(){const m=14;return{x0:m,y0:m,x1:this.W-m,y1:this.H-m,bw:this.W-2*m,bh:this.H-2*m};}
+    spawn(){const b=this.inner();this.p=[];this.precip=0;
+      const each=Math.max(1,Math.round(S.N/2));
+      const add=(kind,count)=>{for(let i=0;i<count;i++){const ang=rng()*Math.PI*2;
+        this.p.push({x:b.x0+RAD+rng()*(b.bw-2*RAD),y:b.y0+RAD+rng()*(b.bh-2*RAD),
+          vx:Math.cos(ang)*V,vy:Math.sin(ang)*V,kind:kind,bound:false,px:0,py:0});}};
+      if(S.react){add(0,each);add(1,each);}
+      if(S.spect){add(2,each);add(3,each);}}
+    isCation(k){return k===0||k===2;}
+    isReactive(k){return k===0||k===1;}
+    step(){const b=this.inner();
+      for(const a of this.p){ if(a.bound)continue;
+        a.x+=a.vx;a.y+=a.vy;
+        if(a.x<b.x0+RAD){a.x=b.x0+RAD;if(a.vx<0)a.vx=-a.vx;}
+        else if(a.x>b.x1-RAD){a.x=b.x1-RAD;if(a.vx>0)a.vx=-a.vx;}
+        if(a.y<b.y0+RAD){a.y=b.y0+RAD;if(a.vy<0)a.vy=-a.vy;}
+        else if(a.y>b.y1-RAD){a.y=b.y1-RAD;if(a.vy>0)a.vy=-a.vy;}}
+      const p=this.p,n=p.length;
+      for(let i=0;i<n;i++){const A=p[i];if(A.bound||A.kind!==0)continue;
+        for(let j=0;j<n;j++){const B=p[j];if(B.bound||B.kind!==1)continue;
+          const dx=B.x-A.x,dy=B.y-A.y;
+          if(dx*dx+dy*dy<BINDR*BINDR){
+            A.bound=true;B.bound=true;
+            const cx=(A.x+B.x)/2,cy=(A.y+B.y)/2;
+            A.px=cx-5;A.py=cy;B.px=cx+5;B.py=cy;
+            this.precip++;break;}}}}
+    draw(){const ctx=this.ctx,sc=this.scale,b=this.inner();ctx.setTransform(sc,0,0,sc,0,0);ctx.clearRect(0,0,this.W,this.H);
+      ctx.strokeStyle='#3a4a5e';ctx.lineWidth=3;ctx.strokeRect(b.x0,b.y0,b.bw,b.bh);
+      ctx.fillStyle='rgba(91,182,227,0.03)';ctx.fillRect(b.x0,b.y0,b.bw,b.bh);
+      if(S.showBond){ctx.lineWidth=2;
+        for(let i=0;i<this.p.length;i++){const A=this.p[i];if(!A.bound||A.kind!==0)continue;
+          for(let j=0;j<this.p.length;j++){const B=this.p[j];if(!B.bound||B.kind!==1)continue;
+            const dx=B.px-A.px,dy=B.py-A.py;if(dx*dx+dy*dy<28*28){
+              ctx.strokeStyle='rgba(201,207,218,0.55)';ctx.beginPath();ctx.moveTo(A.px,A.py);ctx.lineTo(B.px,B.py);ctx.stroke();break;}}}}
+      const trail=(a)=>{ if(a.bound)return;
+        ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=RAD*1.2;ctx.lineCap='round';
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(a.x-a.vx*3,a.y-a.vy*3);ctx.stroke();};
+      for(const a of this.p)trail(a);
+      for(const a of this.p){
+        const x=a.bound?a.px:a.x, y=a.bound?a.py:a.y;
+        if(a.bound){
+          ctx.fillStyle='#c9cfda';ctx.strokeStyle='#8b93a3';ctx.lineWidth=1.4;
+          ctx.fillRect(x-RAD*0.85,y-RAD*0.85,RAD*1.7,RAD*1.7);
+          ctx.strokeRect(x-RAD*0.85,y-RAD*0.85,RAD*1.7,RAD*1.7);
+          continue;}
+        const cation=this.isCation(a.kind);
+        const reactive=this.isReactive(a.kind);
+        let col;
+        if(reactive){col=cation?'#E36B5B':'#5BB6E3';}
+        else{col=cation?'rgba(227,107,91,0.45)':'rgba(91,182,227,0.45)';}
+        const g=ctx.createRadialGradient(x-RAD*0.35,y-RAD*0.35,1,x,y,RAD);
+        g.addColorStop(0,col);g.addColorStop(1,col);ctx.fillStyle=col;
+        ctx.beginPath();ctx.arc(x,y,RAD,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='rgba(11,15,23,0.85)';ctx.font='bold 11px '+'ui-monospace,monospace';
+        ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(cation?'+':'−',x,y+0.5);}
+      ctx.textAlign='start';ctx.textBaseline='alphabetic';}
+  }
+  const sim=new Sim(document.getElementById('cvMix'));
+  let mP=0,nextT=0,sayPend=false;
+  function respawn(){sim.spawn();mP=0;nextT=performance.now()+800;sayPend=true;}
+
+  const $=id=>document.getElementById(id);
+  const LV=(new URLSearchParams(location.search)).get('level')||'standard';
+  const LEVELS={
+    basic:    {label:'Basic', hints:true,  bank:'choose: precipitate / gas / color change',
+      mission:{react:true,spect:false,min:6,txt:'switch on only the reacting pair (Ag⁺·Cl⁻) and raise the concentration to get at least 6 precipitate particles'},
+      q3:{ag:0,cl:0,txt:'Only spectator ions (Na⁺·NO₃⁻) are present. How many precipitate particles form? (enter a number)'},
+      cloze:{ok:['precipitate','precipitates','aprecipitate','theprecipitate','solidprecipitate','ppt']}},
+    standard: {label:'Standard', hints:true,  bank:'one word',
+      mission:{react:true,spect:true,min:8,txt:'switch on both the reacting pair and the spectators and get at least 8 precipitate particles'},
+      q3:{ag:10,cl:6,txt:'10 Ag⁺ and 6 Cl⁻ meet and bind as much as they can. What is the largest number of precipitate particles (AgCl pairs)? (enter a number)'},
+      cloze:{ok:['precipitate','precipitates','aprecipitate','theprecipitate','solidprecipitate','ppt']}},
+    advanced: {label:'Advanced', hints:false, bank:'exact term',
+      mission:{react:true,spect:true,min:12,txt:'switch on both the reacting pair and the spectators, raise the concentration, and get at least 12 precipitate particles'},
+      q3:{ag:12,cl:9,txt:'You mix 12 Ag⁺, 9 Cl⁻, 9 Na⁺ and 12 NO₃⁻. What is the largest number of precipitate particles (AgCl pairs) that can form? (enter a number)'},
+      cloze:{ok:['precipitate','precipitates','aprecipitate','theprecipitate','solidprecipitate','ppt']}}
+  };
+  function maxPrecip(ag,cl){return (Number.isFinite(ag)&&Number.isFinite(cl)&&ag>=0&&cl>=0)?Math.min(ag,cl):null;}try{window.__GC_LEVELS=LEVELS;}catch(e){}
+  const CFG=LEVELS[LV]||LEVELS.standard;
+  function applyLevel(){
+    var q=new URLSearchParams(location.search);
+    function href(lv){q.set('level',lv);return '?'+q.toString();}
+    ['Basic','Standard','Advanced'].forEach(function(C){var lv=C.toLowerCase();var a=$('lvl'+C);if(a){a.href=href(lv);a.classList.toggle('on',lv===(LEVELS[LV]?LV:'standard'));}});
+    if(!CFG.hints){document.querySelectorAll('details.hintbox').forEach(function(d){d.style.display='none';});}
+    var ph=$('qcin'); if(ph) ph.placeholder=CFG.bank;
+    $('q2txt').textContent=CFG.mission.txt;$('q2goal').textContent='precipitate ≥ '+CFG.mission.min;$('q3txt').textContent=CFG.q3.txt;
+  }
+  function setConc(v){S.N=Math.round(8+(v/100)*44);$('concLab').textContent=v<25?'Dilute':v<55?'Medium':v<80?'Concentrated':'Very concentrated';respawn();}
+  function setReactLabel(){
+    var parts=[];if(S.react)parts.push('Ag⁺·Cl⁻ (reacting)');if(S.spect)parts.push('Na⁺·NO₃⁻ (spectator)');
+    $('rxnLab').textContent=parts.length?parts.join(' + '):'none';}
+  $('conc').addEventListener('input',e=>{setConc(+e.target.value);ST.moved=true;});
+  $('tReact').addEventListener('click',e=>{S.react=!S.react;ST.moved=true;e.target.classList.toggle('on',S.react);setReactLabel();respawn();});
+  $('tSpect').addEventListener('click',e=>{S.spect=!S.spect;ST.moved=true;e.target.classList.toggle('on',S.spect);setReactLabel();respawn();});
+  $('play').addEventListener('click',e=>{S.running=!S.running;e.target.textContent=S.running?'Pause':'Play';});
+  $('reset').addEventListener('click',respawn);
+  $('tBond').addEventListener('click',e=>{S.showBond=!S.showBond;e.target.classList.toggle('on',S.showBond);});
+  setConc(55);setReactLabel();
+  window.addEventListener('resize',()=>{sim.resize();});
+
+  const ST={predicted:false,observed:false,passed:false,prediction:null,checks:{entry:false,q1:false,q2:false,q3:false,cloze:false,reflect:false},
+    revealLock:true};
+  function pct(){let p=0;if(ST.predicted)p+=25;if(ST.observed)p+=25;
+    const c=Object.values(ST.checks).filter(Boolean).length;p+=Math.round(c/Object.keys(ST.checks).length*40);
+    if(ST.passed)p+=10;return Math.min(100,p);}
+  function updateProgress(){const p=pct();$('prog').style.width=p+'%';
+    $('progLab').textContent='Progress '+p+'% · Predict → Observe → Check → Complete';
+    $('lo1').classList.toggle('done',ST.observed);
+    $('lo2').classList.toggle('done',ST.predicted&&ST.observed);
+    $('lo3').classList.toggle('done',ST.checks.q1);
+    if(ST.passed){$('stamp').classList.add('on');}}
+
+  let predSel=null;
+  $('predChoices').addEventListener('click',e=>{const c=e.target.closest('.choice');if(!c)return;
+    [...$('predChoices').children].forEach(x=>x.classList.remove('sel'));c.classList.add('sel');predSel=c.dataset.v;});
+  $('conf').addEventListener('input',e=>{const v=+e.target.value;$('confLab').textContent=v<33?'Low':v<66?'Medium':'High';});
+  $('predSubmit').addEventListener('click',()=>{if(ST.predicted)return;
+    if(!predSel){$('gateMsg').textContent='First choose one of the options.';$('gateMsg').className='gate-msg refute';return;}
+    ST.predicted=true;ST.moved=false;R2.unlock();setTimeout(function(){try{Object.defineProperty(ST,'prediction',{value:ST.prediction,writable:false,configurable:false,enumerable:true});}catch(e){}},0);ST.prediction=predSel;
+    $('verdict').classList.remove('locked');
+    if(predSel==='precip'){$('gateMsg').textContent='Good prediction! Switch on the reacting pair and check that a precipitate really forms.';$('gateMsg').className='gate-msg hit';}
+    else if(predSel==='free'){$('gateMsg').innerHTML='Ag⁺ and Cl⁻ have very low solubility together, so when they meet they <b>bind and form a precipitate (AgCl)</b> — check it yourself.';$('gateMsg').className='gate-msg refute';}
+    else{$('gateMsg').innerHTML='Not a gas: a <b>solid precipitate (AgCl)</b> settles out — check it yourself.';$('gateMsg').className='gate-msg refute';}
+    $('predResult').textContent=(predSel==='precip')?'Correct (you predicted a precipitate)':'Needs review (a precipitate actually forms)';
+    updateProgress();
+  });
+
+  let q1tries=0;
+  document.querySelectorAll('[data-q="1"]').forEach(c=>c.addEventListener('click',e=>{
+    const v=e.target.dataset.v;[...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    if(v==='b'){$('fb1').textContent='Correct — Na⁺ and NO₃⁻ are both spectators, so there is no insoluble pair and the precipitate is 0.';$('fb1').className='fb ok';ST.checks.q1=true;}
+    else{q1tries++;$('fb1').textContent=q1tries<2?'Try again — open the hint.':'Try again — NaNO₃ is a soluble salt. Is there an insoluble pair in this beaker? (answer not revealed)';$('fb1').className='fb '+(q1tries<2?'hint':'no');}
+    updateProgress();}));
+
+  function missionPass(){const M=CFG.mission,m=window.__sim&&window.__sim.metric,P=m?m.value:null;
+    return P!=null&&isFinite(P)&&S.react===M.react&&S.spect===M.spect&&P>=M.min;}
+  $('missionBtn').addEventListener('click',()=>{const P=window.__sim.metric?window.__sim.metric.value:null,M=CFG.mission;
+    if(!ST.predicted){$('fb2').textContent='First lock in your prediction, then use the controls.';$('fb2').className='fb hint';}
+    else if(ST.moved&&missionPass()){$('fb2').textContent='Correct — measured precipitate = '+P+' ≥ '+M.min+'. The number of bound pairs is the number of precipitate particles.';$('fb2').className='fb ok';ST.checks.q2=true;}
+    else if(!ST.moved){$('fb2').textContent='You have not changed anything yet — after predicting, change the toggles or the slider yourself.';$('fb2').className='fb hint';}
+    else if(S.react!==M.react||S.spect!==M.spect){$('fb2').textContent='Try again — check the target conditions: '+M.txt+'.';$('fb2').className='fb no';}
+    else{$('fb2').textContent='Try again — precipitate is only '+(P==null?'—':P)+' so far. Raise the concentration or wait a little.';$('fb2').className='fb no';}
+    updateProgress();});
+
+  $('q3btn').addEventListener('click',()=>{const x=parseFloat($('q3in').value),Q=CFG.q3,ans=maxPrecip(Q.ag,Q.cl);
+    if(!isNaN(x)&&ans!=null&&Math.abs(x-ans)<0.5){$('fb3').textContent=Q.ag===0?'Correct — with spectators only there is no binding, so the precipitate is 0.':'Correct — Ag⁺ and Cl⁻ pair 1:1, so the number of precipitate particles equals the smaller ion count; leftover ions and spectators form no pairs.';$('fb3').className='fb ok';ST.checks.q3=true;}
+    else if(Q.ag>0&&!isNaN(x)&&x>Math.max(Q.ag,Q.cl)){$('fb3').textContent='Try again — it looks like you counted spectator ions (Na⁺·NO₃⁻) or leftover ions too. Count only Ag⁺·Cl⁻ pairs. (answer not revealed)';$('fb3').className='fb no';}
+    else if(Q.ag>0&&!isNaN(x)&&Math.abs(x-Math.max(Q.ag,Q.cl))<0.5){$('fb3').textContent='Try again — pairs form 1:1, so some ions of the more abundant kind are left unused. (answer not revealed)';$('fb3').className='fb no';}
+    else{$('fb3').textContent=Q.ag===0?'Try again — spectator ions do not bind to each other. Think again about how many bound pairs can form. (answer not revealed)':'Try again — one Ag⁺ and one Cl⁻ make one pair. Count how many pairs you can make. (answer not revealed)';$('fb3').className='fb no';}
+    updateProgress();});
+  $('qcbtn').addEventListener('click',()=>{const raw=($('qcin').value||''),x=raw.trim().toLowerCase().replace(/\s/g,''),CLOZE_OK=CFG.cloze.ok;
+    if(CLOZE_OK.includes(x)){$('fbc').textContent='Correct — when an insoluble salt forms, it appears as a precipitate.';$('fbc').className='fb ok';ST.checks.cloze=true;}
+    else{$('fbc').textContent=CFG.hints?'Hint: an insoluble solid that settles out of the solution.':'Try again — enter one word.';$('fbc').className='fb '+(CFG.hints?'hint':'no');}
+    updateProgress();});
+
+  document.querySelectorAll('#entryChoices .choice').forEach(c=>c.addEventListener('click',e=>{
+    [...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    var ok=e.target.dataset.v==='ion';
+    $('fbEntry').textContent=ok?'Right — an electrolyte dissolves in water and separates into cations and anions that move freely.':'Try again — in fact it separates into ions that move around, because an electrolyte ionizes when it dissolves in water.';
+    $('fbEntry').className='fb '+(ok?'ok':'hint');
+    var g=$('entryGloss'); if(g) g.open=true; if(ok)ST.checks.entry=true; updateProgress();}));
+
+  var REFLECT_CONCEPTS=/\b(precipitat\w*|spectators?|insoluble|solubility|bind\w*|bound|bond\w*|pairs?|Ag|Cl|AgCl|ions?)\b/i, REFLECT_REL=/\b(because|since|therefore|so|thus|hence|due to|as a result|which means|this means|when|if)\b/i;
+  $('reflectBtn').addEventListener('click',()=>{var t=($('selfExplain').value||'').trim();
+    if(t.length>=40&&!REFLECT_CONCEPTS.test(t)){$('fbReflect').textContent='Not quite — add a key concept: use at least one of precipitate, spectator ion, binding or solubility in your explanation.';$('fbReflect').className='fb hint';}
+    else if(t.length>=40&&!REFLECT_REL.test(t)){$('fbReflect').textContent='Not quite — add the relationship: link the condition and the result with words such as "because", "when" or "so".';$('fbReflect').className='fb hint';}
+    else if(t.length>=40){$('fbReflect').textContent='Recorded — explaining it yourself makes the idea stick.';$('fbReflect').className='fb ok';ST.checks.reflect=true;}
+    else{$('fbReflect').textContent='Not quite — explain the condition for precipitation in one sentence (40+ characters).';$('fbReflect').className='fb hint';}
+    updateProgress();});
+
+  function applyMode(){const q=new URLSearchParams(location.search);
+    if(q.get('mode')==='teacher'){$('teacherBar').classList.add('on');}
+    if(q.get('worksheet')==='1'){document.body.classList.add('worksheet');}}
+  $('btnTeacher').addEventListener('click',()=>$('teacherBar').classList.toggle('on'));
+  $('btnWorksheet').addEventListener('click',()=>{document.body.classList.toggle('worksheet');window.scrollTo(0,0);});
+  $('tRevealToggle').addEventListener('click',e=>{ST.revealLock=!ST.revealLock;
+    e.target.textContent='Answer/explanation lock: '+(ST.revealLock?'on':'off');
+    if(!ST.revealLock)$('verdict').classList.remove('locked');});
+  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',e=>{
+    const p=e.target.dataset.preset;
+    if(p==='precip'){S.react=true;S.spect=false;$('tReact').classList.add('on');$('tSpect').classList.remove('on');setConc(90);$('conc').value=90;}
+    if(p==='spect'){S.react=false;S.spect=true;$('tReact').classList.remove('on');$('tSpect').classList.add('on');setConc(70);$('conc').value=70;}
+    if(p==='mixed'){S.react=true;S.spect=true;$('tReact').classList.add('on');$('tSpect').classList.add('on');setConc(80);$('conc').value=80;}
+    setReactLabel();respawn();}));
+  let big=false;$('tBig').addEventListener('click',()=>{big=!big;document.querySelector('.wrap').style.zoom=big?'1.4':'1';});
+  applyMode();
+  applyLevel();
+
+  function tx(id,t){const e=$(id);if(e&&e.textContent!==String(t))e.textContent=t;}
+  function updateReadout(force){const now=performance.now();
+    if(force||now>=nextT){mP=sim.precip;nextT=now+2000;
+      if(sayPend&&!force){sayPend=false;tx('resLive',(S.react?'Ag⁺·Cl⁻ on':'Ag⁺·Cl⁻ off')+' · '+(S.spect?'spectators on':'spectators off')+' · '+sim.p.length+' ions · measured precipitate '+mP);}}
+    const P=mP;
+    tx('precipVal',P);
+    const ref=Math.max(8,Math.round(S.N/2));$('barPrecip').style.width=Math.min(100,P/ref*100)+'%';
+    window.__sim.metric={type:'precip',value:P,unit:''};tx('missionZ',P);
+    tx('zVal','Precipitate = '+P);
+    let msg;
+    if(!S.react&&S.spect)msg='<b>Precipitate 0</b> — Na⁺ and NO₃⁻ are both <b>spectator ions</b>, so there is no insoluble pair. They only keep moving freely.';
+    else if(P>=6)msg='<b>Precipitate forming</b> — freely moving Ag⁺ and Cl⁻ met, bound (AgCl) and became fixed. The precipitate count <b>emerges</b> from the number of bindings.';
+    else if(S.react)msg='<b>Binding in progress</b> — when Ag⁺ and Cl⁻ come close they bind, and the precipitate grows. Raise the concentration or wait.';
+    else msg='<b>No ions</b> — switch on the reacting pair or the spectators.';
+    if(!ST.predicted)msg='After you lock in a prediction, the measured precipitate count and the explanation appear here.';
+    if($('zMsg').innerHTML!==msg)$('zMsg').innerHTML=msg;
+    if(ST.predicted&&ST.moved&&!ST.observed&&((S.react&&P>=1)||(!S.react&&S.spect))){ST.observed=true;updateProgress();}
+    if(ST.predicted&&ST.observed&&Object.keys(ST.checks).every(function(k){return ST.checks[k];})&&!ST.passed){ST.passed=true;updateProgress();}
+  }
+  function applyCond(c){S.react=c.r;S.spect=c.s;$('tReact').classList.toggle('on',c.r);$('tSpect').classList.toggle('on',c.s);setReactLabel();setConc(c.n);$('conc').value=c.n;ST.moved=true;updateReadout(true);return c;}
+  window.__sim={S,sim,metric:null,ST,updateReadout,LEVELS,
+    seed(k){rng=mulberry32((k>>>0)||1);respawn();updateReadout(true);return k;},
+    initState(){return applyCond({r:true,s:false,n:55});},
+    missionState(){const M=CFG.mission;return applyCond({r:M.react,s:M.spect,n:100});},
+    nearStates(){const M=CFG.mission;return [{label:'reacting pair off (spectators only)',c:{r:false,s:true,n:100}},{label:'pair setting different from the target',c:{r:M.react,s:!M.spect,n:100}},{label:'no ions',c:{r:false,s:false,n:100}}].map(x=>({label:x.label,apply(){return applyCond(x.c);}}));},
+    judge(){return missionPass();},
+    key(k){const Q=CFG.q3;return k==='pred'?'precip':k==='cloze'?CFG.cloze.ok.slice():k==='q3'?maxPrecip(Q.ag,Q.cl):null;},
+    leakTokens:{answer:['A solid precipitate forms','AgCl(s)'],rationale:['have very low solubility together','bind and form a precipitate (AgCl)'],misconception:['They keep moving around freely']},
+    pump(n){for(let i=0;i<n;i++){sim.step();}updateReadout(true);}};
+  function loop(){if(S.running){sim.step();}sim.draw();updateReadout();requestAnimationFrame(loop);}
+  loop();updateProgress();
+})();
+</script>
+<script>/[?&]mode=teacher(&|$)/.test(location.search)&&document.body.classList.add('mode-teacher')</script>
+<script id="gc-record">(function(){
+"use strict";
+var K='genchem.en.history',OK=/^https:\/\/(lab\.jinuchem\.com|jinu-kbs\.github\.io)$|^http:\/\/localhost(:\d+)?$/;
+function load(){try{return JSON.parse(localStorage.getItem(K))||[];}catch(e){return[];}}
+function put(a){try{localStorage.setItem(K,JSON.stringify(a));}catch(e){}}
+function up(m){try{if(window.parent!==window)window.parent.postMessage(m,'*');}catch(e){}}
+function merge(inc){var a=load(),s={},n=0;a.forEach(function(r){s[r.ts+'|'+r.sim]=1;});
+ inc.forEach(function(r){if(r&&r.ts&&r.sim&&!s[r.ts+'|'+r.sim]){a.push(r);s[r.ts+'|'+r.sim]=1;n++;}});put(a);return n;}
+var GC={
+ save:function(r){r.ts=r.ts||new Date().toISOString();var a=load();a.push(r);put(a);up({type:'genchem:record',v:1,rec:r});return r;},
+ all:load, clear:function(){put([]);},
+ export:function(){var p=null;try{p=JSON.parse(localStorage.getItem('genchem.en.path'));}catch(e){}
+  var b=new Blob([JSON.stringify({app:'genchem',v:2,exported:new Date().toISOString(),history:load(),path:p},null,2)],{type:'application/json'});
+  var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='genchem_en_brain.json';a.click();URL.revokeObjectURL(u);
+  try{localStorage.setItem('genchem.en.backupAt',new Date().toISOString());}catch(e){}},
+ import:function(t){try{var o=JSON.parse(t),i=(o&&o.history)||o||[];if(!Array.isArray(i))return -1;var n=merge(i);
+  if(o&&o.path){try{localStorage.setItem('genchem.en.path',JSON.stringify(o.path));}catch(e){}}return n;}catch(e){return -1;}},
+ _meta:function(){var p=location.pathname.split('/').filter(Boolean),f=decodeURIComponent(p[p.length-1]||''),d=decodeURIComponent(p[p.length-2]||'');
+  var c=(f.match(/^(\d+)/)||[])[1]||d.replace(/[^0-9]/g,''),q=function(n){var m=document.querySelector('meta[name="'+n+'"]');return m?m.content:'';};
+  return{sim:f,path:(/^ch\d\d$/.test(d)?d+'/':'')+f,chapter:c?+c:null,level:(new URLSearchParams(location.search)).get('level')||'standard',
+   standard:q('curriculum-2022'),engine:q('engine-class'),title:document.title};},
+ autoInit:function(){var done=false,m=GC._meta();up({type:'genchem:hello',v:1,sim:m.path});
+  var iv=setInterval(function(){var s=window.__sim,st=s&&s.ST;if(!st||!st.passed||done)return;done=true;var k=null;
+   try{k=typeof s.key==='function'?s.key('pred'):null;}catch(e){}
+   GC.save({ts:new Date().toISOString(),sim:m.sim,path:m.path,title:m.title,chapter:m.chapter,standard:m.standard,engine:m.engine,level:m.level,
+    predicted:st.prediction||null,predict_correct:(k==null||st.prediction==null)?null:String(st.prediction)===String(k),check:st.checks||{},completed:true});},1000);
+  setTimeout(function(){clearInterval(iv);},1800000);}
+};
+window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='genchem:restore'||!OK.test(e.origin)||!Array.isArray(d.history))return;
+ up({type:'genchem:restored',v:1,added:merge(d.history)});});
+window.GCRecord=GC;
+if(document.readyState!=='loading')GC.autoInit();else document.addEventListener('DOMContentLoaded',GC.autoInit);
+})();
+</script>
+<script id="lgc-inject">
+(function(){
+  "use strict";
+  if(document.getElementById('lgcPanel')) return;
+  var KEY='genchem.en.lgc';
+  function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function simId(){ return decodeURIComponent(location.pathname.split('/').pop()||''); }
+  function loadAll(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+  function saveAll(o){ try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){} }
+
+  var id=simId(), all=loadAll(), data=all[id]||{reason:'',cloze:'',problem:''};
+  window.__sim = window.__sim || {};
+  window.__sim.LGC = { data:data, save:function(){ all[id]=data; saveAll(all); } };
+
+  var stl=document.createElement('style');
+  stl.textContent='#lgcPanel{margin:22px auto;max-width:980px;border:1px solid rgba(127,127,127,.35);border-radius:12px;padding:16px 18px;font-family:inherit;line-height:1.6}'
+    +'#lgcPanel h3{font-size:16px;margin:0 0 4px}'
+    +'#lgcPanel .lgc-sub{font-size:12px;opacity:.7;margin-bottom:10px}'
+    +'#lgcPanel label{display:block;font-size:13px;font-weight:600;margin:12px 0 4px}'
+    +'#lgcPanel textarea{width:100%;min-height:54px;border:1px solid rgba(127,127,127,.4);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;background:transparent;color:inherit;resize:vertical}'
+    +'#lgcPanel .lgc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}'
+    +'#lgcPanel button{font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid rgba(127,127,127,.5);background:transparent;color:inherit;cursor:pointer}'
+    +'#lgcPanel button:hover{border-color:currentColor}'
+    +'#lgcPanel .lgc-out{margin-top:10px;font-size:13px;white-space:pre-wrap;opacity:.92}'
+    +'#lgcPanel .lgc-shared{margin-top:12px;border-top:1px dashed rgba(127,127,127,.4);padding-top:10px;font-size:13px}'
+    +'@media print{#lgcPanel{display:none}}';
+  document.head.appendChild(stl);
+
+  var sec=document.createElement('section');
+  sec.id='lgcPanel'; sec.setAttribute('aria-label','My own notes and questions');
+  sec.innerHTML=''
+    +'<h3>My own notes and questions <span style="font-weight:400;font-size:12px">(learner-generated · not graded)</span></h3>'
+    +'<div class="lgc-sub">Explain in your own words, make your own fill-in-the-blank question, and write a question for a classmate. This space is for deeper understanding.</div>'
+    +'<label for="lgcReason">1. Explain my prediction and conclusion in my own words (with reasons)</label>'
+    +'<textarea id="lgcReason"></textarea>'
+    +'<label for="lgcCloze">2. Hide key words in my explanation with [square brackets] to make a fill-in-the-blank question</label>'
+    +'<textarea id="lgcCloze" placeholder="e.g. As the concentration of [H⁺] increases, the [pH] decreases."></textarea>'
+    +'<div class="lgc-btns"><button type="button" id="lgcClozePrev">Preview my question</button></div>'
+    +'<div class="lgc-out" id="lgcClozeOut" aria-live="polite"></div>'
+    +'<label for="lgcProblem">3. A question for a classmate (include the answer)</label>'
+    +'<textarea id="lgcProblem"></textarea>'
+    +'<div class="lgc-btns">'
+    +'<button type="button" id="lgcExport">Save my notes (JSON file)</button>'
+    +'<button type="button" id="lgcShare">Copy share link</button>'
+    +'</div>'
+    +'<div class="lgc-shared" id="lgcShared" style="display:none"></div>';
+  var anchor=document.querySelector('footer');
+  if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(sec,anchor);
+  else document.body.appendChild(sec);
+
+  var $=function(i){return document.getElementById(i);};
+  $('lgcReason').value=data.reason||''; $('lgcCloze').value=data.cloze||''; $('lgcProblem').value=data.problem||'';
+  function persist(){ data.reason=$('lgcReason').value; data.cloze=$('lgcCloze').value; data.problem=$('lgcProblem').value; window.__sim.LGC.save(); }
+  $('lgcReason').addEventListener('input',persist);
+  $('lgcCloze').addEventListener('input',persist);
+  $('lgcProblem').addEventListener('input',persist);
+
+  $('lgcClozePrev').addEventListener('click',function(){
+    var t=$('lgcCloze').value||'', n=0, ans=[];
+    var q=t.replace(/\[([^\]]+)\]/g,function(m,w){ n++; ans.push(w); return '____('+n+')'; });
+    $('lgcClozeOut').textContent = n ? ('Question: '+q+'\nAnswer: '+ans.join(', ')) : 'Put key words in [square brackets] to turn them into blanks.';
+  });
+
+  function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(s){ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+
+  $('lgcExport').addEventListener('click',function(){
+    persist();
+    var payload={app:'genchem',kind:'lgc',sim:id,exported:new Date().toISOString(),lgc:data};
+    var b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u; a.download='genchem_lgc_'+id.replace(/\.html$/,'')+'.json'; a.click(); URL.revokeObjectURL(u);
+  });
+  $('lgcShare').addEventListener('click',function(){
+    persist();
+    var link=location.origin+location.pathname+location.search+'#share='+enc({sim:id,lgc:data});
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link).then(function(){ alert('Share link copied. Send it to a classmate.'); },
+        function(){ prompt('Copy the link below:', link); });
+    } else prompt('Copy the link below:', link);
+  });
+
+  (function(){
+    var m=(location.hash||'').match(/share=([^&]+)/); if(!m) return;
+    try{
+      var o=dec(m[1]), L=o.lgc||{}, html='<b>Shared by a classmate</b>';
+      if(L.reason)  html+='<div>· Explanation: '+esc(L.reason)+'</div>';
+      if(L.cloze)   html+='<div>· Fill-in-the-blank text: '+esc(L.cloze)+'</div>';
+      if(L.problem) html+='<div>· Question: '+esc(L.problem)+'</div>';
+      var sh=$('lgcShared'); sh.innerHTML=html; sh.style.display='block';
+    }catch(e){}
+  })();
+})();
+</script>
+<script id="gc-reflectguard">
+(function(){"use strict";
+function go(){var ta=document.getElementById('selfExplain'),b=document.getElementById('reflectBtn');if(!ta||!b)return;
+var ex=(ta.getAttribute('placeholder')||'').replace(/^(?:e\.g\.|example)\s*[:：]?\s*/i,''),fb=document.getElementById('fbReflect')||document.getElementById('fb2');if(!fb)return;
+ta.setAttribute('placeholder','In your own words: "I observed (what), and because (principle), (result)."');
+var n=0,last='',nm=function(x){return x.replace(/[\s.…,·"'()]/g,'');};
+b.addEventListener('click',function(e){var t=nm(ta.value),x=nm(ex);
+ if(x.length>8&&t.length>=8&&(x.indexOf(t)>=0||t.indexOf(x.slice(0,Math.ceil(x.length*.8)))>=0)){e.stopImmediatePropagation();
+  fb.textContent='This looks copied from the example. Recall what you observed and write it again in your own words.';fb.className='fb hint';last=fb.textContent;}},true);
+new MutationObserver(function(){var c=fb.className,t=fb.textContent;if(t===last)return;
+ if(/hint/.test(c)&&/^Not quite/.test(t)){n++;fb.textContent=n<2?'Not quite — write one sentence (40+ characters) that says what you observed and why, e.g. "Because …, …". If it is still not enough, you will get a clue.':t.replace(/^Not quite\s*—\s*/,'Clue: ');}
+ else if(/ok/.test(c)&&ex&&t.indexOf('Compare it with')<0)fb.textContent=t+' Compare it with the example explanation: '+ex;
+ last=fb.textContent;}).observe(fb,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});}
+if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);})();
+</script>
+<script id="gc-r2c112-tail">(function(){function kb(el){if(el.hasAttribute("tabindex"))return;el.setAttribute("tabindex","0");if(!el.getAttribute("role"))el.setAttribute("role","button");el.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();el.click();}});}
+function pr(el){el.setAttribute("aria-pressed",/(^|\s)(on|sel|active)(\s|$)/.test(el.className)?"true":"false");}
+function go(){document.querySelectorAll(".choice").forEach(kb);document.querySelectorAll(".choice,.toggle,.seg,[aria-pressed]").forEach(function(el){pr(el);new MutationObserver(function(){pr(el);}).observe(el,{attributes:true,attributeFilter:["class"]});});try{var L=window.__GC_LEVELS||(typeof LEVELS!=="undefined"?LEVELS:null);if(window.__sim&&L&&!window.__sim.LEVELS)window.__sim.LEVELS=L;}catch(e){}}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go();addEventListener("load",go);})();
+</script>
+<script id="gc-r2c112b">(function(){var live,t=null,last="";function L(){if(live)return live;live=document.getElementById("gcStatusLive");if(live)return live;live=document.createElement("p");live.id="gcStatusLive";live.setAttribute("role","status");live.setAttribute("aria-live","polite");live.className="no-print";live.style.cssText="margin:6px auto 0;max-width:1100px;padding:4px 16px;font-size:13px;opacity:.85";live.textContent="Changes you make are announced here.";var st=document.querySelector(".stage");if(st&&st.parentNode)st.parentNode.insertBefore(live,st.nextSibling);else document.body.appendChild(live);return live;}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",L);else L();
+function nm(el){var a=el.getAttribute("aria-label");if(a)return a;if(el.id){var l=document.querySelector("label[for=\""+el.id+"\"]");if(l)return l.textContent.trim();}var p=el.closest("label,.ctl,.row,.field");return p?p.textContent.replace(/\s+/g," ").trim().slice(0,24):(el.textContent||"").trim().slice(0,24);}
+function say(el){var v=el.tagName==="SELECT"?(el.options[el.selectedIndex]||{}).text:(el.type==="range"||el.type==="number")?el.value:"";var x=(el.classList.contains("choice")?"Selected: "+(el.textContent||"").trim().slice(0,30):(nm(el)+(v?" "+v:""))).trim();var m=window.__sim&&window.__sim.metric;if(document.body.classList.contains("predicted")&&m&&m.value!=null&&isFinite(+m.value))x+=" · result "+(+(+m.value).toPrecision(3))+(m.unit?" "+m.unit:"");if(x&&x!==last){last=x;L().textContent=x;}}
+function on(e){var el=e.target;if(!el||el.closest("#lgcPanel,.teacher-only,.ws"))return;if(e.type!=="click"&&!/^(range|number|checkbox|radio|select-one)$/.test(el.type||""))return;if(e.type==="click"){el=el.closest(".toggle,.seg,.choice,[aria-pressed]");if(!el||el.closest("#predChoices,#entryChoices"))return;}clearTimeout(t);t=setTimeout(function(){say(el);},400);}
+document.addEventListener("input",on,true);document.addEventListener("change",on,true);document.addEventListener("click",on,true);})();
+</script>
+</body>
+</html>

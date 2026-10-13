@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="sim-tier" content="core">
+<title>Salt Solubility and pH — PbF₂ vs PbI₂ · Simulation (self-directed learning · teacher edition)</title>
+<meta name="description" content="Compare how the molar solubility of PbF₂ and PbI₂ changes with pH, calculated exactly from Ksp, Ka and the mass balance at a buffered pH.">
+<meta name="curriculum-univ" content="General Chemistry · factors that affect solubility / acidity and solubility / exact mass balance (buffered pH)">
+<meta name="curriculum-2022" content="General Chemistry">
+<meta name="school-level" content="University general chemistry">
+<meta name="engine-class" content="E2-equation-driven">
+<meta name="misconception-id" content="MC-pHsol-01: adding acid makes every slightly soluble salt dissolve better / MC-pHsol-02: a salt dissolves in acid because H⁺ reacts with the metal ion">
+<style>
+  :root{--ink:#0B0F17;--ink-700:#1A2030;--ink-600:#222a3d;--ink-400:#8C98B3;
+    --paper:#F4F1EA;--paper-2:#E8E3D6;--accent:#A7BCEC;--accent-2:#E8C275;
+    --warn:#E36B5B;--good:#7FB98A;
+    --font-serif:Georgia,'Times New Roman',serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard',sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--paper);font-family:var(--font-sans);min-height:100vh;word-break:keep-all;overflow-wrap:break-word}
+  body{padding:40px 28px 80px;line-height:1.6}
+  .wrap{max-width:1120px;margin:0 auto}
+  header{border-bottom:1px solid var(--ink-700);padding-bottom:26px;margin-bottom:24px}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:5px;color:var(--accent);text-transform:uppercase}
+  h1{font-family:var(--font-serif);font-weight:600;letter-spacing:-1.2px;font-size:44px;margin-top:14px;line-height:1.08}
+  h1 em{color:var(--accent-2);font-style:normal}
+  .lede{font-family:var(--font-serif);font-size:18px;color:var(--paper-2);margin-top:16px;max-width:760px}
+  .card{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:20px;margin-top:20px}
+  .kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .kicker .num{background:#2a3350;color:var(--accent-2);border-radius:6px;padding:2px 8px}
+  .lo-goals{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+  .lo-goals .g{display:flex;gap:10px;font-size:15px;color:var(--paper-2)}
+  .lo-goals .chk{width:18px;height:18px;border:1.5px solid var(--ink-400);border-radius:5px;flex:0 0 auto;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink)}
+  .lo-goals .g.done .chk{background:var(--good);border-color:var(--good)} .lo-goals .g.done .chk::after{content:"✓"}
+  .progress{height:12px;border-radius:7px;background:#10162260;border:1px solid #2a3144;overflow:hidden}
+  .progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5E6B85,var(--accent-2));transition:width .4s}
+  .progress-lab{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px;text-align:right}
+  .stage{display:grid;grid-template-columns:0.8fr 1.2fr;gap:20px;margin-top:8px}
+  .box{background:var(--ink-700);border:1px solid #2a3144;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}
+  .box h2{font-family:var(--font-serif);font-size:20px;color:var(--accent-2)}
+  canvas{width:100%;height:auto;display:block;background:#0d1320;border:1px solid #2a3144;border-radius:10px}
+  .ph-read{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .ph-read b{color:var(--paper);font-size:20px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+  .choice{font-size:14px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:10px 16px;cursor:pointer}
+  .choice:hover{border-color:var(--accent)} .choice.sel{background:#2a3350;border-color:var(--accent-2)}
+  .conf-row{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-bottom:12px}
+  .conf-row input{flex:1;accent-color:var(--accent-2)}
+  .gate-msg{font-size:14px;margin-top:8px;min-height:1.4em} .gate-msg.refute{color:var(--warn)} .gate-msg.hit{color:var(--good)}
+  .verdict{margin-top:20px;padding:20px 22px;border-radius:14px;border:1px solid #2a3144;background:#0d1320;transition:filter .3s}
+  .verdict.locked{filter:blur(7px);pointer-events:none}
+  .vwrap{position:relative} .lockbadge{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;color:var(--accent)}
+  .verdict.locked + .lockbadge{display:flex}
+  .verdict .big{font-family:var(--font-serif);font-size:30px;color:var(--accent-2)}
+  .verdict p{font-family:var(--font-serif);font-size:16px;color:var(--paper-2);margin-top:10px;min-height:2.4em} .verdict p b{color:var(--accent-2)}
+  .panel{margin-top:20px;background:linear-gradient(180deg,#0d1320,#0B0F17);border:1px solid #2a3144;border-radius:16px;padding:22px}
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+  .ctrl label{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:8px}
+  .ctrl .val{color:var(--paper);font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--accent-2);cursor:pointer}
+  .ctrl .ends{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:4px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button,.toggle{font-family:var(--font-mono);font-size:12px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:9px 14px;cursor:pointer}
+  button:hover,.toggle:hover{border-color:var(--accent)} .toggle.on{background:#2a3350;border-color:var(--accent-2)}
+  .notes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+  .note{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:22px}
+  .note h3{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .note p{font-size:14px;color:var(--paper-2)} .note .eq{font-family:var(--font-serif);font-style:italic;font-size:18px;text-align:center;margin:14px 0 6px;padding:12px;background:#0d1320;border-radius:10px;border:1px solid #2a3144}
+  .q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed #2a3144} .q:last-child{border-bottom:none;margin-bottom:0}
+  .q .qtext{font-size:15px;margin-bottom:10px} .q .qtext .qn{color:var(--accent-2);font-family:var(--font-mono);margin-right:8px}
+  .fb{font-size:13px;margin-top:8px;min-height:1.2em} .fb.ok{color:var(--good)} .fb.no{color:var(--warn)} .fb.hint{color:var(--accent)}
+  .num-in{font-family:var(--font-mono);background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:8px 10px;width:120px}
+  .mission{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px} .mission b{color:var(--accent-2)}
+  details.hintbox summary{font-family:var(--font-mono);font-size:12px;color:var(--accent);cursor:pointer} details.hintbox p{font-size:13px;color:var(--ink-400);margin-top:6px}
+  .reflect textarea{width:100%;min-height:64px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical}
+  .self-check{display:flex;flex-direction:column;gap:8px;margin:12px 0} .self-check label{display:flex;gap:10px;font-size:14px;color:var(--paper-2);cursor:pointer} .self-check input{margin-top:4px;accent-color:var(--good)}
+  .stamp{display:none;margin-top:14px;text-align:center;font-family:var(--font-serif);font-size:22px;color:var(--good);border:2px dashed var(--good);border-radius:12px;padding:14px} .stamp.on{display:block}
+  .teacher{margin-top:24px;border-top:2px solid #2a3144;padding-top:6px}
+  details.tguide summary{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);cursor:pointer;padding:12px 0}
+  .tguide-body{background:var(--ink-700);border:1px solid #2a3144;border-radius:12px;padding:20px;font-size:14px;color:var(--paper-2)} .tguide-body h4{font-family:var(--font-mono);font-size:12px;color:var(--accent);margin:14px 0 6px} .tguide-body ul{margin-left:18px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0} .badge{font-family:var(--font-mono);font-size:12px;background:#0d1320;border:1px solid #2a3144;border-radius:20px;padding:5px 12px;color:var(--paper-2)} .badge.verify{color:var(--good);border-color:var(--good)}
+  .teacher-bar{display:none;background:#2a3350;border:1px solid var(--accent);border-radius:12px;padding:14px;margin-top:18px} .teacher-bar.on{display:block} .teacher-bar .tb-title{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);margin-bottom:10px}
+  footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--ink-700);font-family:var(--font-mono);font-size:12px;color:var(--ink-400);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px} footer b{color:var(--paper-2);font-weight:500}
+  @media(max-width:780px){h1{font-size:32px}.stage{grid-template-columns:1fr}.notes{grid-template-columns:1fr}}
+  @media print{body{background:#fff;color:#000}.no-print{display:none!important}}
+  body.worksheet .no-print{display:none} body.worksheet{background:#fff;color:#111} body.worksheet .ws-only{display:block}
+  .ws-only{display:none} .ws{border:1px solid #999;border-radius:8px;padding:16px;margin-top:14px;color:#111} .ws .line{border-bottom:1px solid #bbb;height:28px;margin:8px 0}
+
+
+body:not(.mode-teacher) .teacher-only{display:none!important}
+
+
+html:has(body.worksheet){background:#fff!important}
+body.worksheet *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#111!important;border-color:#888!important;box-shadow:none!important;text-shadow:none!important}
+body.worksheet canvas{filter:grayscale(1) contrast(1.1)}
+@media print{html{background:#fff!important}
+ body *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#000!important;border-color:#666!important;box-shadow:none!important;text-shadow:none!important}
+ canvas{filter:grayscale(1)}}
+
+
+
+.katab{font-family:var(--font-mono);font-size:12px;color:var(--paper-2)}
+.rd{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+.rd b{color:var(--paper);font-size:15px}
+.cond{font-size:14px;color:var(--paper-2)} .cond b{color:var(--accent-2)}
+.srcbar{height:14px;border:1px solid #313a52;border-radius:7px;overflow:hidden;display:flex;background:#0d1320}
+.srcbar>span{display:block;height:100%} .srcbar .s-sol{background:var(--accent)} .srcbar .s-w{background:repeating-linear-gradient(45deg,var(--accent-2) 0 4px,#0d1320 4px 7px)}
+.srclab{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+canvas:focus{outline:2px solid var(--accent-2);outline-offset:2px}
+.limit{border-left:3px solid var(--accent-2)} .limit p{font-size:13px;color:var(--paper-2)}
+.small{font-size:12px;color:var(--ink-400)}
+.meta-row{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:10px}
+.ws svg{max-width:560px;width:100%;display:block;margin:6px 0}
+input[type=range]{min-height:24px}
+.ws-legend{font-size:12px;margin:2px 0 8px}
+button,.choice,input.num-in{min-height:40px} .choice{display:inline-flex;align-items:center}
+
+body:not(.predicted) .post-pred{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+body.predicted .pp-wait{display:none!important}
+.pp-wait{font-size:13px;border:1px dashed #556;border-radius:10px;padding:10px 12px}
+.verdict.locked{display:none!important}
+.verdict.locked + .lockbadge{position:static!important;display:block!important;padding:14px 16px;border:1px dashed #556;border-radius:12px;text-align:center;background:transparent}
+.sum3 ol{margin:4px 0 0 20px;font-size:14px;line-height:1.75}
+.ws-key{margin-top:12px;border-top:1px dashed #777;padding-top:8px;font-size:13px}
+body.worksheet .stage,body.worksheet canvas,body.worksheet .notes,body.worksheet .panel,body.worksheet .vwrap,body.worksheet .teacher-bar,body.worksheet #lgcPanel,body.worksheet .limit,body.worksheet .no-print{display:none!important}
+body.worksheet .ws,body.worksheet .ws-only{display:block!important}
+body.worksheet .ws svg *{fill:none!important;stroke:#000!important}
+body.worksheet .ws svg text{fill:#000!important;stroke:none!important}
+@media print{
+ .stage,canvas,.notes,.panel,.vwrap,.teacher-bar,#lgcPanel,.limit,.no-print,#predCard,.lockbadge{display:none!important}
+ .ws,.ws-only{display:block!important}
+ body:not(.mode-teacher) .teacher-only{display:none!important}
+ .ws svg *{fill:none!important;stroke:#000!important}
+ .ws svg text{fill:#000!important;stroke:none!important}
+}
+span.pp-wait{border:0;padding:0}
+.kicker,.ctrl label,.ends,.ctrl .ends,.progress-lab,.small,.mission,.fb,details.hintbox summary,.rd,.srclab,.meta-row,.badge,footer,.conf-row,.ph-read,.tguide-body h4{font-size:12px}
+</style>
+<script id="gc-wsplot">
+(G=>{
+const Z=Math,B=Z.abs,R=v=>Z.round(v*10)/10,L=Z.log10,K=' fill="#000" stroke="none"',N=' fill="none" stroke="#000"',J=JSON.stringify,
+E=s=>(''+s).replace(/[&<>\x22\x27]/g,c=>'&#'+c.charCodeAt(0)+';'),A=(k,v)=>' '+k+'="'+v+'"',XY=(x,y)=>A('x',x)+A('y',y),
+DA={dash:'6 4',dot:'1.5 3',dashdot:'7 3 1.5 3',longdash:'12 4',dashdotdot:'7 3 1.5 3 1.5 3'},Q=[],W='<g class="ws-key teacher-only">',PD='<path d="M',
+fin=y=>typeof y=='number'&&isFinite(y),H=(a,b)=>Z.hypot(a[0]-b[0],a[1]-b[1]),
+ax=(a,p,q)=>{const l=a.log,f=v=>l?L(v):v,lo=f(a.min),hi=f(a.max);return{f:v=>p+(f(v)-lo)/(hi-lo)*(q-p),i:z=>{const t=lo+(z-p)/(q-p)*(hi-lo);return l?10**t:t}}},
+tk=a=>{let t=a.ticks,r=[],i;if(t&&t.map)return t;
+if(a.log){for(i=Z.ceil(L(a.min));i<=L(a.max)+1e-9;i++)r.push(10**i);return r}
+t=t||5;for(i=0;i<=t;i++)r.push(a.min+(a.max-a.min)*i/t);return r},
+fa=(a,v)=>{const e=Z.round(L(v));return(a.fmt||a.log&&'sup')=='sup'&&10**e==v?(e?e-1?'10'+(''+e).replace(/./g,c=>'⁰¹²³⁴⁵⁶⁷⁸⁹⁻'['0123456789-'.indexOf(c)]):'10':'1'):
+B(v)>=1e4||v&&B(v)<1e-3?v.toExponential(0):''+ +v.toPrecision(4)},
+tx=(x,y,s,a,z)=>'<text'+XY(x,y)+' font-size="'+(z||9)+'"'+(a||' text-anchor="middle"')+K+'>'+E(s)+'</text>',
+frame=o=>{const w=o.w||320,h=o.h||200,p=o.pad??34,b=h-p,X=ax(o.x,p,w-p),Y=ax(o.y,b,p),c=({min,max,log})=>({min,max,log:!!log});
+let s='<g'+N+'>'+PD+p+' '+p+'V'+b+'H'+(w-p)+'"/>';
+tk(o.x).map(v=>{const x=R(X.f(v));s+=PD+x+' '+b+'v4"/>'+tx(x,b+14,fa(o.x,v))});
+tk(o.y).map(v=>{const y=R(Y.f(v));s+=PD+p+' '+y+'h-4"/>'+tx(p-6,y+3,fa(o.y,v),' text-anchor="end"')});
+if(o.x.label)s+=tx(w/2,h-4,o.x.label);
+if(o.y.label)s+=tx(10,h/2,o.y.label,' text-anchor="middle" transform="rotate(-90 10 '+h/2+')"');
+return{svg:s+'</g>',X:X.f,Y:Y.f,iX:X.i,o:{w,h,pad:p,x:c(o.x),y:c(o.y)}}},
+sample=(f,x0,x1,o={})=>{const n=o.n||160,r=o.fr,g=o.log||r&&r.o.x.log,D=o.depth??3,Y=r&&r.o.y,
+ok=y=>fin(y)&&(!r||o.clip==0||(y-Y.min)*(y-Y.max)<=0),
+pt=z=>{const x=r?r.iX(z):z;return[x,f(x),z]},a=g?L(x0):x0,b=g?L(x1):x1,P=[],S=[];let C=[],q,i,t;
+for(i=0;i<=n;i++){t=a+(b-a)*i/n;t=g?10**t:t;P.push(pt(r?R(r.X(t)):t))}
+const sub=(p,q,d)=>{if(!d||!r||!ok(p[1])||!ok(q[1])||B(r.Y(p[1])-r.Y(q[1]))<=2)return[];
+const m=R((p[2]+q[2])/2);if(m==p[2]||m==q[2])return[];const c=pt(m);return[...sub(p,c,d-1),c,...sub(c,q,d-1)]};
+q=[P[0]];for(i=1;i<P.length;i++)if(P[i][2]!=P[i-1][2])q.push(...sub(P[i-1],P[i],D),P[i]);
+q.map(p=>{if(ok(p[1]))C.push([p[0],p[1]]);else if(C[0]){S.push(C);C=[]}});
+if(C[0])S.push(C);return S},
+ln=o=>{const d=o.dash&&o.dash.map?o.dash.join(' '):DA[o.dash];return N+A('stroke-width',o.width||1.4)+(d?A('stroke-dasharray',d):'')},
+polyline=(S,r,o={})=>S.filter(g=>g[1]).map(g=>'<polyline'+ln(o)+(o.fn?A('data-fn',E(o.fn)):'')+(o.args?A('data-args',E(J(o.args))):'')+(o.id?A('data-series',E(o.id)):'')+
+A('data-n',g.length)+A('data-x0',g[0][0])+A('data-x1',g.at(-1)[0])+A('points',g.map(p=>R(r.X(p[0]))+','+R(r.Y(p[1]))).join(' '))+'/>').join(''),
+mk=(X,Y,h,f)=>{const a=(f?' fill="#000" stroke="#000"':N)+' stroke-width="1.2"/>',P=v=>'<polygon'+A('points',v.map(([u,w])=>X+u+','+(Y+w)).join(' '))+a;
+return h=='square'?'<rect'+XY(X-4,Y-4)+' width="8" height="8"'+a:h=='triangle'?P([[0,-5],[5,4],[-5,4]]):h=='tdown'?P([[0,5],[5,-4],[-5,-4]]):
+h=='diamond'?P([[0,-5],[5,0],[0,5],[-5,0]]):h=='cross'?PD+(X-4)+' '+(Y-4)+'l8 8m0-8l-8 8"'+N+'/>':'<circle'+A('cx',X)+A('cy',Y)+' r="4"'+a},
+mark=(x,y,h,r,f)=>mk(R(r.X(x)),R(r.Y(y)),h,f),
+svg=(parts,o={})=>{const r=o.frame,{w=320,h=200}=r?r.o:o;let b=[].concat(parts).join('');if(o.answer)b=W+b+'</g>';
+return'<svg'+A('viewBox','0 0 '+w+' '+(h+(o.eh||0)))+' width="100%" role="img"'+(r?" data-frame='"+J(r.o)+"'":'')+
+'><title>'+E(o.title||'Graph')+'</title><desc>'+E(o.desc||'')+'</desc>'+b+'</svg>'},
+fn=p=>p.call?p:(''+p).split('.').reduce((f,k)=>k&&f!=null?f[k]:f,G),
+nm=o=>o.s.label||o.s.id||o.k,
+lay=sp=>{const r=frame(sp.frame),it=[],pl=[];
+(sp.series||[{}]).map((s,k)=>{const p=s.fn||sp.fn,f=fn(p),x=s.x||sp.x||[r.o.x.min,r.o.x.max],F=v=>f(v,...(s.args||[])),m=s.marks,mx=[];if(!f?.call)return;
+const g=sample(F,x[0],x[1],{fr:r,n:s.n}),a=g.flatMap(c=>c.map(q=>[r.X(q[0]),r.Y(q[1])]));let n=0,e;
+if(m&&m.xs)m.xs.map(v=>fin(F(v))&&mx.push([r.X(v),r.Y(F(v))]));
+else if(m){a.map((q,i)=>i&&(n+=H(q,a[i-1])));e=Z.min(m.every||60,n/3.5);n=e/2;a.map((q,i)=>{if(i&&(n-=H(q,a[i-1]))<=0){mx.push(q);n+=e}})}
+it.push({s,k,p,g,a,m:mx})});
+it.map(o=>{const a=o.a,la=o.s.labelAt??'auto';if(!o.s.label||!a[0])return;let b=a.at(-1),c=-1;
+if(la=='auto')for(let j=1;j<9;j++){const q=a[Z.floor(a.length*j/9.5)];let d=1e9;
+it.map(u=>u!=o&&u.a.map((v,i)=>i&&(u.a[i-1][0]-q[0])*(v[0]-q[0])<=0&&(d=Z.min(d,B(v[1]-q[1])))));pl.map(l=>d=Z.min(d,B(l.y-q[1])+B(l.x-q[0])/4));if(d>c){c=d;b=q}}
+else if(la!='end'){const X=r.X(la);b=a.reduce((u,q)=>B(q[0]-X)<B(u[0]-X)?q:u)}
+const w=(''+o.s.label).length*5.6,l=c>=0&&c<10;pl.push(o.b={x:R(Z.min(b[0]+4,r.o.w-w-2)),y:R(b[1]-(l?16:5)),w,q:b,l})});
+return{r,it}},
+draw=(el,sp)=>{const{r,it}=lay(sp),parts=[r.svg],an=[],lg=sp.legend,v=it.some(o=>o.s.label||o.s.marks||o.s.id);let eh=0;
+it.map(o=>{const s=o.s,l=o.b;let g=polyline(o.g,r,{dash:s.dash,width:s.width,fn:!o.p.call&&o.p,args:s.args,id:s.id||v&&'s'+o.k});
+o.m.map(q=>g+=mk(R(q[0]),R(q[1]),s.marks.shape,s.marks.filled));
+if(l)g+=(l.l?PD+R(l.q[0])+' '+R(l.q[1])+'L'+l.x+' '+(l.y+3)+'"'+N+' stroke-width=".6"/>':'')+tx(l.x,l.y,s.label,' text-anchor="start" paint-order="stroke" stroke="#fff" stroke-width="3"',10).replace(K,' fill="#000"');an.push(g)});
+if(lg){const c=lg.cols||2,w=(r.o.w-20)/c;it.map((o,i)=>{const x=10+i%c*w,y=r.o.h+12+Z.floor(i/c)*14,s=o.s;
+an.push(PD+x+' '+y+'h24"'+ln(s)+'/>'+(s.marks?mk(x+12,y,s.marks.shape,s.marks.filled):'')+tx(x+28,y+3,nm(o),' text-anchor="start"'))});eh=Z.ceil(it.length/c)*14+8}
+(sp.marks||[]).map(m=>parts.push(mark(m.x,m.y,m.shape,r,m.filled)));
+if(sp.answer)parts.push(W+an.join('')+'</g>');
+return el.innerHTML=svg(parts,{frame:r,title:sp.title,desc:sp.desc,eh})},
+lint=sp=>{const{r,it}=lay(sp),e=[],u={},b=it.filter(o=>o.b),p=(c,m)=>c&&e.push(m);
+p(it[8],it.length+' series (9 or more series)');
+if(it[1])it.map(o=>{const s=o.s,k=ln(s)+(s.marks?s.marks.shape+!!s.marks.filled:'');p(u[k],'duplicate dash/marker '+u[k]+'/'+nm(o));u[k]=nm(o);p(o.m.length<3,'fewer than 3 markers '+nm(o))});
+b.map((a,i)=>b.slice(i+1).map(c=>p(B(a.b.y-c.b.y)<10&&a.b.x<c.b.x+c.b.w&&c.b.x<a.b.x+a.b.w,'label overlap '+nm(a)+'/'+nm(c))));
+p(r.o.w<.6*(sp.pageW||680),'width '+r.o.w+'px < 60% of page');return e},
+render=(el,sp)=>{if(typeof el=='string')el=document.querySelector(el);if(!el)return'';Q.push([el,sp]);
+if(!Q[1]&&G.addEventListener)G.addEventListener('beforeprint',()=>Q.map(q=>draw(...q)));
+return/[?&]worksheet=1/.test(G.location?.search)||sp.now?draw(el,sp):''};
+G.GCPlot={frame:frame,sample:sample,polyline:polyline,mark:mark,svg:svg,render:render,draw:draw,lint:lint,specs:()=>Q.map(q=>q[1]),version:2};
+})(globalThis);
+</script>
+<style id="r4fix"> body.predicted .pre-pred{display:none!important}a{color:var(--accent)}a:visited{color:var(--accent-2)}#lgcPanel .lgc-sub,#lgcPanel .lgc-out{opacity:1!important}@media print{a,a:visited{color:#000}}</style>
+<script id="gc-announce">
+(G=>{
+const D=G.document,T=()=>Date.now();
+const st={el:null,delay:400,gap:5000,win:1000,mode:'debounce',gate:null,pre:'',summary:null,timer:null,at:null,pend:null,last:null,lastW:-1e9,ui:-1e9,count:0};
+function ensure(id){if(st.el&&st.el.isConnected!==false)return st.el;let el=D&&D.getElementById(id||'statusLive');
+  if(!el&&D){el=D.createElement('div');el.id=id||'statusLive';(D.body||D.documentElement).appendChild(el);
+    el.setAttribute('style','position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0');}
+  if(el){el.setAttribute('role','status');el.setAttribute('aria-live','polite');el.setAttribute('aria-atomic','true');}
+  st.el=el;return el;}
+function write(t){if(typeof t==='function')t=t();t=String(t==null?'':t).replace(/\s+/g,' ').trim();if(!t||t===st.last)return false;
+  const el=ensure();if(!el)return false;el.textContent=t;st.last=t;st.lastW=T();st.count++;return true;}
+const open=()=>!st.gate||!!st.gate();
+function input(){st.ui=T();}
+if(D&&D.addEventListener)['input','change','click','keydown','pointerdown'].forEach(e=>D.addEventListener(e,input,true));
+function flush(){st.at=null;const w=st.lastW+st.gap-T();if(w>0){st.at=setTimeout(flush,w);return;}const t=st.pend;st.pend=null;if(t!=null&&open())write(t);}
+function auto(t){const n=T();if(st.ui>st.lastW&&n-st.ui<=3000&&n-st.lastW>=1000){clearTimeout(st.at);st.at=null;st.pend=null;return write(t);}
+  st.pend=t;if(st.at)return true;if(n-st.lastW>=st.gap){st.pend=null;return write(t);}st.at=setTimeout(flush,st.lastW+st.gap-n);return true;}
+function route(t,o){if(o&&o.now){clearTimeout(st.timer);return write(t);}
+  if(T()-st.ui<=st.win){clearTimeout(st.timer);st.timer=setTimeout(()=>{st.timer=null;if(open())write(t);},st.delay);return true;}return auto(t);}
+function attach(o){o=o||{};for(const k of ['delay','gap','win','mode','gate','pre','summary'])if(o[k]!=null)st[k]=o[k];
+  ensure(o.id);if(!open()&&st.pre)write(st.pre);return GCAnnounce;}
+function say(text,o){o=o||{};if(st.mode==='block'&&!o.force)return false;if(!open())return st.pre?write(st.pre):false;return route(text,o);}
+function update(){if(!st.summary)return false;return say(()=>st.summary());}
+function blockEnd(text,o){if(!open())return false;return route(text,o);}
+function reset(){clearTimeout(st.timer);clearTimeout(st.at);st.at=null;st.pend=null;st.last=null;if(st.el)st.el.textContent='';if(!open()&&st.pre)write(st.pre);}
+const GCAnnounce={version:2,attach,say,update,blockEnd,reset,input,get last(){return st.last;},get count(){return st.count;},get mode(){return st.mode;}};
+G.GCAnnounce=GCAnnounce;
+})(typeof window!=='undefined'?window:globalThis);
+</script>
+</head>
+<body>
+<script>
+
+window.R2={
+  unlock:function(){document.body.classList.add('predicted');
+    document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.remove('locked');v.removeAttribute('aria-hidden');v.removeAttribute('inert');v.inert=false;});},
+  relock:function(){document.body.classList.remove('predicted');
+    document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.add('locked');v.setAttribute('aria-hidden','true');v.setAttribute('inert','');});},
+  on:function(){return document.body.classList.contains('predicted');}
+};
+(function(){var was=false;
+  window.addEventListener('beforeprint',function(){was=document.body.classList.contains('worksheet');document.body.classList.add('worksheet');});
+  window.addEventListener('afterprint',function(){if(!was)document.body.classList.remove('worksheet');});})();
+(function(){
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('.choice,.toggle').forEach(function(el){
+      if(el.hasAttribute('tabindex')||el.tagName==='A'||el.tagName==='BUTTON')return;
+      el.setAttribute('tabindex','0');if(!el.hasAttribute('role'))el.setAttribute('role','button');
+      el.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();el.click();}});});});})();
+</script>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">General Chemistry · Aqueous Equilibria · SOLUBILITY AND pH</div>
+  <h1>Salt solubility and acidity —<br><em>PbF₂ vs PbI₂</em></h1>
+  <p class="lede">Does a slightly soluble salt dissolve better in an acidic solution? Put two lead salts, PbF₂ and PbI₂, side by side.
+    Change the pH and calculate the molar solubility with an <em>exact</em> mass-balance equation. Predict first.</p>
+</header>
+
+<div class="card no-print">
+  <div class="kicker"><span class="num">Learning objectives</span> After this activity you can …</div>
+  <div class="lo-goals">
+    <div class="g" id="lo1"><span class="chk"></span><span><span class="pre-pred">decide, with reasons, which of PbF₂ and PbI₂ is the <b>salt whose solubility changes in acid</b>.</span><span class="post-pred">identify the salt whose solubility changes in acid by asking whether its anion is the conjugate base of a <b>weak acid</b> or of a strong acid.</span></span></div>
+    <div class="g" id="lo2"><span class="chk"></span><span>calculate the <b>molar solubility at a given pH</b> from Ksp and the fraction α(F⁻) = Ka/(Ka + [H⁺]).</span></div>
+    <div class="g" id="lo3"><span class="chk"></span><span><span class="pre-pred">explain <b>which ion</b> of the dissolution equilibrium the H⁺ of an acidic solution reacts with, and how the equilibrium shifts as a result.</span><span class="post-pred">explain that H⁺ <b>reacts with the anion (F⁻)</b>, not with the metal ion, and shifts the dissolution equilibrium to the right.</span></span></div>
+  </div>
+  <div class="progress"><span id="prog"></span></div>
+  <div class="progress-lab" id="progLab">Progress 0% · Predict → Observe → Check → Complete</div>
+  <div class="meta-row"><span>Estimated time 15–20 min</span><span>Prerequisites: writing a Ksp expression · Ka of a weak acid · Le Chatelier's principle</span><span id="lvlNote">—</span></div>
+  <div class="btns no-print" style="margin-top:12px;align-items:center">
+    <span class="lvl-lab" style="font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--ink-400)">Level</span>
+    <a class="toggle" id="lvlBasic" data-lvl="basic" href="?level=basic">Basic</a>
+    <a class="toggle" id="lvlStandard" data-lvl="standard" href="?level=standard">Standard</a>
+    <a class="toggle" id="lvlAdvanced" data-lvl="advanced" href="?level=advanced">Advanced</a>
+  </div>
+</div>
+
+<div class="card sum3" id="sum3">
+  <div class="kicker"><span class="num">Key summary</span> Three key ideas</div>
+  <ol><li>The solubility-product constant Ksp is fixed at a given temperature, but the molar solubility can change with other equilibria in the solution.</li>
+    <li><span class="pre-pred">The ionization constant of a weak acid HA is Ka = [H⁺][A⁻]/[HA].</span><span class="post-pred">An anion that is the conjugate base of a weak acid combines with H⁺ to form a weak-acid molecule, so the [H⁺] of the solution sets the free concentration of that anion.</span></li>
+    <li><span class="pre-pred">To judge the molar solubility, first check whether the ions formed when the salt dissolves take part in other equilibria in the solution.</span><span class="post-pred">Anions that are conjugate bases of strong acids (Cl⁻, Br⁻, I⁻, NO₃⁻) hardly combine with H⁺ in water.</span></li></ol>
+</div>
+
+<div class="stage">
+  <div class="box">
+    <h2>Solution conditions</h2>
+    <div class="cond" id="condTxt">PbF₂ · pH 7.00</div>
+    <div class="cond small" id="eqTxt">PbF₂(s) ⇌ Pb²⁺(aq) + 2F⁻(aq)</div>
+    <div class="katab" id="kspTxt">Ksp = 3.6×10⁻⁸ · Ka(HF) = 6.8×10⁻⁴</div>
+    <div class="pp-wait">The molar solubility and species concentrations are shown after you submit your prediction.</div>
+    <div class="post-pred">
+      <div class="rd">
+        <span>Molar solubility s</span><b id="sNow">—</b>
+        <span>Ratio to pH 7.00</span><b id="ratioNow">—</b>
+        <span>Free anion fraction α</span><b id="aNow">—</b>
+        <span>[metal ion] = s</span><b id="mNow">—</b>
+        <span>[free anion]</span><b id="xNow">—</b>
+        <span>[weak-acid molecule] (HF)</span><b id="hxNow">—</b>
+      </div>
+      <p class="small" id="bufNote" style="margin-top:8px">—</p>
+    </div>
+  </div>
+  <div class="box">
+    <h2>Molar solubility vs pH (log scale)</h2>
+    <div class="pp-wait">The s–pH curves are shown after you submit your prediction.</div>
+    <div class="post-pred">
+    <canvas id="cvCurve" width="460" height="300" tabindex="0" role="application" aria-roledescription="interactive graph" aria-describedby="cvCurveHelp" aria-label="Graph of molar solubility vs pH"></canvas>
+    <p class="sr-only" id="cvCurveHelp">How to use: focus the graph and change the pH with the arrow keys. The pH slider does the same.</p>
+    <div class="ph-read"><span>Thick solid line: chosen salt · thin lines: other salts (PbF₂ dashed · CaF₂ dotted · PbI₂ and AgCl dash-dot)</span><span id="curLab">—</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card no-print" id="entryCard">
+  <div class="kicker"><span class="num">Entry check</span> Before you start — prerequisites and key terms</div>
+  <p style="font-size:15px;margin-bottom:6px">Which is the correct solubility-product expression for PbF₂(s) ⇌ Pb²⁺(aq) + 2F⁻(aq)?</p>
+  <div class="choices" id="entryChoices" role="group" aria-label="Entry check">
+    <span class="choice" data-v="e1">Ksp = [Pb²⁺][F⁻]</span><span class="choice" data-v="e2">Ksp = [Pb²⁺][F⁻]²</span><span class="choice" data-v="e3">Ksp = [Pb²⁺][F⁻]² / [PbF₂]</span></div>
+  <div class="fb" id="fbEntry" aria-live="polite"></div>
+  <details class="hintbox" id="entryGloss"><summary>Key terms</summary>
+    <p><b>Molar solubility s</b>: moles of salt that dissolve in 1 L of saturated solution (mol/L). · <b>Solubility-product constant Ksp</b>: the equilibrium constant between the solid and its saturated solution (the solid is not written in the expression). ·
+    <b>Conjugate base</b>: the species left after an acid gives away H⁺ (HF → F⁻). · <b>Fraction α(F⁻)</b> = [F⁻] / ([F⁻] + [HF]) = Ka / (Ka + [H⁺]). ·
+    <b>Buffered (fixed pH)</b>: a solution whose pH hardly changes even when acid is used up.</p></details>
+</div>
+
+<div class="card no-print" id="predCard">
+  <div class="kicker"><span class="num">Predict</span> Think first, before you observe</div>
+  <p style="font-size:15px;margin-bottom:6px">Saturated solutions of PbF₂ and PbI₂ are acidified from pH 7 to <b>pH 1 (held by a buffer)</b>. What happens to the molar solubility of each salt?</p>
+  <div class="choices" id="predChoices" role="group" aria-label="Prediction">
+    <span class="choice" data-v="both">Both PbF₂ and PbI₂ increase by tens of times</span>
+    <span class="choice" data-v="fonly">Only PbF₂ increases by tens of times; PbI₂ stays almost the same</span>
+    <span class="choice" data-v="none">Both PbF₂ and PbI₂ stay almost the same</span>
+    <span class="choice" data-v="ionly">Only PbI₂ increases by tens of times; PbF₂ stays almost the same</span>
+  </div>
+  <div class="conf-row"><span>Confidence</span><input type="range" id="conf" min="0" max="100" value="50" aria-label="Confidence"><span id="confLab">Medium</span></div>
+  <button id="predSubmit">Lock in prediction</button>
+  <div class="gate-msg" id="gateMsg" aria-live="polite"></div>
+</div>
+
+<div class="vwrap no-print">
+  <div class="verdict locked" id="verdict" data-lock aria-hidden="true" inert>
+    <div class="big" id="sBig">s = —</div>
+    <p id="sMsg">Change the salt and the pH.</p>
+  </div>
+  <div class="lockbadge">The explanation opens after you lock in a prediction</div>
+</div>
+
+<div class="panel no-print">
+  <div class="controls">
+    <div class="ctrl"><label>Slightly soluble salt <span class="val" id="saltLab">PbF₂</span></label>
+      <div class="btns" id="saltBtns" role="group" aria-label="Type of slightly soluble salt"><span class="toggle on" data-salt="pbf2" role="button" aria-pressed="true">lead(II) fluoride PbF₂</span><span class="toggle" data-salt="pbi2" role="button" aria-pressed="false">lead(II) iodide PbI₂</span><span class="toggle" data-salt="caf2" role="button" aria-pressed="false">calcium fluoride CaF₂</span><span class="toggle" data-salt="agcl" role="button" aria-pressed="false">silver chloride AgCl</span></div></div>
+    <div class="ctrl"><label for="ph">Solution pH (held by a buffer) <span class="val" id="phLab">7.00</span></label>
+      <input type="range" id="ph" min="0" max="700" value="700" step="1" aria-label="Solution pH"><div class="ends"><span>pH 0</span><span>pH 7</span></div></div>
+    <div class="ctrl"><label for="lka">Ka of HF (hypothetical change, log scale) <span class="val" id="kaLab">6.8×10⁻⁴</span></label>
+      <input type="range" id="lka" min="-500" max="-200" value="-317" step="1" aria-label="log of the conjugate-acid Ka"><div class="ends"><span>10⁻⁵</span><span>10⁻²</span></div></div>
+    <div class="ctrl"><label>Actions</label>
+      <div class="btns"><button id="auto">Acidify automatically</button><button id="kaReset">Reset Ka to HF</button><button id="reset">Reset</button></div></div>
+  </div>
+  <p class="small" style="margin-top:12px">The molar solubility is found without approximation by putting the mass balance 2[Pb²⁺] = [F⁻] + [HF] and the Ka expression into the Ksp expression. The pH is assumed to be held by a buffer (why this is needed is explained in "Limits" after the prediction).</p>
+</div>
+
+<div class="notes post-pred">
+  <div class="note"><h3>Why PbF₂ dissolves better in acid</h3>
+    <p>F⁻ is the conjugate base of the weak acid HF, so it combines with H⁺ to form HF. When free [F⁻] drops, Q = [Pb²⁺][F⁻]² becomes smaller than Ksp and more solid dissolves.
+      H⁺ reacts with F⁻, not with Pb²⁺. Overall reaction: PbF₂(s) + 2H⁺ ⇌ Pb²⁺ + 2HF.</p>
+    <div class="eq">Ksp = s · (2s·α)² = 4s³α² ,  α = Ka / (Ka + [H⁺])</div></div>
+  <div class="note"><h3>PbI₂ and AgCl do not depend on pH</h3>
+    <p>I⁻ and Cl⁻ are conjugate bases of strong acids (HI, HCl), so they hardly combine with H⁺ (α = 1). Adding acid leaves the free anion concentration unchanged, and so the molar solubility is unchanged.
+      The more basic the anion (the smaller the Ka of its conjugate acid), the larger the effect of pH — check this with the Ka slider.
+      In soil science this is why the solubility of a heavy-metal salt in acidic soil depends on its anion, not only on the metal.</p>
+    <div class="eq">If [H⁺] ≫ Ka,  s ∝ [H⁺]^(2/3)</div></div>
+</div>
+
+<div class="card limit no-print post-pred">
+  <div class="kicker"><span class="num">Limits</span> Limits of this model</div>
+  <p>The model uses 25 °C, activity coefficients of 1 (ideal solution) and a pH held by a buffer. At pH 1, the HF formed as PbF₂ dissolves uses up about 0.12 M of H⁺, so 0.1 M strong acid alone cannot keep the pH at 1 (this is why a buffer must be assumed).
+    Ion pairs such as PbF⁺, hydrolysis of Pb²⁺ and activity effects in concentrated solutions (s &gt; 0.1 M) are not included — values in that range are model values.
+    Ksp values are from Martell and Smith, Critical Stability Constants (PbF₂ 3.6×10⁻⁸ = reference value for this topic, CaF₂ 3.9×10⁻¹¹, AgCl 1.8×10⁻¹⁰). Values that differ by more than 5% from the CRC Handbook are listed in the teacher layer. For PbI₂ the two sources differ by 24%, so its value is shown but not graded.</p>
+</div>
+
+<div class="card no-print post-pred" id="checkCard">
+  <div class="kicker"><span class="num">Check</span> Formative check — pass all items to complete</div>
+  <div class="q" id="q1">
+    <div class="qtext"><span class="qn">Q1</span><span id="q1Text">—</span></div>
+    <div class="choices" role="group" aria-label="Q1" id="q1Choices">
+      <span class="choice" data-q="1" data-v="a">—</span>
+      <span class="choice" data-q="1" data-v="b">—</span>
+      <span class="choice" data-q="1" data-v="c">—</span></div>
+    <details class="hintbox"><summary>Hint</summary><p id="q1Hint">—</p></details>
+    <div class="fb" id="fb1" aria-live="polite"></div>
+  </div>
+  <div class="q" id="q2">
+    <div class="qtext"><span class="qn">Q2 · Task</span><span id="missionTxt">—</span></div>
+    <div class="mission">Now: <b id="missionNow">—</b> · Goal: <b id="missionGoal">—</b></div>
+    <button id="missionBtn" style="margin-top:8px">Check</button>
+    <div class="fb" id="fb2"></div>
+  </div>
+  <div class="q" id="q3">
+    <div class="qtext"><span class="qn">Q3</span><span id="q3txt">—</span></div>
+    <input class="num-in" id="q3in" inputmode="decimal" placeholder="number" aria-label="Q3 answer"><button id="q3btn">Check</button>
+    <details class="hintbox"><summary>Hint</summary><p id="q3hint">—</p></details>
+    <div class="fb" id="fb3"></div>
+  </div>
+  <div class="q" id="qc">
+    <div class="qtext"><span class="qn">Q4 · Fill in the blank</span><span id="qcText">—</span></div>
+    <input class="num-in" id="qcin" placeholder="formula" style="width:180px" aria-label="Q4 blank"><button id="qcbtn">Check</button>
+    <details class="hintbox" id="qcHint"><summary>Hint</summary><p id="qcHintTxt">—</p></details>
+    <div class="fb" id="fbc"></div>
+  </div>
+  <div class="q" id="qho">
+    <div class="qtext"><span class="qn">Q5 · Apply (advanced, not required for completion)</span>In a buffer held at pH 2.00, what is the molar solubility of CaF₂ (Ksp 3.9×10⁻¹¹) in units of ×10⁻³ M? (Ka(HF) 6.8×10⁻⁴, one decimal place)</div>
+    <input class="num-in" id="qhoin" inputmode="decimal" placeholder="e.g. 1.0" aria-label="Q5 answer"><button id="qhobtn">Check</button>
+    <div class="fb" id="fbho"></div>
+  </div>
+</div>
+
+<div class="card reflect no-print post-pred" id="reflectCard">
+  <div class="kicker"><span class="num">Reflect</span> Reflect — metacognition · completion</div>
+  <p style="font-size:14px;color:var(--ink-400);margin-bottom:10px">My prediction result: <b id="predResult" style="color:var(--paper)">Not predicted yet</b></p>
+  <p style="font-size:14px;margin-bottom:6px">Explain in <b>one sentence</b> why the idea "adding acid makes all slightly soluble salts dissolve better" is wrong. Use a concept word (conjugate base, HF, Ksp, equilibrium) and a reason word ("because", "so"):</p>
+  <textarea id="selfExplain" placeholder="e.g. I⁻ is the conjugate base of a strong acid, so …" aria-label="Self-explanation"></textarea>
+  <div class="btns" style="margin-top:8px"><button id="reflectBtn">Submit explanation</button></div><div class="fb" id="fbReflect" aria-live="polite"></div>
+  <div class="self-check">
+    <label><input type="checkbox" class="sc"> I can use the anion to pick out the salts that dissolve better in acid</label>
+    <label><input type="checkbox" class="sc"> I can calculate the molar solubility at a given pH from α and Ksp</label>
+    <label><input type="checkbox" class="sc"> I can explain that H⁺ reacts with the anion and shifts the dissolution equilibrium</label>
+  </div>
+  <div class="card" style="margin-top:14px;background:#0d1320">
+    <div class="kicker"><span class="num">Apply</span> Use the idea in a new context (not required for completion)</div>
+    <p style="font-size:14px;color:var(--paper-2)">Tooth enamel is mainly calcium hydroxyapatite, Ca₅(PO₄)₃OH. It is weakened by acidic food, while Ca₅(PO₄)₃F, formed by fluoride treatment, is weakened less. Explain this in one or two sentences in terms of how basic the anions are (the strength of their conjugate acids).</p>
+    <textarea id="transferText" placeholder="e.g. OH⁻ and PO₄³⁻ combine with H⁺ …" aria-label="Transfer task" style="width:100%;min-height:56px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical;margin-top:8px"></textarea>
+    <div class="btns" style="margin-top:8px"><button id="transferBtn">Submit transfer task</button></div>
+    <div class="fb" id="fbTransfer"></div>
+  </div>
+  <p style="font-size:13px;color:var(--ink-400);margin-top:12px">Next up: dissolving AgCl by complex-ion formation (Kf) → predicting precipitation on mixing (Q and Ksp).</p>
+  <div class="stamp" id="stamp">COMPLETE · Completed — all checks passed.</div>
+</div>
+
+<div class="ws ws-only">
+  <h3>Worksheet — Salt solubility and acidity</h3>
+  <p>Name ________  Class ________  Date ________</p>
+  <p><b>1. Predict</b> — From pH 7 to pH 1 (buffered), what happens to the molar solubility of PbF₂ and PbI₂? (both increase / only PbF₂ increases / both stay the same / only PbI₂ increases) Reason for your choice:</p><div class="line"></div>
+  <p><b>2. Calculate</b> — Find the molar solubility of PbF₂ (Ksp 3.6×10⁻⁸, Ka(HF) 6.8×10⁻⁴) at pH 1.00 (buffered).</p>
+  <table style="border-collapse:collapse;width:100%;font-size:13px"><tr><th style="border:1px solid #000;padding:4px">Step</th><th style="border:1px solid #000;padding:4px">Equation</th><th style="border:1px solid #000;padding:4px">Value</th></tr>
+    <tr><td style="border:1px solid #000;padding:4px">α(F⁻)</td><td style="border:1px solid #000;padding:4px">Ka / (Ka + [H⁺])</td><td style="border:1px solid #000;padding:4px"></td></tr>
+    <tr><td style="border:1px solid #000;padding:4px">Ksp expression</td><td style="border:1px solid #000;padding:4px">Ksp = s · (2s·α)²</td><td style="border:1px solid #000;padding:4px"></td></tr>
+    <tr><td style="border:1px solid #000;padding:4px">s</td><td style="border:1px solid #000;padding:4px">(Ksp / 4α²)^(1/3)</td><td style="border:1px solid #000;padding:4px"></td></tr></table>
+  <p>s(pH 1) = ________ M, s(pH 7) = ________ M, ratio = ______ times</p>
+  <p><b>3. Observe</b> — On the axes below (log vertical scale), sketch the molar solubility vs pH curves of PbF₂, CaF₂, PbI₂ and AgCl. Mark which salts change with pH and which do not.</p>
+  <div id="wsPlot" aria-label="Worksheet graph axes"></div>
+  <p><b>4. Fill in the blank</b> — PbF₂(s) + 2H⁺(aq) ⇌ Pb²⁺(aq) + 2[＿＿＿](aq)</p>
+  <p class="ws-legend ws-key teacher-only">Curve key (teacher copy): solid PbF₂ · dashed CaF₂ · dotted PbI₂ · dash-dot AgCl.</p>
+  <div class="ws-key teacher-only"><b>Answer key (teacher only · not in the student printout)</b> — 1. only PbF₂ increases (about 28 times), PbI₂ unchanged ·
+    2. α = 6.75×10⁻³, s(pH 1) = 5.8×10⁻² M, s(pH 7) = 2.1×10⁻³ M, ratio about 28 ·
+    3. the fluorides (PbF₂, CaF₂) rise with slope −2/3 below about pH 4; PbI₂ and AgCl are flat · 4. HF</div>
+</div>
+
+<div class="teacher no-print">
+  <details class="tguide teacher-only"><summary>Teacher notes — open the lesson plan</summary>
+    <div class="tguide-body">
+      <h4>Lesson plan · 5E phase and time</h4><ul><li><b>Explain and Elaborate</b>, 15–20 min. After the common-ion effect, before complex-ion formation. Whole-class demonstration (<code>?mode=teacher</code>) or individual work.</li></ul>
+      <h4>Demonstration in 3 steps</h4><ul><li>① PbF₂ at pH 7 → s 2.1×10⁻³ M. ② pH 1 (buffered) → 5.8×10⁻² M, about 28 times. ③ Switch to PbI₂ and repeat → a flat line.</li></ul>
+      <h4>Three key questions</h4><ul><li>"Does H⁺ react with Pb²⁺ or with F⁻?"</li><li>"Ksp stays the same. How can the molar solubility increase?"</li><li>"Why is a buffer needed to keep the pH at 1?"</li></ul>
+      <h4>Common misconceptions</h4><ul><li>MC-pHsol-01 "acid dissolves every salt better" → ignores how basic the anion is. PbI₂ and AgCl do not depend on pH.</li><li>MC-pHsol-02 "H⁺ reacts with the metal ion" → ions of the same charge do not combine. Correct it with F⁻ + H⁺ ⇌ HF.</li></ul>
+      <h4>Calculation method (E2 exact equations)</h4><ul><li>At fixed pH, combining Ksp = [M²⁺][F⁻]², [HF] = [H⁺][F⁻]/Ka and 2[M²⁺] = [F⁻] + [HF] gives the exact closed form Ksp = 4s³α² (no approximation). For AgCl s = √Ksp; for PbI₂ s = (Ksp/4)^(1/3).</li>
+        <li>Buffer assumption: at pH 1 the HF formed, 2s(1 − α) ≈ 0.116 M, uses up H⁺, so 0.1 M HCl alone cannot keep the pH. Students see this in the "H⁺ used up" line on screen.</li></ul>
+      <h4>Sources</h4><ul><li>Ka(HF) 6.8×10⁻⁴: common reference value (Martell and Smith).</li>
+        <li>CaF₂ Ksp 3.9×10⁻¹¹ and AgCl 1.80×10⁻¹⁰: common reference values. PbF₂ and PbI₂: Martell and Smith.</li></ul>
+      <h4>Literature check (2 sources: Martell and Smith, Critical Stability Constants Vol. 1 and 4 (tables in Harvey, Analytical Chemistry 2.1) · CRC Handbook 84th ed. (LibreTexts Tables E1 and E3), checked 2026-10-03)</h4><ul>
+        <li>PbF₂: 3.6×10⁻⁸ (Martell–Smith) / 3.3×10⁻⁸ (CRC), 8% difference, both listed — with the CRC value, s at pH 7 is 2.0×10⁻³ M.</li>
+        <li>HF Ka: 6.8×10⁻⁴ (Martell–Smith) / 6.3×10⁻⁴ (CRC), 7% difference, both listed — with the CRC value the ratio becomes 29 instead of 28.</li>
+        <li>CaF₂: 3.9×10⁻¹¹ (Martell–Smith) / 3.45×10⁻¹¹ (CRC), 12% difference, both listed. AgCl: 1.8×10⁻¹⁰ / 1.77×10⁻¹⁰, agree.</li>
+        <li>PbI₂: 7.9×10⁻⁹ (Martell–Smith) / 9.8×10⁻⁹ (CRC), 24% difference — shown only; no numerical grading (only its pH independence is graded).</li></ul>
+    </div>
+  </details>
+  <div class="badges"><span class="badge">University general chemistry · solubility equilibria</span><span class="badge">Engine E2 equation-driven (exact mass balance)</span><span class="badge verify">Verified: independent Python (mpmath) multi-point comparison</span></div>
+  <div class="btns"><button id="btnTeacher" class="teacher-only">Toggle teacher mode</button><button id="btnWorksheet">Print worksheet (preview)</button></div>
+  <div class="teacher-bar teacher-only" id="teacherBar">
+    <div class="tb-title">Teacher mode — class controls</div>
+    <div class="btns"><button id="tReveal">Unlock answers/explanations</button>
+      <button class="post-pred" data-preset="pbf2ph1">PbF₂ pH 1</button><button class="post-pred" data-preset="pbi2ph1">PbI₂ pH 1</button><button class="post-pred" data-preset="caf2ph2">CaF₂ pH 2</button></div>
+  </div>
+</div>
+
+<footer>
+  <div><b>General Chemistry</b> · acidity and solubility · PbF₂ vs PbI₂ · exact mass balance (quantitatively verified) · sources: Martell and Smith, Critical Stability Constants; CRC Handbook 84th ed. (literature values listed)</div>
+  <div><b>KBS Lab</b> · General Chemistry Simulations · works offline · no personal data collected · report errors: bkim@gnu.ac.kr</div>
+</footer>
+</div>
+<script>
+"use strict";
+(function(){
+  const $=id=>document.getElementById(id);
+  const LV=(new URLSearchParams(location.search)).get('level')||'standard';
+  const LEVELS={
+    basic:{label:'Basic',hints:true,bank:'formula',
+      q1:{text:'Nitric acid is added to a saturated PbI₂ solution (solid still present) to make pH 1. What happens to the molar solubility of PbI₂?',ans:'b',
+        ch:{a:'It increases greatly — acids dissolve slightly soluble salts',b:'It hardly changes — I⁻ is the conjugate base of the strong acid HI and does not combine with H⁺',c:'It decreases — H⁺ acts as a common ion'},
+        fb:{b:'Correct — I⁻ is the conjugate base of a strong acid, so free [I⁻] stays the same in acid, and so does the molar solubility.',
+            a:'Choose PbI₂, lower the pH and look at the curve. The dissolution equilibrium shifts only if the anion combines with H⁺. (answer not revealed)',
+            c:'H⁺ is not one of the ions of PbI₂, so it is not a common ion. (answer not revealed)'},
+        hint:'HI is a strong acid. Does the conjugate base of a strong acid take H⁺ back in water?'},
+      mission:{kind:'ratio',salts:['pbf2'],min:10,kaHF:true,
+        txt:'Choose PbF₂ (keep the Ka of HF), lower the pH until the molar solubility is at least 10 times the value at pH 7, then press [Check].',
+        goal:'PbF₂ · s(pH)/s(7) ≥ 10',hint:'[H⁺] must become much larger than Ka (6.8×10⁻⁴) for F⁻ to drop a lot. Try going below pH 3.'},
+      q3:{txt:'At pH 7.00, what is the molar solubility of PbF₂ (Ksp 3.6×10⁻⁸) in units of ×10⁻³ M? (one decimal place)',ans:2.1,tol:0.06,hint:'Ksp = s·(2s)² = 4s³ (at pH 7, α ≈ 1).',
+        wrong:[[3.3,'You left out the 4 in Ksp = s·(2s)².'],[0.19,'√Ksp is the formula for a 1:1 salt. PbF₂ has two F⁻.']]},
+      cloze:{text:'Fill in the blank: F⁻ is the conjugate base of the weak acid [＿＿＿], so it combines with H⁺ in acidic solution. (formula or name)',
+        ok:['hf','hf(aq)','hydrogenfluoride','hydrofluoricacid','hydrogen-fluoride','hydrofluoric'],wrong:['hi','h2f','f2','hcl'],hint:'It is the molecule formed when one H⁺ joins F⁻.'}},
+    standard:{label:'Standard',hints:true,bank:'formula',
+      q1:{text:'Which of these salts dissolves better in an acidic solution than in pure water?',ans:'a',
+        ch:{a:'CaF₂',b:'AgCl',c:'PbI₂'},
+        fb:{a:'Correct — F⁻ is the conjugate base of the weak acid HF. In acid it becomes HF, free [F⁻] drops and the dissolution equilibrium shifts to the right.',
+            b:'Cl⁻ is the conjugate base of the strong acid HCl. Choose AgCl and change the pH. (answer not revealed)',
+            c:'I⁻ is the conjugate base of the strong acid HI. Look at the shape of the PbI₂ curve. (answer not revealed)'},
+        hint:'Ask whether the conjugate acid of the anion is a weak acid or a strong acid.'},
+      mission:{kind:'target',salts:['pbf2'],target:1.0e-2,rtol:0.03,kaHF:true,
+        txt:'Choose PbF₂ (keep the Ka of HF) and adjust the pH to make a solution with a molar solubility of 1.0×10⁻² M (±3%). Then press [Check].',
+        goal:'PbF₂ · s = 1.0×10⁻² M ± 3%',hint:'From s³ = Ksp/(4α²), find the α you need, then estimate [H⁺] from α = Ka/(Ka + [H⁺]).'},
+      q3:{txt:'How many times larger is the molar solubility of PbF₂ at pH 1.00 (buffered) than at pH 7.00? (whole number)',ans:28,tol:0.6,hint:'s ∝ α^(−2/3). At pH 1, α = Ka/(Ka + 0.10); at pH 7, α ≈ 1.',
+        wrong:[[148,'1/α is the ratio of the F⁻ fractions. s is proportional to α to the power −2/3.'],[1,'The salts that do not depend on pH are those whose anion is the conjugate base of a strong acid.']]},
+      cloze:{text:'Fill in the blank: PbF₂(s) + 2H⁺(aq) ⇌ Pb²⁺(aq) + 2[＿＿＿](aq) (formula)',
+        ok:['hf','hf(aq)'],wrong:['f-','f⁻','h2','h2o','pbh2'],hint:'F⁻ + H⁺ ⇌ ?'}},
+    advanced:{label:'Advanced',hints:false,bank:'type it exactly',
+      q1:{text:'In the region where the pH is well below pKa(HF), lowering the pH by 1 changes the molar solubility of PbF₂ by about how much?',ans:'b',
+        ch:{a:'It becomes 10 times larger',b:'It becomes about 10^(2/3) ≈ 4.6 times larger',c:'It does not change'},
+        fb:{b:'Correct — when [H⁺] ≫ Ka, α ≈ Ka/[H⁺] and s = (Ksp/4α²)^(1/3) ∝ [H⁺]^(2/3).',
+            a:'s is not directly proportional to [H⁺]. Look at the exponents in Ksp = 4s³α². (answer not revealed)',
+            c:'Look at the slope of the curve at low pH. (answer not revealed)'},
+        hint:''},
+      mission:{kind:'kaRatio',salts:['pbf2'],ph:2.00,target:10,rtol:0.03,
+        txt:'For PbF₂ at pH 2.00, change the Ka of HF (hypothetically) until the molar solubility is 10 times (±3%) its pH 7 value with the same Ka. Then press [Check]. Is the Ka you need larger or smaller than that of real HF?',
+        goal:'PbF₂ · pH 2.00 · s(2)/s(7) = 10 ± 3%',hint:''},
+      q3:{txt:'At pH 1.00 (buffered), what is the molar solubility of PbF₂ in units of ×10⁻² M? (Ksp 3.6×10⁻⁸, Ka 6.8×10⁻⁴, one decimal place)',ans:5.8,tol:0.06,hint:'',
+        wrong:[[0.21,'That is the value at pH 7.'],[11.6,'That is the concentration of HF formed (about 2s). Find s.']]},
+      cloze:{text:'Fill in the blank: when [H⁺] ≫ Ka, the molar solubility of PbF₂ is proportional to [H⁺] raised to the power [＿＿]. (fraction)',
+        ok:['2/3','⅔','two-thirds','twothirds','0.67','0.667'],wrong:['2','1/3','3/2','1/2','1'],hint:''}}
+  };
+  const CFG=LEVELS[LV]||LEVELS.standard;
+
+  const KA_HF=6.8e-4,LKA_HF=Math.log10(KA_HF),LKAMIN=-5,LKAMAX=-2,PHMIN=0,PHMAX=7;
+  const SALT={pbf2:{f:'PbF₂',name:'lead(II) fluoride',Ksp:3.6e-8,n:2,weak:true,M:'Pb²⁺',X:'F⁻',HX:'HF',eq:'PbF₂(s) ⇌ Pb²⁺(aq) + 2F⁻(aq)',ksp:'3.6×10⁻⁸'},
+    pbi2:{f:'PbI₂',name:'lead(II) iodide',Ksp:7.9e-9,n:2,weak:false,M:'Pb²⁺',X:'I⁻',HX:'HI',eq:'PbI₂(s) ⇌ Pb²⁺(aq) + 2I⁻(aq)',ksp:'7.9×10⁻⁹ (shown only)'},
+    caf2:{f:'CaF₂',name:'calcium fluoride',Ksp:3.9e-11,n:2,weak:true,M:'Ca²⁺',X:'F⁻',HX:'HF',eq:'CaF₂(s) ⇌ Ca²⁺(aq) + 2F⁻(aq)',ksp:'3.9×10⁻¹¹'},
+    agcl:{f:'AgCl',name:'silver chloride',Ksp:1.8e-10,n:1,weak:false,M:'Ag⁺',X:'Cl⁻',HX:'HCl',eq:'AgCl(s) ⇌ Ag⁺(aq) + Cl⁻(aq)',ksp:'1.8×10⁻¹⁰'}};
+  const okPH=p=>typeof p==='number'&&isFinite(p)&&p>=PHMIN-1e-9&&p<=PHMAX+1e-9;
+  const okKa=k=>typeof k==='number'&&isFinite(k)&&k>=1e-5*(1-1e-9)&&k<=1e-2*(1+1e-9);
+  function alpha(p,Ka){if(!okPH(p)||!okKa(Ka))return null;const h=Math.pow(10,-p);return Ka/(Ka+h);}
+  function sGen(p,salt,Ka){const t=SALT[salt];if(!t||!okPH(p)||!okKa(Ka))return null;const a=t.weak?alpha(p,Ka):1;
+    const s=t.n===2?Math.cbrt(t.Ksp/(4*a*a)):Math.sqrt(t.Ksp/a);return isFinite(s)&&s>0?s:null;}
+  function s(p,salt){return sGen(p,salt,KA_HF);}
+  function sKa(p,Ka){return sGen(p,'pbf2',Ka);}
+  function ratio(p,salt){const a=s(p,salt),b=s(7,salt);return (a==null||b==null)?null:a/b;}
+  function ratioKa(p,Ka){const a=sKa(p,Ka),b=sKa(7,Ka);return (a==null||b==null)?null:a/b;}
+  function hConsumed(p,salt){const t=SALT[salt],v=s(p,salt);if(v==null)return null;return t.weak?t.n*v*(1-alpha(p,KA_HF)):0;}
+  const fn={s,sKa,alpha,ratio,ratioKa,hConsumed,
+    sPbF2:p=>s(p,'pbf2'),sCaF2:p=>s(p,'caf2'),sPbI2:p=>s(p,'pbi2'),sAgCl:p=>s(p,'agcl')};
+
+  const SUP={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};
+  function sci(x,d,u){if(!(x>0)||!isFinite(x))return '—';let e=Math.floor(Math.log10(x)),m=x/Math.pow(10,e);
+    if(+m.toFixed(d)>=10){m/=10;e+=1;}return m.toFixed(d)+'×10'+String(e).split('').map(c=>SUP[c]||c).join('')+(u==null?' M':u);}
+
+  const S={salt:'pbf2',ph:7,lka:LKA_HF};
+  function Ka(){return Math.pow(10,S.lka);}
+  function kaHF(){return Math.abs(S.lka-LKA_HF)<1e-9;}
+  function sNow(){return sGen(S.ph,S.salt,Ka());}
+  function rNow(){const a=sNow(),b=sGen(7,S.salt,Ka());return (a==null||b==null)?null:a/b;}
+
+  function drawCurve(){const c=$('cvCurve');if(!c)return;const ctx=c.getContext('2d');const W=c.width,H=c.height;
+    ctx.clearRect(0,0,W,H);const pL=44,pB=28,pT=10,pR=12,Y0=-6,Y1=0;
+    const x=p=>pL+(p-PHMIN)/(PHMAX-PHMIN)*(W-pL-pR),y=l=>pT+(1-(Math.max(Y0,Math.min(Y1,l))-Y0)/(Y1-Y0))*(H-pT-pB);
+    ctx.strokeStyle='#1c2535';ctx.lineWidth=1;ctx.fillStyle='#8a96b0';ctx.font='11px ui-monospace,monospace';
+    for(let l=Y0;l<=Y1;l++){ctx.beginPath();ctx.moveTo(pL,y(l));ctx.lineTo(W-pR,y(l));ctx.stroke();ctx.fillText('1e'+l,6,y(l)+4);}
+    for(let p=PHMIN;p<=PHMAX;p++){ctx.fillText(String(p),x(p)-3,H-10);}
+    ctx.fillText('pH',W-30,H-22);
+    const DS={pbf2:[6,4],caf2:[2,3],pbi2:[7,3,2,3],agcl:[7,3,2,3]};
+    Object.keys(SALT).forEach(k=>{const cur=k===S.salt;ctx.setLineDash(cur?[]:DS[k]);ctx.strokeStyle=cur?'#E8C275':'#A7BCEC';ctx.lineWidth=cur?2.8:1.3;ctx.beginPath();
+      for(let i=0;i<=140;i++){const p=PHMIN+i/20;const v=sGen(p,k,Ka());const l=Math.log10(v);i===0?ctx.moveTo(x(p),y(l)):ctx.lineTo(x(p),y(l));}ctx.stroke();});
+    ctx.setLineDash([]);const v0=sNow();ctx.fillStyle='#7FB98A';ctx.beginPath();ctx.arc(x(S.ph),y(Math.log10(v0)),6,0,7);ctx.fill();}
+
+  const ST={predicted:false,observed:false,passed:false,prediction:null,manip:false,checks:{entry:false,q1:false,q2:false,q3:false,cloze:false,reflect:false}};
+  function pcent(){let p=0;if(ST.predicted)p+=25;if(ST.observed)p+=25;
+    p+=Math.round(Object.values(ST.checks).filter(Boolean).length/Object.keys(ST.checks).length*40);if(ST.passed)p+=10;return Math.min(100,p);}
+  function updateProgress(){const p=pcent();$('prog').style.width=p+'%';$('progLab').textContent='Progress '+p+'% · Predict → Observe → Check → Complete';
+    $('lo1').classList.toggle('done',ST.checks.q1&&ST.checks.cloze);$('lo2').classList.toggle('done',ST.observed&&ST.checks.q3);$('lo3').classList.toggle('done',ST.checks.q2&&ST.checks.reflect);
+    if(ST.passed)$('stamp').classList.add('on');}
+
+  function update(){const t=SALT[S.salt],ka=Ka(),v=sNow(),r=rNow(),a=t.weak?alpha(S.ph,ka):1;
+    window.__sim.metric={type:'molarSolubility',value:(typeof v==='number'&&isFinite(v))?v:null,unit:'M',ratio:r,alpha:a};
+    $('condTxt').textContent=t.name+' '+t.f+' · pH '+S.ph.toFixed(2);$('eqTxt').textContent=t.eq;
+    $('kspTxt').textContent='Ksp = '+t.ksp+' · '+(t.weak?'Ka(HF) = '+sci(ka,1,'')+(kaHF()?'':' (hypothetical)'):t.HX+' is a strong acid');
+    $('phLab').textContent=S.ph.toFixed(2);$('kaLab').textContent=sci(ka,1,'')+(kaHF()?' (HF)':'');
+    const fx=t.n*v*a,hx=t.n*v*(1-a);
+    $('sNow').textContent=sci(v,2);$('ratioNow').textContent=r.toFixed(r<10?2:1)+' times';$('aNow').textContent=a>0.9995?'1.000':a.toPrecision(3);
+    $('mNow').textContent=sci(v,2);$('xNow').textContent=sci(fx,2)+' ('+t.X+')';$('hxNow').textContent=t.weak?sci(hx,2)+' ('+t.HX+')':'0 ('+t.HX+' fully dissociated)';
+    $('bufNote').textContent=(t.weak?'H⁺ used up: the '+t.HX+' formed on dissolving uses up '+sci(hx,2)+' of H⁺ — the model assumes the buffer supplies this much and keeps the pH.':t.X+' is the conjugate base of a strong acid — it does not use up H⁺.')+(v>0.1?' s > 0.1 M: a model value outside the ideal-solution assumption.':'');
+    $('sBig').textContent='s = '+sci(v,2);
+    $('sMsg').innerHTML=t.f+' · pH '+S.ph.toFixed(2)+': free '+t.X+' fraction α = '+(a>0.9995?'1.000':a.toPrecision(3))+' → molar solubility <b>'+sci(v,2)+'</b>, '+r.toFixed(r<10?2:1)+' times the pH 7 value. '+
+      (t.weak?'This is because H⁺ turns '+t.X+' into '+t.HX+', so free '+t.X+' decreases.':t.X+' does not combine with H⁺, so it stays the same when the pH changes.');
+    $('missionNow').textContent=t.f+', pH '+S.ph.toFixed(2)+', s '+sci(v,2)+', ratio '+r.toFixed(2);
+    $('curLab').textContent='current s '+sci(v,2);
+    drawCurve();if(window.GCAnnounce)GCAnnounce.update();}
+  function observe(){if(!ST.predicted)return;ST.manip=true;
+    if(!ST.observed&&S.salt==='pbf2'&&kaHF()&&S.ph<=1.05){ST.observed=true;updateProgress();}}
+  function syncSlider(){$('ph').value=String(Math.round(S.ph*100));$('ph').setAttribute('aria-valuetext','pH '+S.ph.toFixed(2));
+    $('lka').value=String(Math.round(S.lka*100));$('lka').setAttribute('aria-valuetext','Ka '+sci(Ka(),1,''));}
+  function setSalt(k,user){if(!SALT[k])return;S.salt=k;document.querySelectorAll('#saltBtns .toggle').forEach(t=>{const on=t.dataset.salt===k;t.classList.toggle('on',on);t.setAttribute('aria-pressed',on?'true':'false');});
+    $('saltLab').textContent=SALT[k].f;update();if(user)observe();}
+  function setPh(p,user){S.ph=Math.max(PHMIN,Math.min(PHMAX,Math.round((isFinite(p)?p:7)*100)/100));syncSlider();update();if(user)observe();}
+  function setLka(l,user){S.lka=Math.max(LKAMIN,Math.min(LKAMAX,isFinite(l)?l:LKA_HF));syncSlider();update();if(user)observe();}
+  $('ph').addEventListener('input',e=>setPh((+e.target.value)/100,true));
+  $('lka').addEventListener('input',e=>setLka((+e.target.value)/100,true));
+  document.querySelectorAll('#saltBtns .toggle').forEach(t=>t.addEventListener('click',()=>setSalt(t.dataset.salt,true)));
+  $('cvCurve').addEventListener('keydown',ev=>{const k=ev.key;let d=0;if(k==='ArrowRight'||k==='ArrowDown')d=0.05;else if(k==='ArrowLeft'||k==='ArrowUp')d=-0.05;else return;ev.preventDefault();setPh(S.ph+d,true);});
+  let tmr=null;
+  function stopAuto(){if(tmr){clearInterval(tmr);tmr=null;}$('auto').textContent='Acidify automatically';}
+  $('auto').addEventListener('click',()=>{if(tmr){stopAuto();return;}$('auto').textContent='Stop';if(S.ph<=PHMIN+1e-9)setPh(PHMAX,true);
+    tmr=setInterval(()=>{if(document.hidden)return;if(S.ph<=PHMIN+1e-9){stopAuto();return;}setPh(S.ph-0.05,true);},200);});
+  $('kaReset').addEventListener('click',()=>setLka(LKA_HF,true));
+  $('reset').addEventListener('click',()=>{stopAuto();setSalt('pbf2',false);setLka(LKA_HF,false);setPh(7,false);});
+  $('conf').addEventListener('input',e=>{const v=+e.target.value;$('confLab').textContent=v<33?'Low':v<66?'Medium':'High';});
+
+  let predSel=null;
+  $('predChoices').addEventListener('click',e=>{const c=e.target.closest('.choice');if(!c||ST.predicted)return;
+    [...$('predChoices').children].forEach(x=>x.classList.remove('sel'));c.classList.add('sel');predSel=c.dataset.v;});
+  const PFB={fonly:['hit','Good prediction. Now keep PbF₂ selected, lower the pH slider to 1 or below yourself and watch the molar solubility change. Then switch to PbI₂ as well.','Correct (PbF₂ about 28 times, PbI₂ unchanged)'],
+    both:['refute','This is a common misconception. For an acid to dissolve a salt, the anion must combine with H⁺. Choose PbF₂, lower the pH to 1 or below, then switch to PbI₂ and compare.','Needs review (PbI₂ stays the same)'],
+    none:['refute','Ksp stays the same, but the molar solubility is affected by other equilibria. Choose PbF₂ and lower the pH to 1 or below.','Needs review (PbF₂ increases by tens of times)'],
+    ionly:['refute','H⁺ and Pb²⁺ are both cations, so they do not combine. H⁺ reacts with an anion. Choose PbF₂ and lower the pH to 1 or below.','Needs review (only PbF₂ increases)']};
+  $('predSubmit').addEventListener('click',()=>{if(ST.predicted)return;
+    if(!predSel){$('gateMsg').textContent='Choose an option first.';$('gateMsg').className='gate-msg refute';return;}
+    ST.predicted=true;Object.defineProperty(ST,'prediction',{value:predSel,writable:false,configurable:false});R2.unlock();const f=PFB[predSel];
+    $('gateMsg').textContent=f[1];$('gateMsg').className='gate-msg '+f[0];$('predResult').textContent=f[2];
+    $('predSubmit').disabled=true;document.querySelectorAll('#predChoices .choice').forEach(c=>{c.setAttribute('aria-disabled','true');c.style.pointerEvents='none';});
+    update();updateProgress();});
+
+  document.querySelectorAll('[data-q="1"]').forEach(c=>c.addEventListener('click',e=>{const v=e.target.dataset.v;
+    [...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    const ok=v===CFG.q1.ans;$('fb1').textContent=(ok||/^(Correct|Try again)/.test(CFG.q1.fb[v])?'':'Try again — ')+CFG.q1.fb[v];$('fb1').className='fb '+(ok?'ok':'no');if(ok)ST.checks.q1=true;updateProgress();}));
+  function missionOK(){const m=CFG.mission,v=sNow(),r=rNow();if(v==null||m.salts.indexOf(S.salt)<0)return false;
+    if(m.kind==='ratio')return kaHF()&&r>=m.min;
+    if(m.kind==='target')return kaHF()&&Math.abs(v/m.target-1)<=m.rtol;
+    return Math.abs(S.ph-m.ph)<=0.005&&Math.abs(r/m.target-1)<=m.rtol;}
+  $('missionBtn').addEventListener('click',()=>{const m=CFG.mission,v=sNow(),r=rNow();
+    if(!ST.predicted||!ST.manip){$('fb2').textContent='First submit your prediction, then adjust the salt, pH and Ka yourself — the starting state does not count for the task.';$('fb2').className='fb no';updateProgress();return;}
+    if(m.salts.indexOf(S.salt)<0){$('fb2').textContent='Wrong salt — choose PbF₂.';$('fb2').className='fb no';}
+    else if(m.kind!=='kaRatio'&&!kaHF()){$('fb2').textContent='Ka is a hypothetical value — press [Reset Ka to HF].';$('fb2').className='fb no';}
+    else if(m.kind==='kaRatio'&&Math.abs(S.ph-m.ph)>0.005){$('fb2').textContent='Set the pH to 2.00 (now '+S.ph.toFixed(2)+').';$('fb2').className='fb no';}
+    else if(missionOK()){$('fb2').textContent='Success — '+SALT[S.salt].f+' pH '+S.ph.toFixed(2)+', s '+sci(v,2)+', '+r.toFixed(2)+' times the pH 7 value.';$('fb2').className='fb ok';ST.checks.q2=true;}
+    else{$('fb2').textContent='Not yet: s '+sci(v,2)+', ratio '+r.toFixed(2)+'. '+(CFG.hints?m.hint:'Think again about α and the Ksp expression.');$('fb2').className='fb no';}
+    updateProgress();});
+  $('q3btn').addEventListener('click',()=>{const x=parseFloat(($('q3in').value||'').replace(',','.'));const q=CFG.q3;
+    if(!isNaN(x)&&Math.abs(x-q.ans)<=q.tol+1e-9){$('fb3').textContent='Correct — '+q.ans+'.';$('fb3').className='fb ok';ST.checks.q3=true;}
+    else{let t='Try again — '+(CFG.hints?q.hint:'Check your calculation again.')+' (answer not revealed)';
+      if(!isNaN(x))for(const w of q.wrong){if(Math.abs(x-w[0])<=Math.max(0.015,0.03*Math.abs(w[0]))){t='Try again — '+w[1]+' (answer not revealed)';break;}}
+      $('fb3').textContent=t;$('fb3').className='fb no';}
+    updateProgress();});
+  const CLOZE_OK=CFG.cloze.ok.slice();
+  $('qcbtn').addEventListener('click',()=>{const raw=($('qcin').value||'').trim().toLowerCase().replace(/\s+/g,'').replace(/[−–]/g,'-');
+    if(CLOZE_OK.indexOf(raw)>=0){$('fbc').textContent='Correct — this is the key relationship.';$('fbc').className='fb ok';ST.checks.cloze=true;}
+    else if(CFG.cloze.wrong.indexOf(raw)>=0){$('fbc').textContent='Try again — this is a common confusion. Think about what F⁻ forms when it combines with H⁺, and look again at Ksp = 4s³α².';$('fbc').className='fb no';}
+    else{$('fbc').textContent=CFG.hints?'Hint: '+CFG.cloze.hint:'Try again — check the form of the answer for the blank.';$('fbc').className='fb '+(CFG.hints?'hint':'no');}
+    updateProgress();});
+  const EFB={e2:['ok','Right — the solid is not written in the expression, and the coefficient 2 becomes the exponent of [F⁻].'],e1:['hint','A coefficient becomes an exponent. What is the coefficient of F⁻?'],e3:['hint','A pure solid is not written in an equilibrium-constant expression.']};
+  document.querySelectorAll('#entryChoices .choice').forEach(c=>c.addEventListener('click',e=>{
+    [...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    const v=e.target.dataset.v,f=EFB[v];$('fbEntry').textContent=f[1];$('fbEntry').className='fb '+f[0];
+    const g=$('entryGloss');if(g)g.open=true;if(v==='e2')ST.checks.entry=true;updateProgress();}));
+  const REFLECT_CONCEPTS=/(conjugate|weak acid|strong acid|\bHF\b|\bHI\b|F⁻|F-|I⁻|I-|K\s*sp|solubility product|equilibri\w*|fraction|proton|fluoride|iodide)/i;
+  const REFLECT_REL=/(\b(because|since|therefore|so|thus|hence|due to|as a result|which means|this means|when|if)\b|→)/i;
+  $('reflectBtn').addEventListener('click',()=>{const t=($('selfExplain').value||'').trim();
+    if(t.length<40){$('fbReflect').textContent='Not quite — explain in one sentence (40+ characters).';$('fbReflect').className='fb hint';}
+    else if(!REFLECT_CONCEPTS.test(t)){$('fbReflect').textContent='Add a key concept word — at least one of conjugate base, weak/strong acid, HF, Ksp, equilibrium.';$('fbReflect').className='fb hint';}
+    else if(!REFLECT_REL.test(t)){$('fbReflect').textContent='Link cause and effect — use "because", "so" or "therefore".';$('fbReflect').className='fb hint';}
+    else{$('fbReflect').textContent='Recorded — explaining in your own words makes understanding stronger.';$('fbReflect').className='fb ok';ST.checks.reflect=true;}
+    updateProgress();});
+  $('qhobtn').addEventListener('click',()=>{const x=parseFloat(($('qhoin').value||'').replace(',','.'));
+    if(!isNaN(x)&&Math.abs(x-1.3)<=0.06){$('fbho').textContent='Correct — α = 6.8×10⁻⁴/(6.8×10⁻⁴ + 0.010) = 0.0637, s = (Ksp/4α²)^(1/3) = 1.3×10⁻³ M (about 6.3 times the pH 7 value).';$('fbho').className='fb ok';}
+    else if(!isNaN(x)&&Math.abs(x-0.21)<=0.02){$('fbho').textContent='Try again — that is the value at pH 7 (α ≈ 1).';$('fbho').className='fb no';}
+    else{$('fbho').textContent='Try again — find α first, then solve Ksp = 4s³α² for s.';$('fbho').className='fb no';}});
+  $('transferBtn').addEventListener('click',()=>{const t=($('transferText').value||'').trim();
+    if(t.length>=40){$('fbTransfer').textContent='Good — OH⁻ and PO₄³⁻ are strong bases, so in acid they combine readily with H⁺ and the solid dissolves. F⁻ is a weaker base, so acid affects it less.';$('fbTransfer').className='fb ok';}
+    else{$('fbTransfer').textContent='Not quite — link how basic the anion is to how it combines with H⁺, in at least 40 characters.';$('fbTransfer').className='fb hint';}});
+  setInterval(()=>{if(ST.predicted&&ST.observed&&Object.keys(ST.checks).every(function(k){return ST.checks[k];})&&!ST.passed){ST.passed=true;updateProgress();}},300);
+
+  const WSPEC={frame:{w:430,h:250,x:{min:0,max:7,ticks:7,label:'pH (held by a buffer)'},y:{min:1e-6,max:1,log:true,label:'molar solubility s (M)'}},
+    series:[{fn:'__sim.fn.sPbF2',dash:'solid',label:'PbF₂',labelAt:0.5,marks:{shape:'circle',every:40}},{fn:'__sim.fn.sCaF2',dash:'dash',label:'CaF₂',labelAt:0.5,marks:{shape:'square',every:40}},
+      {fn:'__sim.fn.sPbI2',dash:'dot',label:'PbI₂',labelAt:5.5,marks:{shape:'triangle',every:40}},{fn:'__sim.fn.sAgCl',dash:'dashdot',label:'AgCl',labelAt:5.5,marks:{shape:'diamond',every:40}}],
+    answer:true,title:'Molar solubility vs pH',desc:'Horizontal axis pH 0–7, vertical axis molar solubility 1e-6 to 1 M on a log scale. Only the teacher copy shows the exact curves of the four salts.'};
+  function applyMode(){const q=new URLSearchParams(location.search);
+    if(q.get('mode')==='teacher')$('teacherBar').classList.add('on');
+    if(q.get('worksheet')==='1')document.body.classList.add('worksheet');}
+  $('btnTeacher').addEventListener('click',()=>$('teacherBar').classList.toggle('on'));
+  $('btnWorksheet').addEventListener('click',()=>{document.body.classList.toggle('worksheet');try{if(window.GCPlot)GCPlot.draw($('wsPlot'),WSPEC);}catch(e){}window.scrollTo(0,0);});
+  $('tReveal').addEventListener('click',()=>R2.unlock());
+  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',e=>{const p=e.target.dataset.preset;setLka(LKA_HF);
+    if(p==='pbf2ph1'){setSalt('pbf2');setPh(1);}
+    if(p==='pbi2ph1'){setSalt('pbi2');setPh(1);}
+    if(p==='caf2ph2'){setSalt('caf2');setPh(2);}}));
+  function applyLevel(){const q=new URLSearchParams(location.search);
+    function href(lv){q.set('level',lv);return '?'+q.toString();}
+    ['Basic','Standard','Advanced'].forEach(function(Cn){const lv=Cn.toLowerCase();const a=$('lvl'+Cn);if(a){a.href=href(lv);a.classList.toggle('on',lv===(LEVELS[LV]?LV:'standard'));}});
+    if(!CFG.hints){document.querySelectorAll('details.hintbox').forEach(function(d){if(d.id!=='entryGloss')d.style.display='none';});}
+    const ph=$('qcin');if(ph)ph.placeholder=CFG.bank;
+    $('q1Text').textContent=CFG.q1.text;document.querySelectorAll('#q1Choices [data-q="1"]').forEach(c=>{c.textContent=CFG.q1.ch[c.dataset.v];});$('q1Hint').textContent=CFG.q1.hint||'';
+    $('missionTxt').textContent=CFG.mission.txt;$('missionGoal').textContent=CFG.mission.goal;
+    $('q3txt').textContent=CFG.q3.txt;$('q3hint').textContent=CFG.q3.hint||'';
+    $('qcText').textContent=CFG.cloze.text;$('qcHintTxt').textContent=CFG.cloze.hint||'';
+    $('lvlNote').textContent='Current level: '+CFG.label;}
+
+  window.__sim={metric:null,ST,fn,LEVELS,level:(LEVELS[LV]?LV:'standard'),SALT,KA_HF,
+    domain:{controls:[{sel:'#saltBtns .toggle',kind:'toggle'},{sel:'#ph',kind:'range'},{sel:'#lka',kind:'range'}],metric:{min:0,max:20}},
+    key(n){return n==='pred'?'fonly':(n==='cloze'?CLOZE_OK.slice():(n==='q1'?CFG.q1.ans:null));},
+    clozeWrong:CFG.cloze.wrong[0],
+    state(){return {salt:S.salt,ph:S.ph,Ka:Ka(),lka:S.lka};},
+    setState(salt,p,ka){if(SALT[salt])setSalt(salt);if(typeof ka==='number'&&ka>0)setLka(Math.log10(ka));if(typeof p==='number')setPh(p);return window.__sim.metric;},
+    missionOK,
+    pump(){update();return window.__sim.metric;}};
+  applyMode();applyLevel();syncSlider();update();updateProgress();
+  window.__sim.leakTokens={answer:['PbI₂ unchanged','PbI₂ stays the same','PbF₂ about 28 times','conjugate base of a weak acid combines with H⁺'],
+    rationale:['combines with H⁺ to form a weak-acid molecule','hardly combine with H⁺','reacts with the anion (F⁻)','turns F⁻ into HF'],
+    misconception:['all slightly soluble salts','This is a common misconception','H⁺ and Pb²⁺ are both cations','the metal ion']};
+  window.__sim.domain.mission={kind:'explore',note:'adjust the salt, pH and Ka sliders to reach a solubility ratio or a target molar solubility'};
+  window.__sim.predStates={fonly:()=>window.__sim.setState('pbf2',1),none:()=>window.__sim.setState('pbf2',7),ionly:()=>window.__sim.setState('pbi2',1)};
+  if(window.GCAnnounce)GCAnnounce.attach({gate:()=>ST.predicted,pre:'After you submit your prediction, the molar solubility result will be read aloud.',summary:()=>{const m=window.__sim.metric,t=SALT[S.salt];if(!m||m.value==null)return '';
+    return t.f+', pH '+S.ph.toFixed(2)+': molar solubility '+sci(m.value,2)+' M, '+(m.ratio!=null?m.ratio.toFixed(m.ratio<10?2:1):'—')+' times the pH 7 value.';}});
+  if(window.GCPlot)GCPlot.render($('wsPlot'),WSPEC);
+})();
+</script>
+<script>/[?&]mode=teacher(&|$)/.test(location.search)&&document.body.classList.add('mode-teacher')</script>
+<script id="gc-record">(function(){
+"use strict";
+var K='genchem.en.history',OK=/^https:\/\/(lab\.jinuchem\.com|jinu-kbs\.github\.io)$|^http:\/\/localhost(:\d+)?$/;
+function load(){try{return JSON.parse(localStorage.getItem(K))||[];}catch(e){return[];}}
+function put(a){try{localStorage.setItem(K,JSON.stringify(a));}catch(e){}}
+function up(m){try{if(window.parent!==window)window.parent.postMessage(m,'*');}catch(e){}}
+function merge(inc){var a=load(),s={},n=0;a.forEach(function(r){s[r.ts+'|'+r.sim]=1;});
+ inc.forEach(function(r){if(r&&r.ts&&r.sim&&!s[r.ts+'|'+r.sim]){a.push(r);s[r.ts+'|'+r.sim]=1;n++;}});put(a);return n;}
+var GC={
+ save:function(r){r.ts=r.ts||new Date().toISOString();var a=load();a.push(r);put(a);up({type:'genchem:record',v:1,rec:r});return r;},
+ all:load, clear:function(){put([]);},
+ export:function(){var p=null;try{p=JSON.parse(localStorage.getItem('genchem.en.path'));}catch(e){}
+  var b=new Blob([JSON.stringify({app:'genchem',v:2,exported:new Date().toISOString(),history:load(),path:p},null,2)],{type:'application/json'});
+  var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='genchem_en_brain.json';a.click();URL.revokeObjectURL(u);
+  try{localStorage.setItem('genchem.en.backupAt',new Date().toISOString());}catch(e){}},
+ import:function(t){try{var o=JSON.parse(t),i=(o&&o.history)||o||[];if(!Array.isArray(i))return -1;var n=merge(i);
+  if(o&&o.path){try{localStorage.setItem('genchem.en.path',JSON.stringify(o.path));}catch(e){}}return n;}catch(e){return -1;}},
+ _meta:function(){var p=location.pathname.split('/').filter(Boolean),f=decodeURIComponent(p[p.length-1]||''),d=decodeURIComponent(p[p.length-2]||'');
+  var c=(f.match(/^(\d+)/)||[])[1]||d.replace(/[^0-9]/g,''),q=function(n){var m=document.querySelector('meta[name="'+n+'"]');return m?m.content:'';};
+  return{sim:f,path:(/^ch\d\d$/.test(d)?d+'/':'')+f,chapter:c?+c:null,level:(new URLSearchParams(location.search)).get('level')||'standard',
+   standard:q('curriculum-2022'),engine:q('engine-class'),title:document.title};},
+ autoInit:function(){var done=false,m=GC._meta();up({type:'genchem:hello',v:1,sim:m.path});
+  var iv=setInterval(function(){var s=window.__sim,st=s&&s.ST;if(!st||!st.passed||done)return;done=true;var k=null;
+   try{k=typeof s.key==='function'?s.key('pred'):null;}catch(e){}
+   GC.save({ts:new Date().toISOString(),sim:m.sim,path:m.path,title:m.title,chapter:m.chapter,standard:m.standard,engine:m.engine,level:m.level,
+    predicted:st.prediction||null,predict_correct:(k==null||st.prediction==null)?null:String(st.prediction)===String(k),check:st.checks||{},completed:true});},1000);
+  setTimeout(function(){clearInterval(iv);},1800000);}
+};
+window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='genchem:restore'||!OK.test(e.origin)||!Array.isArray(d.history))return;
+ up({type:'genchem:restored',v:1,added:merge(d.history)});});
+window.GCRecord=GC;
+if(document.readyState!=='loading')GC.autoInit();else document.addEventListener('DOMContentLoaded',GC.autoInit);
+})();
+</script>
+<script id="lgc-inject">
+(function(){
+  "use strict";
+  if(document.getElementById('lgcPanel')) return;
+  var KEY='genchem.en.lgc';
+  function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function simId(){ return decodeURIComponent(location.pathname.split('/').pop()||''); }
+  function loadAll(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+  function saveAll(o){ try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){} }
+
+  var id=simId(), all=loadAll(), data=all[id]||{reason:'',cloze:'',problem:''};
+  window.__sim = window.__sim || {};
+  window.__sim.LGC = { data:data, save:function(){ all[id]=data; saveAll(all); } };
+
+  var stl=document.createElement('style');
+  stl.textContent='#lgcPanel{margin:22px auto;max-width:980px;border:1px solid rgba(127,127,127,.35);border-radius:12px;padding:16px 18px;font-family:inherit;line-height:1.6}'
+    +'#lgcPanel h3{font-size:16px;margin:0 0 4px}'
+    +'#lgcPanel .lgc-sub{font-size:12px;opacity:.7;margin-bottom:10px}'
+    +'#lgcPanel label{display:block;font-size:13px;font-weight:600;margin:12px 0 4px}'
+    +'#lgcPanel textarea{width:100%;min-height:54px;border:1px solid rgba(127,127,127,.4);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;background:transparent;color:inherit;resize:vertical}'
+    +'#lgcPanel .lgc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}'
+    +'#lgcPanel button{font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid rgba(127,127,127,.5);background:transparent;color:inherit;cursor:pointer}'
+    +'#lgcPanel button:hover{border-color:currentColor}'
+    +'#lgcPanel .lgc-out{margin-top:10px;font-size:13px;white-space:pre-wrap;opacity:.92}'
+    +'#lgcPanel .lgc-shared{margin-top:12px;border-top:1px dashed rgba(127,127,127,.4);padding-top:10px;font-size:13px}'
+    +'@media print{#lgcPanel{display:none}}';
+  document.head.appendChild(stl);
+
+  var sec=document.createElement('section');
+  sec.id='lgcPanel'; sec.setAttribute('aria-label','My own notes and questions');
+  sec.innerHTML=''
+    +'<h3>My own notes and questions <span style="font-weight:400;font-size:12px">(learner-generated · not graded)</span></h3>'
+    +'<div class="lgc-sub">Explain in your own words, make your own fill-in-the-blank question, and write a question for a classmate. This space is for deeper understanding.</div>'
+    +'<label for="lgcReason">1. Explain my prediction and conclusion in my own words (with reasons)</label>'
+    +'<textarea id="lgcReason"></textarea>'
+    +'<label for="lgcCloze">2. Hide key words in my explanation with [square brackets] to make a fill-in-the-blank question</label>'
+    +'<textarea id="lgcCloze" placeholder="e.g. As the concentration of [H⁺] increases, the [pH] decreases."></textarea>'
+    +'<div class="lgc-btns"><button type="button" id="lgcClozePrev">Preview my question</button></div>'
+    +'<div class="lgc-out" id="lgcClozeOut" aria-live="polite"></div>'
+    +'<label for="lgcProblem">3. A question for a classmate (include the answer)</label>'
+    +'<textarea id="lgcProblem"></textarea>'
+    +'<div class="lgc-btns">'
+    +'<button type="button" id="lgcExport">Save my notes (JSON file)</button>'
+    +'<button type="button" id="lgcShare">Copy share link</button>'
+    +'</div>'
+    +'<div class="lgc-shared" id="lgcShared" style="display:none"></div>';
+  var anchor=document.querySelector('footer');
+  if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(sec,anchor);
+  else document.body.appendChild(sec);
+
+  var $=function(i){return document.getElementById(i);};
+  $('lgcReason').value=data.reason||''; $('lgcCloze').value=data.cloze||''; $('lgcProblem').value=data.problem||'';
+  function persist(){ data.reason=$('lgcReason').value; data.cloze=$('lgcCloze').value; data.problem=$('lgcProblem').value; window.__sim.LGC.save(); }
+  $('lgcReason').addEventListener('input',persist);
+  $('lgcCloze').addEventListener('input',persist);
+  $('lgcProblem').addEventListener('input',persist);
+
+  $('lgcClozePrev').addEventListener('click',function(){
+    var t=$('lgcCloze').value||'', n=0, ans=[];
+    var q=t.replace(/\[([^\]]+)\]/g,function(m,w){ n++; ans.push(w); return '____('+n+')'; });
+    $('lgcClozeOut').textContent = n ? ('Question: '+q+'\nAnswer: '+ans.join(', ')) : 'Put key words in [square brackets] to turn them into blanks.';
+  });
+
+  function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(s){ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+
+  $('lgcExport').addEventListener('click',function(){
+    persist();
+    var payload={app:'genchem',kind:'lgc',sim:id,exported:new Date().toISOString(),lgc:data};
+    var b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u; a.download='genchem_lgc_'+id.replace(/\.html$/,'')+'.json'; a.click(); URL.revokeObjectURL(u);
+  });
+  $('lgcShare').addEventListener('click',function(){
+    persist();
+    var link=location.origin+location.pathname+location.search+'#share='+enc({sim:id,lgc:data});
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link).then(function(){ alert('Share link copied. Send it to a classmate.'); },
+        function(){ prompt('Copy the link below:', link); });
+    } else prompt('Copy the link below:', link);
+  });
+
+  (function(){
+    var m=(location.hash||'').match(/share=([^&]+)/); if(!m) return;
+    try{
+      var o=dec(m[1]), L=o.lgc||{}, html='<b>Shared by a classmate</b>';
+      if(L.reason)  html+='<div>· Explanation: '+esc(L.reason)+'</div>';
+      if(L.cloze)   html+='<div>· Fill-in-the-blank text: '+esc(L.cloze)+'</div>';
+      if(L.problem) html+='<div>· Question: '+esc(L.problem)+'</div>';
+      var sh=$('lgcShared'); sh.innerHTML=html; sh.style.display='block';
+    }catch(e){}
+  })();
+})();
+</script>
+<script id="gc-reflectguard">
+(function(){"use strict";
+function go(){var ta=document.getElementById('selfExplain'),b=document.getElementById('reflectBtn');if(!ta||!b)return;
+var ex=(ta.getAttribute('placeholder')||'').replace(/^(?:e\.g\.|example)\s*[:：]?\s*/i,''),fb=document.getElementById('fbReflect')||document.getElementById('fb2');if(!fb)return;
+ta.setAttribute('placeholder','In your own words: "I observed (what), and because (principle), (result)."');
+var n=0,last='',nm=function(x){return x.replace(/[\s.…,·"'()]/g,'');};
+b.addEventListener('click',function(e){var t=nm(ta.value),x=nm(ex);
+ if(x.length>8&&t.length>=8&&(x.indexOf(t)>=0||t.indexOf(x.slice(0,Math.ceil(x.length*.8)))>=0)){e.stopImmediatePropagation();
+  fb.textContent='This looks copied from the example. Recall what you observed and write it again in your own words.';fb.className='fb hint';last=fb.textContent;}},true);
+new MutationObserver(function(){var c=fb.className,t=fb.textContent;if(t===last)return;
+ if(/hint/.test(c)&&/^Not quite/.test(t)){n++;fb.textContent=n<2?'Not quite — write one sentence (40+ characters) that says what you observed and why, e.g. "Because …, …". If it is still not enough, you will get a clue.':t.replace(/^Not quite\s*—\s*/,'Clue: ');}
+ else if(/ok/.test(c)&&ex&&t.indexOf('Compare it with')<0)fb.textContent=t+' Compare it with the example explanation: '+ex;
+ last=fb.textContent;}).observe(fb,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});}
+if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);})();
+</script>
+</body>
+</html>
+

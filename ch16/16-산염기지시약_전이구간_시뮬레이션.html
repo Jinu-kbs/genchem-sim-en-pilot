@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="sim-tier" content="core">
+<title>Acid–Base Indicator Transition Ranges · Simulation (self-directed learning · teacher edition)</title>
+<meta name="description" content="Move the pH and watch seven acid–base indicators change color only inside their transition ranges. Combine indicators to narrow down the pH of an unknown sample.">
+<meta name="curriculum-univ" content="General Chemistry · acids and bases · pH / acid–base indicator / transition range">
+<meta name="curriculum-2022" content="General Chemistry">
+<meta name="curriculum-2022-text" content="">
+<meta name="school-level" content="University general chemistry">
+<meta name="engine-class" content="E3-state-diagram">
+<meta name="misconception-id" content="MC-ind-01: if phenolphthalein is colorless, the solution is acidic / MC-ind-02: indicators change color at pH 7 / MC-ind-03: one indicator gives the exact pH">
+<style>
+  :root{--ink:#0B0F17;--ink-700:#1A2030;--ink-600:#222a3d;--ink-400:#8C98B3;
+    --paper:#F4F1EA;--paper-2:#E8E3D6;--accent:#A7BCEC;--accent-2:#E8C275;--warn:#E36B5B;--good:#7FB98A;
+    --font-serif:Georgia,'Times New Roman',serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard',sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--paper);font-family:var(--font-sans);min-height:100vh;word-break:keep-all;overflow-wrap:break-word}
+  body{padding:40px 28px 80px;line-height:1.6}.wrap{max-width:1120px;margin:0 auto}
+  header{border-bottom:1px solid var(--ink-700);padding-bottom:26px;margin-bottom:24px}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:5px;color:var(--accent);text-transform:uppercase}
+  h1{font-family:var(--font-serif);font-weight:600;letter-spacing:-1.2px;font-size:44px;margin-top:14px;line-height:1.08} h1 em{color:var(--accent-2);font-style:normal}
+  .lede{font-family:var(--font-serif);font-size:18px;color:var(--ink-400);margin-top:16px;max-width:760px}
+  .card{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:20px;margin-top:20px}
+  .kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;display:flex;gap:10px} .kicker .num{background:#2a3350;color:var(--accent-2);border-radius:6px;padding:2px 8px}
+  .lo-goals{display:flex;flex-direction:column;gap:8px;margin-bottom:14px} .lo-goals .g{display:flex;gap:10px;font-size:15px;color:var(--paper-2)} .lo-goals .chk{width:18px;height:18px;border:1.5px solid var(--ink-400);border-radius:5px;flex:0 0 auto;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink)} .lo-goals .g.done .chk{background:var(--good);border-color:var(--good)} .lo-goals .g.done .chk::after{content:"✓"}
+  .meta-row{display:flex;gap:10px;flex-wrap:wrap;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-bottom:10px}
+  .progress{height:12px;border-radius:7px;background:#10162260;border:1px solid #2a3144;overflow:hidden} .progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5E6B85,var(--accent-2));transition:width .4s} .progress-lab{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px;text-align:right}
+  .stage{display:grid;grid-template-columns:1.35fr 0.65fr;gap:20px;margin-top:8px}
+  .box{background:var(--ink-700);border:1px solid #2a3144;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0} .box h2{font-family:var(--font-serif);font-size:20px;color:var(--accent-2)}
+  svg#chart{width:100%;height:auto;display:block}
+  svg#chart text{font-family:var(--font-sans);fill:var(--paper-2)} svg#chart .ax{stroke:#3a4360;stroke-width:1} svg#chart .axl{font-size:12px;fill:var(--ink-400)}
+  svg#chart .tbar{stroke:#5E6B85;stroke-width:1} svg#chart .cname{font-size:12px;fill:var(--paper-2)} svg#chart .rowlab{font-size:12px}
+  svg#chart .cursor{stroke:var(--accent-2);stroke-width:2;stroke-dasharray:4 3} svg#chart .band{fill:var(--accent-2);fill-opacity:.12;stroke:var(--accent-2);stroke-opacity:.6}
+  svg#chart .rowhit{fill:transparent;cursor:pointer} svg#chart .rowsel{fill:#2a3350;fill-opacity:.55}
+  .ctrl{display:flex;flex-direction:column;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400)}
+  .ctrl input[type=range]{width:100%;accent-color:var(--accent-2)} .phbig{font-family:var(--font-serif);font-size:30px;color:var(--accent-2)}
+  .indsel{display:flex;flex-wrap:wrap;gap:6px} .indsel label{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--paper-2);background:var(--ink-600);border:1px solid #313a52;border-radius:8px;padding:5px 9px;cursor:pointer} .indsel input{accent-color:var(--accent-2)}
+  .tubes{display:flex;flex-direction:column;gap:8px}
+  .tube{display:flex;gap:10px;align-items:center;background:#0d1320;border:1px solid #2a3144;border-radius:10px;padding:8px 10px}
+  .sw{width:34px;height:34px;border-radius:50% 50% 12px 12px;border:1.5px solid #8a93a8;flex:0 0 auto;position:relative;background-image:linear-gradient(45deg,#2a3144 25%,transparent 25%,transparent 75%,#2a3144 75%),linear-gradient(45deg,#2a3144 25%,#0d1320 25%,#0d1320 75%,#2a3144 75%);background-size:8px 8px;background-position:0 0,4px 4px}
+  .sw>i{position:absolute;inset:0;border-radius:inherit}
+  .tube .tx{font-size:12.5px;color:var(--paper-2);line-height:1.45} .tube .tx b{color:var(--paper)} .tube .tx .cons{font-family:var(--font-mono);color:var(--accent)}
+  .deduce{font-family:var(--font-mono);font-size:13px;color:var(--paper-2);background:#0d1320;border:1px dashed var(--accent);border-radius:10px;padding:10px 12px} .deduce b{color:var(--accent-2);font-size:15px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px} .choice{font-size:14px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:10px 16px;cursor:pointer} .choice:hover{border-color:var(--accent)} .choice.sel{background:#2a3350;border-color:var(--accent-2)}
+  .conf-row{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-bottom:12px} .conf-row input{flex:1;accent-color:var(--accent-2)}
+  .gate-msg{font-size:14px;margin-top:8px;min-height:1.4em} .gate-msg.refute{color:var(--warn)} .gate-msg.hit{color:var(--good)}
+  .verdict{margin-top:20px;padding:20px 22px;border-radius:14px;border:1px solid #2a3144;background:#0d1320;transition:filter .3s} .verdict.locked{filter:blur(7px);pointer-events:none}
+  .vwrap{position:relative} .lockbadge{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;color:var(--accent)} .verdict.locked + .lockbadge{display:flex}
+  .verdict p{font-family:var(--font-serif);font-size:16px;color:var(--paper-2);min-height:2.4em} .verdict p b{color:var(--accent-2)}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center} button,.toggle{font-family:var(--font-mono);font-size:12px;color:var(--paper);background:var(--ink-600);border:1px solid #313a52;border-radius:9px;padding:9px 14px;cursor:pointer;text-decoration:none} button:hover,.toggle:hover{border-color:var(--accent)} .toggle.on{background:#2a3350;border-color:var(--accent-2)}
+  .notes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px} .note{background:var(--ink-700);border:1px solid #2a3144;border-radius:14px;padding:22px} .note h3{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px} .note p,.note li{font-size:14px;color:var(--paper-2)} .note ul{margin-left:18px}
+  .limit{border-color:#5a4a2a} .limit h3{color:var(--accent-2)}
+  .q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed #2a3144} .q:last-child{border-bottom:none;margin-bottom:0} .q .qtext{font-size:15px;margin-bottom:10px} .q .qtext .qn{color:var(--accent-2);font-family:var(--font-mono);margin-right:8px}
+  .fb{font-size:13px;margin-top:8px;min-height:1.2em} .fb.ok{color:var(--good)} .fb.no{color:var(--warn)} .fb.hint{color:var(--accent)}
+  .num-in{font-family:var(--font-mono);background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:8px 10px;width:120px}
+  .mission{font-family:var(--font-mono);font-size:12px;color:var(--ink-400);margin-top:6px} .mission b{color:var(--accent-2)}
+  details.hintbox summary{font-family:var(--font-mono);font-size:12px;color:var(--accent);cursor:pointer} details.hintbox p{font-size:13px;color:var(--ink-400);margin-top:6px}
+  .reflect textarea{width:100%;min-height:64px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical}
+  .self-check{display:flex;flex-direction:column;gap:8px;margin:12px 0} .self-check label{display:flex;gap:10px;font-size:14px;color:var(--paper-2);cursor:pointer} .self-check input{margin-top:4px;accent-color:var(--good)}
+  .stamp{display:none;margin-top:14px;text-align:center;font-family:var(--font-serif);font-size:22px;color:var(--good);border:2px dashed var(--good);border-radius:12px;padding:14px} .stamp.on{display:block}
+  .teacher{margin-top:24px;border-top:2px solid #2a3144;padding-top:6px} details.tguide summary{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);cursor:pointer;padding:12px 0} .tguide-body{background:var(--ink-700);border:1px solid #2a3144;border-radius:12px;padding:20px;font-size:14px;color:var(--paper-2)} .tguide-body h4{font-family:var(--font-mono);font-size:12px;color:var(--accent);margin:14px 0 6px} .tguide-body ul{margin-left:18px}
+  .tguide-body table{border-collapse:collapse;font-size:12.5px;margin-top:4px} .tguide-body td,.tguide-body th{border:1px solid #2a3144;padding:4px 8px;text-align:left}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0} .badge{font-family:var(--font-mono);font-size:12px;background:#0d1320;border:1px solid #2a3144;border-radius:20px;padding:5px 12px;color:var(--paper-2)} .badge.verify{color:var(--good);border-color:var(--good)}
+  .teacher-bar{display:none;background:#2a3350;border:1px solid var(--accent);border-radius:12px;padding:14px;margin-top:18px} .teacher-bar.on{display:block} .teacher-bar .tb-title{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--accent-2);margin-bottom:10px} .teacher-bar .tb-out{font-family:var(--font-mono);font-size:12px;color:var(--paper-2);margin-top:8px}
+  footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--ink-700);font-family:var(--font-mono);font-size:12px;color:var(--ink-400);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px} footer b{color:var(--paper-2);font-weight:500}
+  @media(max-width:780px){h1{font-size:32px}.stage{grid-template-columns:1fr}.notes{grid-template-columns:1fr}}
+  .ws-only{display:none} .ws{border:1px solid #999;border-radius:8px;padding:16px;margin-top:14px;color:#111} .ws .line{border-bottom:1px solid #bbb;height:28px;margin:8px 0}
+  .ws table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0} .ws td,.ws th{border:1px solid #333;padding:5px 7px;text-align:left}
+  .ws-key{page-break-before:always;break-before:page}
+  
+  body.worksheet{background:#fff;color:#111} body.worksheet .no-print{display:none!important} body.worksheet .ws-only{display:block}
+  body.worksheet .box,body.worksheet .note{background:#fff;border-color:#333;color:#111} body.worksheet .box h2,body.worksheet .note h3,body.worksheet .note p,body.worksheet .note li{color:#111}
+  body.worksheet svg#chart text,body.worksheet svg#chart .axl{fill:#111} body.worksheet svg#chart .tbar{fill:url(#hatch)!important;stroke:#000;stroke-width:1.2}
+  body.worksheet svg#chart .ax{stroke:#000} body.worksheet svg#chart .cursor,body.worksheet svg#chart .band,body.worksheet svg#chart .rowsel{display:none}
+  body.worksheet header .lede,body.worksheet h1 em{color:#111} body.worksheet footer{color:#333;border-color:#999} body.worksheet footer b{color:#111}
+  @media print{
+    html,body{background:#fff!important;color:#000!important} .no-print{display:none!important} .ws-only{display:block!important}
+    .box,.note,.card{background:#fff!important;border-color:#333!important;color:#000!important} .box h2,.note h3,.note p,.note li,h1 em,.lede{color:#000!important}
+    svg#chart text,svg#chart .axl{fill:#000!important} svg#chart .tbar{fill:url(#hatch)!important;stroke:#000!important} svg#chart .ax{stroke:#000!important}
+    svg#chart .cursor,svg#chart .band,svg#chart .rowsel{display:none!important} footer,footer b{color:#000!important}
+  }
+
+
+body:not(.mode-teacher) .teacher-only{display:none!important}
+
+
+html:has(body.worksheet){background:#fff!important}
+body.worksheet *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#111!important;border-color:#888!important;box-shadow:none!important;text-shadow:none!important}
+body.worksheet canvas{filter:grayscale(1) contrast(1.1)}
+@media print{html{background:#fff!important}
+ body *:not(svg):not(svg *):not(canvas){background-color:transparent!important;background-image:none!important;color:#000!important;border-color:#666!important;box-shadow:none!important;text-shadow:none!important}
+ canvas{filter:grayscale(1)}}
+
+
+.verdict.locked{visibility:hidden}
+body:not(.predicted) .post-pred{display:none!important}
+body.predicted .pre-pred{display:none!important}
+.pre-pred{font-size:13px;color:var(--ink-400)}
+body.worksheet .notes,body.worksheet .pre-pred{display:none!important}
+@media print{.notes,.pre-pred{display:none!important}}
+
+
+body:not(.predicted) .post-pred{display:none!important}
+body.predicted .pp-wait{display:none!important}
+.pp-wait{font-size:13px;border:1px dashed #556;border-radius:10px;padding:10px 12px}
+.verdict.locked{display:none!important}
+.verdict.locked + .lockbadge{position:static!important;display:block!important;padding:14px 16px;border:1px dashed #556;border-radius:12px;text-align:center;background:transparent}
+
+.lockbadge{display:none}
+body.predicted .lockbadge,body.predicted .verdict + .lockbadge{display:none!important}
+.sum3 ol{margin:4px 0 0 20px;font-size:14px;line-height:1.75}
+.ws-key{margin-top:12px;border-top:1px dashed #777;padding-top:8px;font-size:13px}
+body.worksheet .stage,body.worksheet canvas,body.worksheet .notes,body.worksheet .panel,body.worksheet .vwrap,body.worksheet .teacher-bar,body.worksheet #lgcPanel,body.worksheet .limit,body.worksheet .no-print{display:none!important}
+body.worksheet .ws,body.worksheet .ws-only{display:block!important}
+body.worksheet .ws svg *{fill:none!important;stroke:#000!important}
+body.worksheet .ws svg text{fill:#000!important;stroke:none!important}
+@media print{
+ .stage,canvas,.notes,.panel,.vwrap,.teacher-bar,#lgcPanel,.limit,.no-print,#predCard,.lockbadge{display:none!important}
+ .ws,.ws-only{display:block!important}
+ body:not(.mode-teacher) .teacher-only{display:none!important}
+ .ws svg *{fill:none!important;stroke:#000!important}
+ .ws svg text{fill:#000!important;stroke:none!important}
+}
+span.pp-wait{border:0;padding:0}
+</style>
+<style id="r4fix"> .sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}input[type=range]{min-height:24px}button,.toggle,.choice{min-height:24px}a{color:var(--accent)}a:visited{color:var(--accent-2)}#lgcPanel .lgc-sub,#lgcPanel .lgc-out{opacity:1!important}@media print{a,a:visited{color:#000}}</style>
+<script id="gc-announce">
+(G=>{
+const D=G.document,T=()=>Date.now();
+const st={el:null,delay:400,gap:5000,win:1000,mode:'debounce',gate:null,pre:'',summary:null,timer:null,at:null,pend:null,last:null,lastW:-1e9,ui:-1e9,count:0};
+function ensure(id){if(st.el&&st.el.isConnected!==false)return st.el;let el=D&&D.getElementById(id||'statusLive');
+  if(!el&&D){el=D.createElement('div');el.id=id||'statusLive';(D.body||D.documentElement).appendChild(el);
+    el.setAttribute('style','position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0');}
+  if(el){el.setAttribute('role','status');el.setAttribute('aria-live','polite');el.setAttribute('aria-atomic','true');}
+  st.el=el;return el;}
+function write(t){if(typeof t==='function')t=t();t=String(t==null?'':t).replace(/\s+/g,' ').trim();if(!t||t===st.last)return false;
+  const el=ensure();if(!el)return false;el.textContent=t;st.last=t;st.lastW=T();st.count++;return true;}
+const open=()=>!st.gate||!!st.gate();
+function input(){st.ui=T();}
+if(D&&D.addEventListener)['input','change','click','keydown','pointerdown'].forEach(e=>D.addEventListener(e,input,true));
+function flush(){st.at=null;const w=st.lastW+st.gap-T();if(w>0){st.at=setTimeout(flush,w);return;}const t=st.pend;st.pend=null;if(t!=null&&open())write(t);}
+function auto(t){const n=T();if(st.ui>st.lastW&&n-st.ui<=3000&&n-st.lastW>=1000){clearTimeout(st.at);st.at=null;st.pend=null;return write(t);}
+  st.pend=t;if(st.at)return true;if(n-st.lastW>=st.gap){st.pend=null;return write(t);}st.at=setTimeout(flush,st.lastW+st.gap-n);return true;}
+function route(t,o){if(o&&o.now){clearTimeout(st.timer);return write(t);}
+  if(T()-st.ui<=st.win){clearTimeout(st.timer);st.timer=setTimeout(()=>{st.timer=null;if(open())write(t);},st.delay);return true;}return auto(t);}
+function attach(o){o=o||{};for(const k of ['delay','gap','win','mode','gate','pre','summary'])if(o[k]!=null)st[k]=o[k];
+  ensure(o.id);if(!open()&&st.pre)write(st.pre);return GCAnnounce;}
+function say(text,o){o=o||{};if(st.mode==='block'&&!o.force)return false;if(!open())return st.pre?write(st.pre):false;return route(text,o);}
+function update(){if(!st.summary)return false;return say(()=>st.summary());}
+function blockEnd(text,o){if(!open())return false;return route(text,o);}
+function reset(){clearTimeout(st.timer);clearTimeout(st.at);st.at=null;st.pend=null;st.last=null;if(st.el)st.el.textContent='';if(!open()&&st.pre)write(st.pre);}
+const GCAnnounce={version:2,attach,say,update,blockEnd,reset,input,get last(){return st.last;},get count(){return st.count;},get mode(){return st.mode;}};
+G.GCAnnounce=GCAnnounce;
+})(typeof window!=='undefined'?window:globalThis);
+</script>
+</head>
+<body>
+<script>
+window.R2={
+  unlock:function(){document.body.classList.add('predicted');
+    document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.remove('locked');v.removeAttribute('aria-hidden');v.removeAttribute('inert');v.inert=false;});},
+  relock:function(){document.body.classList.remove('predicted');
+    document.querySelectorAll('[data-lock]').forEach(function(v){v.classList.add('locked');v.setAttribute('aria-hidden','true');v.setAttribute('inert','');});},
+  on:function(){return document.body.classList.contains('predicted');}
+};
+(function(){var was=false;
+  window.addEventListener('beforeprint',function(){was=document.body.classList.contains('worksheet');document.body.classList.add('worksheet');});
+  window.addEventListener('afterprint',function(){if(!was)document.body.classList.remove('worksheet');});})();
+(function(){
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('.choice,.toggle').forEach(function(el){
+      if(el.hasAttribute('tabindex')||el.tagName==='A'||el.tagName==='BUTTON')return;
+      el.setAttribute('tabindex','0');if(!el.hasAttribute('role'))el.setAttribute('role','button');
+      el.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();el.click();}});});});})();
+(function(){
+  document.addEventListener('DOMContentLoaded',function(){
+    var b=document.getElementById('predSubmit'),pc=document.getElementById('predChoices');
+    if(b)b.addEventListener('click',function(){var S=window.__sim&&window.__sim.ST;if(!S||!S.predicted||R2._pl)return;R2._pl=1;
+      var sel=pc&&pc.querySelector('.choice.sel,[data-v].sel');var v=(S.prediction!=null)?S.prediction:(sel?sel.dataset.v:null);
+      try{Object.defineProperty(S,'prediction',{value:v,writable:false,configurable:false,enumerable:true});}catch(e){}
+      b.disabled=true;b.textContent='Prediction locked (cannot change)';
+      if(pc){pc.querySelectorAll('.choice,[data-v]').forEach(function(c){c.setAttribute('aria-disabled','true');c.style.pointerEvents='none';if(c.dataset.v!==v)c.style.borderStyle='dashed';});
+        pc.addEventListener('click',function(e){e.stopImmediatePropagation();e.preventDefault();},true);
+        pc.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.stopImmediatePropagation();e.preventDefault();}},true);}});
+    document.querySelectorAll('.toggle[aria-pressed]').forEach(function(el){
+      new MutationObserver(function(){var on=el.classList.contains('on')?'true':'false';if(el.getAttribute('aria-pressed')!==on)el.setAttribute('aria-pressed',on);}).observe(el,{attributes:true,attributeFilter:['class']});});});})();
+</script>
+<div class="wrap">
+<header>
+  <div class="eyebrow">General Chemistry · Acid–Base Equilibria · ACID-BASE INDICATORS</div>
+  <h1>Acid–base indicators and their <em>transition ranges</em></h1>
+  <p class="lede">Change the pH and watch how the colors of seven indicators change.
+    What can one indicator color tell you about the pH of a solution? What changes when you use several indicators?</p>
+</header>
+
+<div class="card no-print">
+  <div class="kicker"><span class="num">Learning objectives</span> After this activity you can …</div>
+  <div class="meta-row"><span>Estimated time 15 min</span><span>· Prerequisites: the pH scale (0–14); acidic, neutral and basic solutions</span></div>
+  <div class="lo-goals">
+    <div class="g" id="lo1"><span class="chk"></span><span>explain that an indicator changes color only inside its own <b>transition range</b> of about <b>2 pH units</b>.</span></div>
+    <div class="g" id="lo2"><span class="chk"></span><span>infer the <b>possible pH range</b> from an observed color.</span></div>
+    <div class="g" id="lo3"><span class="chk"></span><span><b>combine</b> several indicators to narrow down the pH range of an unknown solution.</span></div>
+  </div>
+  <div class="progress"><span id="prog"></span></div>
+  <div class="progress-lab" id="progLab">Progress 0% · Predict → Observe → Check → Complete</div>
+  <div class="btns no-print" style="margin-top:12px;align-items:center">
+    <span class="lvl-lab" style="font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--ink-400)">Level</span>
+    <a class="toggle" id="lvlBasic" data-lvl="basic" href="?level=basic">Basic</a>
+    <a class="toggle" id="lvlStandard" data-lvl="standard" href="?level=standard">Standard</a>
+    <a class="toggle" id="lvlAdvanced" data-lvl="advanced" href="?level=advanced">Advanced</a>
+  </div>
+</div>
+
+<div class="stage no-print">
+  <div class="box">
+    <h2>pH range of the color change for each indicator</h2>
+    <svg id="chart" viewBox="0 0 760 330" role="img" aria-label="Bar chart of the transition pH ranges of seven acid–base indicators. Left of each bar: color of the acid form. Right of each bar: color of the base form."></svg>
+    <div style="font-family:var(--font-mono);font-size:12px;color:var(--ink-400)">Bar = transition range (the pH range where the color changes gradually). Words beside each bar = acid-form color / base-form color (written as text, so you do not need to rely on color). Click a row (mouse) or use the checkbox list on the right (keyboard) to add an indicator.</div>
+  </div>
+  <div class="box">
+    <h2 id="modeTitle">Explore mode — solution pH</h2>
+    <div class="ctrl">
+      <div class="btns" role="group" aria-label="Choose mode"><span class="toggle on" id="mExplore" aria-pressed="true">Explore mode (pH shown)</span><span class="toggle" id="mMystery" aria-pressed="false">Unknown sample mode (pH hidden)</span></div>
+      <div>Solution pH = <span class="phbig" id="phOut">3.0</span></div>
+      <input type="range" id="ph" min="0" max="14" step="0.1" value="3" aria-label="Solution pH slider (0 to 14). Use the left and right arrow keys to change it by 0.1">
+      <div>Indicators to add (choose one or more)</div>
+      <div class="indsel" id="indsel" role="group" aria-label="Choose indicators"></div>
+    </div>
+    <div class="tubes" id="tubes"></div>
+    <div class="deduce" id="deduce">The possible pH range is shown after you submit your prediction.</div>
+  </div>
+</div>
+
+<div class="card no-print" id="entryCard">
+  <div class="kicker"><span class="num">Entry check</span> Before you start — prerequisites and key terms</div>
+  <p style="font-size:15px;margin-bottom:6px">What is an acid–base indicator?</p>
+  <div class="choices" id="entryChoices" role="group" aria-label="Entry check">
+    <span class="choice" data-v="a">A weak-acid (or weak-base) dye whose acid form and base form have different colors</span>
+    <span class="choice" data-v="b">A substance that reacts and forms a color only when an acid is present</span>
+    <span class="choice" data-v="c">A substance that brings a solution to neutral (pH 7)</span></div>
+  <div class="fb" id="fbEntry"></div>
+  <details class="hintbox" id="entryGloss"><summary>Key terms</summary>
+    <p><b>Indicator (HIn)</b>: a weak-acid dye whose acid form HIn and base form In⁻ have different colors. Equilibrium: HIn ⇌ H⁺ + In⁻. ·
+    <b>Transition range</b>: the pH range where both forms are present and the color changes gradually (usually about 2 pH units). ·
+    <b>Possible pH range</b>: all pH values that agree with the observed color. ·
+    <b>pH</b>: −log[H⁺]. At 25 °C, below 7 is acidic, 7 is neutral, above 7 is basic.</p></details>
+</div>
+
+<div class="card no-print" id="predCard">
+  <div class="kicker"><span class="num">Predict</span> Think first, before you observe</div>
+  <p style="font-size:15px;margin-bottom:6px">You add <b>phenolphthalein</b> to a solution and it stays <b>colorless</b>. What can you say about this solution <b>for certain</b>?</p>
+  <div class="choices" id="predChoices" role="group" aria-label="Prediction">
+    <span class="choice" data-v="acid">It is acidic (pH is lower than 7)</span>
+    <span class="choice" data-v="below">Its pH is lower than about 8.2 (we only know a range)</span>
+    <span class="choice" data-v="neutral">It is neutral (pH is exactly 7)</span>
+  </div>
+  <div class="conf-row"><span>Confidence</span><input type="range" id="conf" min="0" max="100" value="50" aria-label="Confidence"><span id="confLab">Medium</span></div>
+  <button id="predSubmit">Lock in prediction</button>
+  <div class="gate-msg" id="gateMsg" aria-live="polite"></div>
+</div>
+
+<div class="vwrap no-print">
+  <div class="verdict locked" id="verdict" data-lock aria-hidden="true" inert><p id="vMsg">Observation task: in explore mode, add <b>phenolphthalein</b> only and move the slider to <b>pH 7.0–8.1</b> (weakly basic). The solution is basic — what color do you see?</p></div>
+  <div class="lockbadge">The explanation opens after you lock in a prediction</div>
+</div>
+
+<div class="notes">
+  <div class="note post-pred"><h3>Why the color changes only inside a "range"</h3><p>An indicator is a weak acid, HIn. In HIn ⇌ H⁺ + In⁻, HIn (acid-form color) dominates at low pH and In⁻ (base-form color) dominates at high pH.
+    Our eyes see the color of one form when that form is about 10 times more abundant than the other. So the color changes only within about <b>pKa ± 1</b>, that is, within <b>about 2 pH units</b>.
+    Outside this range, the color stays the same however much the pH changes. Example: methyl red is red at pH 4.5 and below, turns gradually yellow from 4.5 to 6.0, and is yellow at 6.0 and above.</p></div>
+  <div class="note post-pred" id="noteRange"><h3>One color = one pH range</h3><p>Colorless phenolphthalein only means "pH is below about 8.2". A solution at pH 3 (acidic), pH 7 (neutral) or pH 7.8 (weakly basic) is colorless in every case.
+    So <b>colorless ≠ acidic</b>. To narrow the range, use indicators with different transition ranges together. This is why pH paper is coated with a mixture of several indicators. Soil pH test kits use the same idea.</p></div>
+  <div class="note limit"><h3>Limits of this model</h3><ul>
+    <li>The transition-range limits are <b>approximate values (±0.3)</b> taken from standard literature tables. They change with temperature, ionic strength, indicator concentration and the observer.</li>
+    <li>The screen colors are approximations and may differ from real colors. Base your decision on the <b>color names written as text</b>.</li>
+    <li>The limits are not sharp lines. The model simplifies "outside the range = color of one form". Do not read results such as a 0.1-unit gap between two indicator limits as real precision. Phenolphthalein slowly becomes colorless again in very strong base (pH above about 13); this model does not include that.</li></ul></div>
+  <div class="note" id="noteSummary"><h3>Key summary</h3><ul>
+    <li>An indicator changes color only inside its own transition range of about 2 pH units.</li>
+    <li><span class="pre-pred">What an observed color tells you (a value or a range?) is shown after you submit your prediction.</span><span class="post-pred">An observed color gives a pH <b>range</b>, not a pH value (colorless phenolphthalein → pH &lt; about 8.2).</span></li>
+    <li>Combining indicators with different transition ranges narrows the possible range (the overlap = the intersection).</li></ul></div>
+  <div class="note pre-pred"><h3>Explanation cards</h3><p>The cards "Why the color changes only inside a range" and "One color = one pH range", and the second summary line, open after you submit your prediction.</p></div>
+</div>
+
+<div class="card no-print" id="checkCard">
+  <div class="kicker"><span class="num">Check</span> Formative check — pass all items to complete</div>
+  <div class="q" id="q1"><div class="qtext"><span class="qn">Q1</span>A solution with bromthymol blue is <b>green (between yellow and blue)</b>. Which pH fits this solution best?</div>
+    <div class="choices" role="group"><span class="choice" data-q="1" data-v="a">Between about 6.0 and 7.6</span><span class="choice" data-q="1" data-v="b">Higher than 7.6</span><span class="choice" data-q="1" data-v="c">Exactly 7.0</span></div>
+    <details class="hintbox"><summary>Hint</summary><p>An in-between color means the acid form and the base form are both present. In which pH range does this happen?</p></details><div class="fb" id="fb1"></div></div>
+  <div class="q" id="q2"><div class="qtext"><span class="qn">Q2 · Task</span>Switch to <b>unknown sample mode</b> (the pH is hidden). Add indicators and narrow the width of the possible pH range to <b id="q2target">1.5</b> pH units or less.</div>
+    <div class="mission">Current range width: <b id="missionW">—</b> · Indicators tried: <b id="missionN">0</b> (at least <span id="q2min">2</span>) · Target width ≤ <span id="q2t2">1.5</span></div>
+    <details class="hintbox"><summary>Hint</summary><p>First use an indicator that gives a wide range to find the rough position. Then add indicators whose transition ranges lie near it and find the overlap.</p></details>
+    <div class="fb" id="fb2"></div></div>
+  <div class="q" id="q3"><div class="qtext"><span class="qn">Q3</span><span id="q3text">—</span></div>
+    <input class="num-in" id="q3in" placeholder="number" inputmode="decimal"><button id="q3btn">Check</button>
+    <details class="hintbox"><summary>Hint</summary><p id="q3hint">Write down the range each indicator gives. Then find the overlap that satisfies both.</p></details><div class="fb" id="fb3"></div></div>
+  <div class="q" id="qc"><div class="qtext"><span class="qn">Q4 · Fill in the blank</span>Fill in the blank: most indicators change color over a transition range about [＿＿＿＿] wide. (Write a number and a unit, e.g. ○ pH units)</div>
+    <input class="num-in" id="qcin" placeholder="number + unit" style="width:180px"><button id="qcbtn">Check</button>
+    <details class="hintbox" id="qcHint"><summary>Hint</summary><p>Methyl red 4.5–6.0, phenolphthalein 8.2–10.0 — subtract to get each width yourself (round to a whole number).</p></details><div class="fb" id="fbc"></div></div>
+  <div class="q" id="qho"><div class="qtext"><span class="qn">Q5 · Apply (advanced, not required for completion)</span>When a weak acid is titrated with a strong base, the pH at the equivalence point is about <b>8.8</b>. Which indicator is better for detecting this equivalence point: methyl red or phenolphthalein? (type the name)</div>
+    <input class="num-in" id="qhoin" placeholder="indicator name" style="width:180px"><button id="qhobtn">Check</button>
+    <div class="fb" id="fbho"></div></div>
+</div>
+
+<div class="card reflect no-print post-pred" id="reflectCard">
+  <div class="kicker"><span class="num">Reflect</span> Reflect — metacognition · completion</div>
+  <p style="font-size:14px;color:var(--ink-400);margin-bottom:10px">My prediction result: <b id="predResult" style="color:var(--paper)">Not predicted yet</b></p>
+  <p style="font-size:14px;margin-bottom:6px">Explain in one or two sentences why the statement "if phenolphthalein is colorless, the solution is acidic" is wrong. Use the words "transition range":</p>
+  <textarea id="selfExplain" placeholder="e.g. The transition range of phenolphthalein is about 8.2–10.0, so colorless means …"></textarea>
+  <div class="btns" style="margin-top:8px"><button id="reflectBtn">Submit explanation</button></div><div class="fb" id="fbReflect"></div>
+  <div class="self-check"><label><input type="checkbox" class="sc"> I can say that an indicator changes color only within a range of about 2 pH units</label>
+    <label><input type="checkbox" class="sc"> I can infer a pH range from an observed color</label>
+    <label><input type="checkbox" class="sc"> I can combine two indicators to narrow the range</label></div>
+  <div class="card" style="margin-top:14px;background:#0d1320">
+    <div class="kicker"><span class="num">Apply</span> Use the idea in a new context (not required for completion)</div>
+    <p style="font-size:14px;color:var(--paper-2)">Transfer task: nature also has indicators, such as red cabbage juice or hydrangea flowers (their color depends on soil pH).
+      Universal indicator paper is made from <b>a mixture of several indicators, not just one</b>. Explain why, using today's ideas of "transition range" and "overlapping ranges".</p>
+    <textarea id="transferText" placeholder="e.g. One indicator changes color only within about 2 pH units, so …" style="width:100%;min-height:56px;background:var(--ink-600);border:1px solid #313a52;border-radius:8px;color:var(--paper);padding:10px;font-family:var(--font-sans);font-size:14px;resize:vertical;margin-top:8px"></textarea>
+    <div class="btns" style="margin-top:8px"><button id="transferBtn">Submit transfer task</button></div>
+    <div class="fb" id="fbTransfer"></div>
+  </div>
+  <div class="card" style="margin-top:14px;background:#0d1320"><div class="kicker"><span class="num">Next up</span> What to study next</div>
+    <p style="font-size:14px;color:var(--paper-2)">Ka and percent ionization of weak acids (an indicator is also a weak acid) → titration curves: choosing an indicator that matches the pH at the equivalence point.</p></div>
+  <div class="card no-print" id="selfKeyCard" style="margin-top:14px;background:#0d1320"><div class="kicker"><span class="num">Self-study</span> Self-check key</div><p id="selfKeyLock" style="font-size:13px;color:var(--ink-400)">The worksheet answers open here after you finish every step (predict, observe, check, reflect). Try to solve it yourself first.</p><div id="selfKey" hidden aria-live="polite" style="font-size:14px;color:var(--paper-2)"></div></div>
+  <div class="stamp" id="stamp">COMPLETE · Completed — all checks passed.</div>
+</div>
+
+<div class="ws ws-only"><h3>Worksheet — Transition ranges of acid–base indicators (black and white)</h3><p>Name ________  Class ________  Date ________</p>
+  <p><b>1. Predict</b> — A solution with phenolphthalein is colorless. What can you say for certain? (it is acidic / its pH is below about 8.2 / it is neutral)</p><div class="line"></div>
+  <svg id="wsChart" viewBox="0 0 640 250" width="100%" role="img" aria-label="Black-and-white bar chart of the transition ranges of seven indicators" style="display:block;margin:8px 0"></svg>
+  <p><b>2. Observe</b> — Use the chart above (outlined bar = transition range; words beside the bar = acid-form color / base-form color) to complete the table.</p>
+  <table><tr><th>Indicator</th><th>Acid-form color</th><th>Transition range (pH)</th><th>Base-form color</th></tr>
+    <tr><td>Methyl red</td><td></td><td>____ – ____</td><td></td></tr>
+    <tr><td>Bromthymol blue</td><td></td><td>____ – ____</td><td></td></tr>
+    <tr><td>Phenolphthalein</td><td></td><td>____ – ____</td><td></td></tr></table>
+  <p><b>3. Infer</b> — Methyl red is yellow and phenolphthalein is colorless. What is the possible pH range? [ ____ ] ≤ pH ≤ [ ____ ]</p>
+  <p><b>4. Fill in the blank</b> — Most indicators change color over a transition range about [ ________ ] wide (write a number and a unit).</p>
+  <p><b>5. Conclusion</b> — Use the transition range to explain why "colorless phenolphthalein = acidic" is wrong.</p><div class="line"></div><div class="line"></div>
+  <div class="ws-key teacher-only"><h3>Answer key (separate teacher page)</h3>
+    <p>1. Its pH is below about 8.2. 2. Methyl red: red / 4.5–6.0 / yellow · Bromthymol blue: yellow / 6.0–7.6 / blue · Phenolphthalein: colorless / 8.2–10.0 / pink.
+    3. 6.0 ≤ pH ≤ 8.2. 4. 2 pH units. 5. Colorless means the pH is below the transition range (about 8.2). Neutral and weakly basic solutions with pH 7–8.2 are also colorless.</p></div></div>
+
+<div class="teacher no-print">
+  <details class="tguide teacher-only"><summary>Teacher notes — open the lesson plan</summary>
+    <div class="tguide-body"><h4>Lesson plan · 5E phase and time</h4><ul><li><b>Explore and Explain</b>, 15 min. Use before a lab (indicator colors, neutralization) as preparation, or after the lab as a summary.</li></ul>
+      <h4>Demonstration in 3 steps</h4><ul><li>① Add only phenolphthalein and move pH 2 → 7 → 7.8 → 9 → 11. Stress that it is still colorless at 7.8.</li>
+        <li>② Add methyl red + bromthymol blue + phenolphthalein together and compare pH 5, 7 and 9.</li>
+        <li>③ Switch to unknown sample mode. Let students discuss the order of indicators, then use "Reveal unknown pH" in the teacher bar.</li></ul>
+      <h4>Three key questions</h4><ul><li>"Which pH values does the observation 'colorless' rule out, and which does it not rule out?"</li><li>"Why does each indicator change color at a different pH, not at pH 7?" (their pKa values differ)</li><li>"Why does pH paper contain a mixture of several indicators?"</li></ul>
+      <h4>Common misconceptions</h4><ul><li>MC-ind-01: "colorless phenolphthalein = acidic" → colorless means pH &lt; about 8.2, which includes neutral and weakly basic solutions.</li>
+        <li>MC-ind-02: "all indicators change at pH 7" → methyl violet 0–1.6, alizarin yellow R 10.1–12.0, and so on: each is different.</li>
+        <li>MC-ind-03: "one indicator gives the exact pH" → one indicator gives only a range (use a pH meter for precise measurement).</li>
+        <li>Note on photographs: published photos of salt solutions with indicators may show colors that do not match the range definitions (for example, solutions inside a transition range shown as pure red or yellow). Photo colors are approximate; this simulation follows the range definitions.</li></ul>
+      <h4>Answer key (hidden in student mode)</h4><ul><li>Entry check: a weak-acid dye whose acid and base forms have different colors. Prediction: pH is lower than about 8.2. Q1: about 6.0–7.6.</li>
+        <li>Q2: Basic, unknown pH 5.2 (methyl red alone gives width 1.5) / Standard 9.0 (phenolphthalein + thymol blue → 8.2–9.6, width 1.4) / Advanced 7.8 (bromthymol blue blue [7.6, 14] ∩ thymol blue yellow [2.8, 8.0] ∩ phenolphthalein colorless [0, 8.2] → 7.6–8.0, width 0.4, at least 3 indicators). An earlier advanced version (4.45, methyl orange + methyl red → width 0.1) was dropped: it relied on an artificial gap between model limits and gave false precision.</li>
+        <li>Q3: Basic 8.2 / Standard 6.0 / Advanced 0.6. Q4: 2 pH units ("2 pH", "2 units" also accepted). Q5: phenolphthalein (8.2–10.0 includes 8.8).</li></ul>
+      <h4>Data sources · verification</h4>
+      <table><tr><th>Indicator</th><th>Value used (pH)</th><th>Source</th></tr>
+        <tr><td>Methyl violet</td><td>0.0–1.6 yellow→violet</td><td>standard literature value</td></tr>
+        <tr><td>Thymol blue</td><td>1.2–2.8 red→yellow, 8.0–9.6 yellow→blue</td><td>standard literature value</td></tr>
+        <tr><td>Methyl orange</td><td>3.1–4.4 red→yellow</td><td>standard literature value</td></tr>
+        <tr><td>Methyl red</td><td>4.5–6.0 red→yellow</td><td>common teaching value (literature about 4.4–6.2; small difference)</td></tr>
+        <tr><td>Bromthymol blue</td><td>6.0–7.6 yellow→blue</td><td>standard literature value</td></tr>
+        <tr><td>Phenolphthalein</td><td>8.2–10.0 colorless→pink</td><td>standard literature value (some sources give 8.0–10.0)</td></tr>
+        <tr><td>Alizarin yellow R</td><td>10.1–12.0 yellow→red</td><td>standard literature value</td></tr></table>
+      <p style="margin-top:6px;font-size:12.5px">Decimal limits follow the standard values of the acid–base indicator table in the CRC Handbook of Chemistry and Physics. They agree within about ±0.3 with indicator range charts read from images. The lower limit of thymol blue and the upper limit of methyl violet differ by 0.2–0.3 between sources; the literature values were used.</p>
+    </div>
+  </details>
+  <div class="badges"><span class="badge">University general chemistry · acids and bases</span><span class="badge">Engine E3 state/diagram</span><span class="badge verify">Verified: checked against standard literature values (2026-10-01)</span></div>
+  <div class="btns"><button id="btnTeacher" class="teacher-only">Open/close teacher bar</button><button id="btnWorksheet">Print worksheet (black and white preview)</button></div>
+  <div class="teacher-bar teacher-only" id="teacherBar"><div class="tb-title">Teacher mode — class controls</div>
+    <div class="btns"><button id="tReveal">Unlock answers/explanations</button><button id="tMystery">Reveal unknown pH</button><button data-preset="fig168">Three common indicators</button><button data-preset="pp78">Phenolphthalein at pH 7.8</button></div>
+    <div class="tb-out" id="tbOut"></div></div>
+</div>
+
+<footer><div><b>General Chemistry</b> · Acid–base indicator transition ranges · self-directed learning and teacher edition · data: standard literature values (CRC indicator table)</div>
+  <div><b>KBS Lab</b> · General Chemistry Simulations · works offline · no personal data collected · report errors: bkim@gnu.ac.kr</div></footer>
+</div>
+
+<script>
+"use strict";
+(function(){
+  const $=id=>document.getElementById(id);
+  const LV=(new URLSearchParams(location.search)).get('level')||'standard';
+  const LEVELS={
+    basic:    {label:'Basic', hints:true,  mystery:5.2,  target:1.5, minInd:1,
+      q3:{text:'A solution with phenolphthalein is <b>colorless</b>. Its pH is lower than what maximum value? (number, one decimal place)', states:{pp:0}, ask:'hi'}},
+    standard: {label:'Standard', hints:true,  mystery:9.0,  target:1.5, minInd:2,
+      q3:{text:'<b>Methyl red is yellow</b> and <b>phenolphthalein is colorless</b>. What is the <b>lower limit</b> of the possible pH range? (number, one decimal place)', states:{mr:2, pp:0}, ask:'lo'}},
+    advanced: {label:'Advanced', hints:false, mystery:7.8, target:0.5, minInd:3,
+      q3:{text:'<b>Bromthymol blue is blue</b> and <b>phenolphthalein is colorless</b>. What is the <b>width</b> of the possible pH range? (number)', states:{btb:2, pp:0}, ask:'width'}}
+  };
+  Object.keys(LEVELS).forEach(function(k){var L=LEVELS[k];L.mission={samplePH:L.mystery,target:L.target,minInd:L.minInd};});
+  const CFG=LEVELS[LV]||LEVELS.standard;
+  function applyLevel(){
+    var q=new URLSearchParams(location.search);
+    function href(lv){q.set('level',lv);return '?'+q.toString();}
+    ['Basic','Standard','Advanced'].forEach(function(C){var lv=C.toLowerCase();var a=$('lvl'+C);if(a){a.href=href(lv);a.classList.toggle('on',lv===(LEVELS[LV]?LV:'standard'));}});
+    if(!CFG.hints){document.querySelectorAll('details.hintbox').forEach(function(d){if(d.id!=='entryGloss')d.style.display='none';});}
+    $('q2target').textContent=CFG.target;$('q2t2').textContent=CFG.target;$('q2min').textContent=CFG.minInd;
+    $('q3text').innerHTML=CFG.q3.text;
+  }
+
+  const IND=[
+    {k:'mv', ko:'methyl violet', en:'methyl violet', tr:[[0.0,1.6,'yellow','violet','green to blue-violet',[242,211,0,1],[106,44,145,1]]]},
+    {k:'tb', ko:'thymol blue', en:'thymol blue', tr:[[1.2,2.8,'red','yellow','orange',[212,32,32,1],[242,211,0,1]],[8.0,9.6,'yellow','blue','green',[242,211,0,1],[31,79,191,1]]]},
+    {k:'mo', ko:'methyl orange', en:'methyl orange', tr:[[3.1,4.4,'red','yellow','orange',[212,32,32,1],[242,211,0,1]]]},
+    {k:'mr', ko:'methyl red', en:'methyl red', tr:[[4.5,6.0,'red','yellow','orange',[212,32,32,1],[242,211,0,1]]]},
+    {k:'btb', ko:'bromthymol blue', en:'bromthymol blue', tr:[[6.0,7.6,'yellow','blue','green',[242,211,0,1],[31,79,191,1]]]},
+    {k:'pp', ko:'phenolphthalein', en:'phenolphthalein', tr:[[8.2,10.0,'colorless','pink','pale pink',[255,255,255,0],[229,64,143,1]]]},
+    {k:'ay', ko:'alizarin yellow R', en:'alizarin yellow R', tr:[[10.1,12.0,'yellow','red','orange',[242,211,0,1],[200,40,30,1]]]}
+  ];
+  const byK={};IND.forEach(d=>{byK[d.k]=d;});
+  const PH_MIN=0, PH_MAX=14;
+  function zones(ind){const z=[];let prev=PH_MIN;
+    ind.tr.forEach((t,i)=>{z.push({kind:'flat',lo:prev,hi:t[0],name:t[2],form:(i===0?'acid form (HIn)':'intermediate form'),rgba:t[5]});
+      z.push({kind:'trans',lo:t[0],hi:t[1],name:t[4]+' (in transition)',form:'transition range (both forms present)',t:t});prev=t[1];});
+    const L=ind.tr[ind.tr.length-1];z.push({kind:'flat',lo:prev,hi:PH_MAX,name:L[3],form:'base form (In⁻)',rgba:L[6]});return z;}
+  function observe(k,pH){const ind=byK[k],z=zones(ind);let idx=z.length-1;
+    for(let i=0;i<z.length;i++){const s=z[i];if(s.kind==='trans'?(pH<=s.hi):(pH<s.hi)){idx=i;break;}}
+    const s=z[idx];let rgba=s.rgba;
+    if(s.kind==='trans'){const f=(pH-s.lo)/(s.hi-s.lo),a=s.t[5],b=s.t[6];rgba=a.map((v,j)=>v+(b[j]-v)*f);}
+    return {k:k,zone:idx,kind:s.kind,name:s.name,form:s.form,lo:s.lo,hi:s.hi,rgba:rgba};}
+  function deduceStates(states){let lo=PH_MIN,hi=PH_MAX;
+    Object.keys(states).forEach(k=>{const z=zones(byK[k])[states[k]];lo=Math.max(lo,z.lo);hi=Math.min(hi,z.hi);});
+    return {lo:+lo.toFixed(2),hi:+hi.toFixed(2),width:+(hi-lo).toFixed(2)};}
+  function deduce(keys,pH){const st={};keys.forEach(k=>{st[k]=observe(k,pH).zone;});return deduceStates(st);}
+
+  let mode='explore', pH=3.0, selected=['pp'], phMoved=false;
+  const tested=new Set();
+  function curPH(){return mode==='mystery'?CFG.mystery:pH;}
+  function css(c){return 'rgba('+c.slice(0,3).map(v=>Math.round(v)).join(',')+','+(+c[3]).toFixed(2)+')';}
+
+  const X0=190,X1=740,ROW=40,Y0=40;
+  function xp(v){return X0+(X1-X0)*v/14;}
+  function buildChart(){const s=$('chart');let h='<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#fff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#000" stroke-width="1.6"/></pattern>';
+    IND.forEach((d,i)=>d.tr.forEach((t,j)=>{h+='<linearGradient id="g'+i+'_'+j+'" x1="0" x2="1"><stop offset="0" stop-color="'+css(t[5].slice(0,3).concat([1]))+'" stop-opacity="'+t[5][3]+'"/><stop offset="1" stop-color="'+css(t[6].slice(0,3).concat([1]))+'" stop-opacity="'+t[6][3]+'"/></linearGradient>';}));
+    h+='</defs>';
+    for(let v=0;v<=14;v+=2){h+='<line class="ax" x1="'+xp(v)+'" y1="'+(Y0-12)+'" x2="'+xp(v)+'" y2="'+(Y0+ROW*7)+'"/><text class="axl" x="'+xp(v)+'" y="'+(Y0-18)+'" text-anchor="middle">'+v+'</text>';}
+    h+='<text class="axl" x="'+((X0+X1)/2)+'" y="12" text-anchor="middle">pH (range of each color change)</text>';
+    const cp=curPH();
+    if(selected.length&&ST.predicted){const r=deduce(selected,cp);h+='<rect class="band" x="'+xp(r.lo)+'" y="'+(Y0-10)+'" width="'+Math.max(1.5,xp(r.hi)-xp(r.lo))+'" height="'+(ROW*7+10)+'"/>';}
+    IND.forEach((d,i)=>{const y=Y0+i*ROW;const on=selected.indexOf(d.k)>=0;
+      if(on)h+='<rect class="rowsel" x="0" y="'+y+'" width="760" height="'+ROW+'"/>';
+      h+='<text class="rowlab" x="6" y="'+(y+17)+'">'+d.ko+'</text><text class="axl" x="6" y="'+(y+31)+'">'+(on?'[added]':'')+'</text>';
+      d.tr.forEach((t,j)=>{const bx=xp(t[0]),bw=xp(t[1])-xp(t[0]);
+        h+='<rect class="tbar" x="'+bx+'" y="'+(y+9)+'" width="'+bw+'" height="20" rx="3" fill="url(#g'+i+'_'+j+')"/>';
+        h+='<text class="cname" x="'+(bx-4)+'" y="'+(y+23)+'" text-anchor="end">'+t[2]+'</text><text class="cname" x="'+(bx+bw+4)+'" y="'+(y+23)+'">'+t[3]+'</text>';});
+      h+='<rect class="rowhit" data-k="'+d.k+'" x="0" y="'+y+'" width="760" height="'+ROW+'" aria-hidden="true"/>';});
+    if(mode==='explore')h+='<line class="cursor" x1="'+xp(cp)+'" y1="'+(Y0-12)+'" x2="'+xp(cp)+'" y2="'+(Y0+ROW*7)+'"/><text class="axl" x="'+xp(cp)+'" y="'+(Y0+ROW*7+16)+'" text-anchor="middle">current pH '+cp.toFixed(1)+'</text>';
+    else h+='<text class="axl" x="'+((X0+X1)/2)+'" y="'+(Y0+ROW*7+16)+'" text-anchor="middle">Unknown sample: pH hidden — highlighted band = possible range</text>';
+    s.innerHTML=h;
+    s.querySelectorAll('.rowhit').forEach(r=>{r.addEventListener('click',()=>toggleInd(r.dataset.k));});}
+  function buildSel(){const box=$('indsel');box.innerHTML='';IND.forEach(d=>{const l=document.createElement('label');
+    l.innerHTML='<input type="checkbox" value="'+d.k+'"'+(selected.indexOf(d.k)>=0?' checked':'')+'> '+d.ko;
+    l.querySelector('input').addEventListener('change',()=>toggleInd(d.k));box.appendChild(l);});}
+  function toggleInd(k){const i=selected.indexOf(k);if(i>=0)selected.splice(i,1);else selected.push(k);
+    if(mode==='mystery'&&i<0)tested.add(k);render();}
+
+  function fmtCons(o){if(o.lo<=PH_MIN+1e-9)return 'pH ≤ '+o.hi.toFixed(1);if(o.hi>=PH_MAX-1e-9)return 'pH ≥ '+o.lo.toFixed(1);return o.lo.toFixed(1)+' ≤ pH ≤ '+o.hi.toFixed(1);}
+  function render(){const cp=curPH();
+    $('phOut').textContent=mode==='mystery'?'? (hidden)':cp.toFixed(1);$('ph').disabled=(mode==='mystery');
+    $('modeTitle').textContent=mode==='mystery'?'Unknown sample mode — infer the pH':'Explore mode — solution pH';
+    buildChart();buildSel();
+    const tb=$('tubes');tb.innerHTML='';
+    selected.forEach(k=>{const o=observe(k,cp),d=byK[k];const div=document.createElement('div');div.className='tube';
+      div.innerHTML='<span class="sw" aria-hidden="true"><i style="background:'+css(o.rgba)+'"></i></span><span class="tx"><b>'+d.ko+'</b>: color seen <b>'+o.name+'</b> · '+o.form+'<br><span class="cons">→ '+(ST.predicted?fmtCons(o):'range shown after prediction')+'</span></span>';
+      tb.appendChild(div);});
+    let w=14;
+    if(selected.length){const r=deduce(selected,cp);w=r.width;
+      if(!ST.predicted)$('deduce').textContent='The possible pH range is shown after you submit your prediction.';else $('deduce').innerHTML='Possible pH range: <b>'+fmtCons(r)+'</b> · width '+r.width.toFixed(2)+' pH units';}
+    else $('deduce').textContent='Add at least one indicator to see the possible pH range.';
+    window.__sim.metric=Number.isFinite(w)?{type:'width of the possible pH range',value:w,unit:'pH'}:null;
+    $('ph').setAttribute('aria-valuetext',mode==='mystery'?'hidden (unknown sample)':'pH '+cp.toFixed(1));
+    if(window.GCAnnounce)GCAnnounce.update();
+    $('missionW').textContent=selected.length?w.toFixed(2):'—';$('missionN').textContent=tested.size;
+    checkObserve(cp);checkMission(w);}
+
+  const ST={predicted:false,observed:false,passed:false,prediction:null,checks:{entry:false,q1:false,q2:false,q3:false,cloze:false,reflect:false}};
+  function pct(){let p=0;if(ST.predicted)p+=25;if(ST.observed)p+=25;p+=Math.round(Object.values(ST.checks).filter(Boolean).length/Object.keys(ST.checks).length*40);if(ST.passed)p+=10;return Math.min(100,p);}
+  function updateProgress(){
+    if(ST.predicted&&ST.observed&&Object.keys(ST.checks).every(function(k){return ST.checks[k];})&&!ST.passed){ST.passed=true;}
+    const p=pct();$('prog').style.width=p+'%';$('progLab').textContent='Progress '+p+'% · Predict → Observe → Check → Complete';
+    $('lo1').classList.toggle('done',ST.checks.q1&&ST.checks.cloze);$('lo2').classList.toggle('done',ST.observed&&ST.checks.q3);$('lo3').classList.toggle('done',ST.checks.q2);
+    if(ST.passed)$('stamp').classList.add('on');}
+  function checkObserve(cp){
+    if(ST.predicted&&phMoved&&!ST.observed&&mode==='explore'&&selected.indexOf('pp')>=0&&cp>=7.0&&cp<8.2){ST.observed=true;
+      $('vMsg').innerHTML='Observation done — pH <b>'+cp.toFixed(1)+'</b> is neutral or above (including weakly basic), yet phenolphthalein is <b>colorless</b>. Colorless only tells you "pH &lt; about 8.2", so <b>colorless ≠ acidic</b>. To turn pink, the pH must enter the transition range (8.2–10.0).';
+      updateProgress();}}
+  function checkMission(w){
+    if(ST.checks.q2)return;
+    if(mode==='mystery'&&selected.length>0&&tested.size>=CFG.minInd&&w<=CFG.target+1e-9){
+      ST.checks.q2=true;$('fb2').textContent='Task complete — you used '+tested.size+' indicator(s) and narrowed the range width to '+w.toFixed(2)+' pH units. The overlapping range (the intersection) is the possible range.';$('fb2').className='fb ok';updateProgress();}
+    else if(mode==='mystery'&&selected.length>0&&w<=CFG.target+1e-9&&tested.size<CFG.minInd){
+      $('fb2').textContent='The range is narrow, but in unknown sample mode add at least '+CFG.minInd+' indicator(s) to cross-check.';$('fb2').className='fb hint';}
+    else if(mode==='mystery'&&selected.length>0){$('fb2').textContent='Current width '+w.toFixed(2)+' — still too wide. Find an indicator whose transition range lies near the current range and add it.';$('fb2').className='fb hint';}
+  }
+
+  $('ph').addEventListener('input',e=>{pH=+e.target.value;if(ST.predicted)phMoved=true;render();});
+  $('mExplore').addEventListener('click',()=>{mode='explore';$('mExplore').classList.add('on');$('mMystery').classList.remove('on');render();});
+  $('mMystery').addEventListener('click',()=>{mode='mystery';$('mMystery').classList.add('on');$('mExplore').classList.remove('on');selected=[];tested.clear();
+    $('fb2').textContent='You have an unknown sample (pH hidden). No indicator yet — the possible range is 14 pH units wide. Add indicators one at a time.';$('fb2').className='fb hint';render();});
+
+  $('conf').addEventListener('input',e=>{const v=+e.target.value;$('confLab').textContent=v<33?'Low':v<66?'Medium':'High';});
+  let predSel=null;
+  $('predChoices').addEventListener('click',e=>{const c=e.target.closest('.choice');if(!c)return;[...$('predChoices').children].forEach(x=>x.classList.remove('sel'));c.classList.add('sel');predSel=c.dataset.v;});
+  $('predSubmit').addEventListener('click',()=>{if(ST.predicted)return;if(!predSel){$('gateMsg').textContent='Choose an option first.';$('gateMsg').className='gate-msg refute';return;}
+    ST.predicted=true;Object.defineProperty(ST,'prediction',{value:predSel,writable:false,configurable:false,enumerable:true});R2.unlock();
+    $('predSubmit').disabled=true;$('predSubmit').textContent='Prediction locked (cannot change)';[...$('predChoices').children].forEach(x=>{x.style.pointerEvents='none';x.setAttribute('aria-disabled','true');});
+    if(predSel==='below'){$('gateMsg').textContent='Good reasoning. Now check it yourself — add only phenolphthalein and move the pH to 7.0–8.1.';$('gateMsg').className='gate-msg hit';$('predResult').textContent='Correct (pH < about 8.2)';}
+    else if(predSel==='acid'){$('gateMsg').innerHTML='This is the most common misconception. Colorless does not mean "acidic"; it means <b>"below the transition range (about 8.2)"</b>. Look at the color at pH 7.0–8.1 yourself.';$('gateMsg').className='gate-msg refute';$('predResult').textContent='Needs review (colorless = pH < about 8.2)';}
+    else{$('gateMsg').innerHTML='One observation of "colorless" cannot pin the pH at exactly 7. It is colorless at pH 3 and also at 7.8 — check with the slider.';$('gateMsg').className='gate-msg refute';$('predResult').textContent='Needs review (think in ranges)';}
+    render();updateProgress();});
+
+  document.querySelectorAll('[data-q="1"]').forEach(c=>c.addEventListener('click',e=>{const v=e.target.dataset.v;[...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    if(v==='a'){$('fb1').textContent='Correct — an in-between color means HIn and In⁻ are both present, i.e. the transition range (about 6.0–7.6).';$('fb1').className='fb ok';ST.checks.q1=true;}
+    else if(v==='b'){$('fb1').textContent='Try again — above 7.6 only the base form dominates, so the color looks pure blue. What state does green (an in-between color) show? (answer not revealed)';$('fb1').className='fb no';}
+    else{$('fb1').textContent='Try again — the in-between color appears over the whole transition range, so you cannot pin it to one value. Think in ranges. (answer not revealed)';$('fb1').className='fb no';}
+    updateProgress();}));
+  function q3answer(){const r=deduceStates(CFG.q3.states);return r[CFG.q3.ask];}
+  $('q3btn').addEventListener('click',()=>{const raw=($('q3in').value||'').trim().replace(',','.');const x=parseFloat(raw);const ans=q3answer(),r=deduceStates(CFG.q3.states);
+    if(raw!==''&&isFinite(x)&&Math.abs(x-ans)<=0.05){$('fb3').textContent='Correct — the range that '+(Object.keys(CFG.q3.states).length>1?'satisfies both observations':'agrees with the observation')+' is '+fmtCons(r)+'.';$('fb3').className='fb ok';ST.checks.q3=true;}
+    else if(isFinite(x)&&(Math.abs(x-7)<=0.05)){$('fb3').textContent='Try again — 7 is only the reference point for neutral. It is not a limit of an indicator transition range. Look at the end values of each indicator bar. (answer not revealed)';$('fb3').className='fb no';}
+    else if(isFinite(x)&&(Math.abs(x-r.lo)<=0.05||Math.abs(x-r.hi)<=0.05||Math.abs(x-r.width)<=0.05)){$('fb3').textContent='Try again — you gave a different value of the range (lower limit / upper limit / width). Read the question again. (answer not revealed)';$('fb3').className='fb no';}
+    else{$('fb3').textContent='Try again — write the range each indicator color gives, then find the overlap. Colorless = below the transition range; yellow/blue (base form) = above the transition range. (answer not revealed)';$('fb3').className='fb no';}
+    updateProgress();});
+  const CLOZE_OK=['2phunits','2phunit','2.0phunits','2.0phunit','about2phunits','about2phunit','approximately2phunits','approx.2phunits','~2phunits','twophunits','twophunit','2ph','2.0ph','about2ph','2units','about2units','twounits'];
+  $('qcbtn').addEventListener('click',()=>{var x=($('qcin').value||'').trim().toLowerCase().replace(/\s/g,'');
+    if(CLOZE_OK.includes(x)){$('fbc').textContent='Correct — most indicators change color over a range about 2 pH units wide (roughly pKa ± 1).';$('fbc').className='fb ok';ST.checks.cloze=true;}
+    else if(x==='2'||x==='about2'||x==='two'){$('fbc').textContent='Try again — you also need the unit. Write how many units of what.';$('fbc').className='fb no';}
+    else if(['7','14','1','0.1','7ph','14ph','1ph','7phunits','14phunits','1phunit'].includes(x)){$('fbc').textContent='Try again — that value is not the "width" of the range. Subtract to find the widths of methyl red 4.5–6.0 and phenolphthalein 8.2–10.0.';$('fbc').className='fb no';}
+    else{$('fbc').textContent=CFG.hints?'Hint: calculate upper limit − lower limit of a transition range, round to a whole number, and add the unit (pH units).':'Try again — write a number and a unit (e.g. ○ pH units).';$('fbc').className='fb '+(CFG.hints?'hint':'no');}
+    updateProgress();});
+  document.querySelectorAll('#entryChoices .choice').forEach(c=>c.addEventListener('click',e=>{
+    [...e.target.parentElement.children].forEach(x=>x.classList.remove('sel'));e.target.classList.add('sel');
+    var v=e.target.dataset.v, ok=v==='a', fb;
+    if(ok) fb='Right — HIn (acid form) and In⁻ (base form) have different colors, so you see the color of the form that dominates at that pH.';
+    else if(v==='b') fb='In fact, both the acid form and the base form have a color (or are colorless). An indicator is a weak acid that gives and takes H⁺; the dominant form changes with pH.';
+    else fb='In fact, only a very small amount of indicator is added, so it does not change the pH of the solution. It is a weak-acid dye that only "shows" the pH.';
+    $('fbEntry').textContent=fb;$('fbEntry').className='fb '+(ok?'ok':'hint');
+    var g=$('entryGloss'); if(g) g.open=true; if(ok) ST.checks.entry=true; updateProgress();}));
+  var REFLECT_CONCEPTS=/(transition\s*range|transition|pH\s*range|range|8\.2|indicator|color[\s-]*change)/i;
+  var REFLECT_REL=/(\b(because|since|therefore|so|thus|hence|due to|as a result|which means|this means|when|if)\b|→)/i;
+  $('reflectBtn').addEventListener('click',()=>{var t=($('selfExplain').value||'').trim();var hasConcept=REFLECT_CONCEPTS.test(t);
+    if(t.length>=40&&hasConcept&&!REFLECT_REL.test(t)){$('fbReflect').textContent='Link cause and effect — use "because", "so" or "therefore".';$('fbReflect').className='fb hint';}
+    else if(t.length>=40&&hasConcept){$('fbReflect').textContent='Recorded — explaining in your own words makes understanding stronger.';$('fbReflect').className='fb ok';ST.checks.reflect=true;}
+    else if(t.length>=40){$('fbReflect').textContent='Not quite — the length is fine, but a key concept word is missing. Explain with words such as transition range or pH range.';$('fbReflect').className='fb hint';}
+    else{$('fbReflect').textContent='Not quite — write one or two sentences (40+ characters) and include the words "transition range".';$('fbReflect').className='fb hint';}
+    updateProgress();});
+  $('qhobtn').addEventListener('click',()=>{var x=($('qhoin').value||'').trim().toLowerCase().replace(/\s/g,'');
+    if(['phenolphthalein','phenolphtalein','phenolpthalein','pp'].includes(x)){$('fbho').textContent='Correct — the phenolphthalein transition range 8.2–10.0 includes the equivalence point 8.8. Methyl red (4.5–6.0) is already yellow long before the equivalence point.';$('fbho').className='fb ok';}
+    else if(['methylred','methyl-red','mr'].includes(x)){$('fbho').textContent='Try again — methyl red finishes its change at pH 6.0, so it changes color before the equivalence point (8.8). Find the transition range that includes 8.8.';$('fbho').className='fb no';}
+    else{$('fbho').textContent='Try again — type the name of one of the two indicators. Its transition range must include the pH of the equivalence point.';$('fbho').className='fb no';}});
+  $('transferBtn').addEventListener('click',()=>{var t=($('transferText').value||'').trim();
+    if(t.length>=40&&/(range|overlap|combin|several|multiple|many|mix)/i.test(t)){$('fbTransfer').textContent='Good — mixing indicators with different transition ranges gives step-by-step color changes over the whole 0–14 range, so you can narrow the range.';$('fbTransfer').className='fb ok';}
+    else{$('fbTransfer').textContent='Not quite — in one sentence (40+ characters), write how wide the transition range of one indicator is, and what improves when several ranges overlap.';$('fbTransfer').className='fb hint';}});
+
+  function applyMode(){const q=new URLSearchParams(location.search);if(q.get('mode')==='teacher')$('teacherBar').classList.add('on');if(q.get('worksheet')==='1')document.body.classList.add('worksheet');}
+  $('btnTeacher').addEventListener('click',()=>$('teacherBar').classList.toggle('on'));
+  $('btnWorksheet').addEventListener('click',()=>{document.body.classList.toggle('worksheet');window.scrollTo(0,0);});
+  $('tReveal').addEventListener('click',()=>R2.unlock());
+  $('tMystery').addEventListener('click',()=>{$('tbOut').textContent='Current level ('+CFG.label+'): unknown sample pH = '+CFG.mystery+' · target width ≤ '+CFG.target;});
+  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',e=>{const p=e.target.dataset.preset;mode='explore';$('mExplore').classList.add('on');$('mMystery').classList.remove('on');
+    if(p==='fig168'){selected=['mr','btb','pp'];pH=7.0;}if(p==='pp78'){selected=['pp'];pH=7.8;}$('ph').value=pH;render();}));
+
+  (function(){const W=$('wsChart');if(!W)return;const a=150,b=620,xs=v=>a+(b-a)*v/14;let h='<g stroke="#000" fill="none" stroke-width="1">';
+    for(let v=0;v<=14;v+=2)h+='<line x1="'+xs(v)+'" y1="20" x2="'+xs(v)+'" y2="236" stroke-dasharray="2 3"/>';h+='</g>';
+    for(let v=0;v<=14;v+=2)h+='<text x="'+xs(v)+'" y="14" font-size="11" text-anchor="middle">'+v+'</text>';
+    IND.forEach((d,i)=>{const y=26+i*30;h+='<text x="4" y="'+(y+14)+'" font-size="12">'+d.ko+'</text>';
+      d.tr.forEach(t=>{h+='<rect x="'+xs(t[0])+'" y="'+(y+3)+'" width="'+(xs(t[1])-xs(t[0]))+'" height="16" fill="none" stroke="#000" stroke-width="1.5"/>'+
+        '<text x="'+(xs(t[0])-3)+'" y="'+(y+15)+'" font-size="11" text-anchor="end">'+t[2]+'</text><text x="'+(xs(t[1])+3)+'" y="'+(y+15)+'" font-size="11">'+t[3]+'</text>';});});
+    h+='<text x="'+((a+b)/2)+'" y="248" font-size="11" text-anchor="middle">pH</text>';W.innerHTML=h;})();
+  function summary(){const cp=curPH();const cols=selected.map(k=>byK[k].ko+' '+observe(k,cp).name).join(', ');
+    const r=selected.length?deduce(selected,cp):{lo:0,hi:14,width:14};
+    return (mode==='mystery'?'Unknown sample (pH hidden)':'pH '+cp.toFixed(1))+'. '+(selected.length?'Colors seen: '+cols+'. Possible range '+fmtCons(r)+', width '+r.width.toFixed(2)+' pH units.':'No indicator — the possible range is 14 pH units wide (the whole scale).');}
+  window.__sim={metric:{type:'width of the possible pH range',value:14,unit:'pH'},ST,data:IND,observe,deduce,deduceStates,
+    LEVELS,level:(LEVELS[LV]?LV:'standard'),
+    key(n){return n==='pred'?'below':n==='q1'?'a':n==='q3'?q3answer():n==='cloze'?CLOZE_OK.slice():null;},
+    clozeWrong:'7',
+    domain:{controls:[{sel:'#mExplore',kind:'toggle'},{sel:'#mMystery',kind:'toggle'},{sel:'#ph',kind:'range'},{sel:'#indsel input',kind:'checkbox'}],
+      continuous:{pH:{min:0,max:14}},metric:{min:0,max:14},
+      mission:{kind:'explore',level:LV,goal:'unknown sample: possible range width ≤ '+CFG.target+' (at least '+CFG.minInd+' indicator(s))',note:'indicator-combination task — several combinations pass'}},
+    fn:{observe:(k,pH)=>(byK[k]&&Number.isFinite(pH)&&pH>=0&&pH<=14)?observe(k,pH).name:null,
+        width:(keys,pH)=>(Array.isArray(keys)&&keys.length&&keys.every(k=>byK[k])&&Number.isFinite(pH)&&pH>=0&&pH<=14)?deduce(keys,pH).width:null},
+    leakTokens:{answer:['lower than about 8.2 (we','colorless ≠ acidic','below the transition range (about 8.2)','pH < about 8.2'],
+      rationale:['pKa ± 1','the color stays the same'],
+      misconception:['the most common misconception','colorless = acidic','pin the pH at exactly 7']},
+    setState(m,ph,keys){if(m==='mystery'||m==='explore'){mode=m;$('mExplore').classList.toggle('on',m==='explore');$('mMystery').classList.toggle('on',m==='mystery');}
+      if(Number.isFinite(ph)){pH=Math.max(0,Math.min(14,ph));$('ph').value=pH;}if(Array.isArray(keys))selected=keys.filter(k=>byK[k]);render();return window.__sim.metric;},
+    pump(){if(!selected.length)selected=['pp'];render();return window.__sim.metric;}};
+  if(window.GCAnnounce)GCAnnounce.attach({gate:()=>ST.predicted,pre:'After you submit your prediction, the colors seen and the possible pH range will be read aloud.',summary});
+  ['fb1','fb2','fb3','fbc','fbho','fbReflect','fbTransfer'].forEach(function(id){const el=$(id);if(!el)return;
+    new MutationObserver(function(){const t=el.textContent;if(t&&window.GCAnnounce)GCAnnounce.say(t,{now:true});}).observe(el,{childList:true,characterData:true,subtree:true});});
+  applyMode();
+  applyLevel();
+  render();
+
+  document.querySelectorAll('.choice,.toggle').forEach(function(el){
+    if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0');
+    if(!el.hasAttribute('role')) el.setAttribute('role','button');
+    el.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();el.click();}});
+  });
+  updateProgress();
+})();
+</script>
+<script>/[?&]mode=teacher(&|$)/.test(location.search)&&document.body.classList.add('mode-teacher')</script>
+<script id="gc-record">(function(){
+"use strict";
+var K='genchem.en.history',OK=/^https:\/\/(lab\.jinuchem\.com|jinu-kbs\.github\.io)$|^http:\/\/localhost(:\d+)?$/;
+function load(){try{return JSON.parse(localStorage.getItem(K))||[];}catch(e){return[];}}
+function put(a){try{localStorage.setItem(K,JSON.stringify(a));}catch(e){}}
+function up(m){try{if(window.parent!==window)window.parent.postMessage(m,'*');}catch(e){}}
+function merge(inc){var a=load(),s={},n=0;a.forEach(function(r){s[r.ts+'|'+r.sim]=1;});
+ inc.forEach(function(r){if(r&&r.ts&&r.sim&&!s[r.ts+'|'+r.sim]){a.push(r);s[r.ts+'|'+r.sim]=1;n++;}});put(a);return n;}
+var GC={
+ save:function(r){r.ts=r.ts||new Date().toISOString();var a=load();a.push(r);put(a);up({type:'genchem:record',v:1,rec:r});return r;},
+ all:load, clear:function(){put([]);},
+ export:function(){var p=null;try{p=JSON.parse(localStorage.getItem('genchem.en.path'));}catch(e){}
+  var b=new Blob([JSON.stringify({app:'genchem',v:2,exported:new Date().toISOString(),history:load(),path:p},null,2)],{type:'application/json'});
+  var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='genchem_en_brain.json';a.click();URL.revokeObjectURL(u);
+  try{localStorage.setItem('genchem.en.backupAt',new Date().toISOString());}catch(e){}},
+ import:function(t){try{var o=JSON.parse(t),i=(o&&o.history)||o||[];if(!Array.isArray(i))return -1;var n=merge(i);
+  if(o&&o.path){try{localStorage.setItem('genchem.en.path',JSON.stringify(o.path));}catch(e){}}return n;}catch(e){return -1;}},
+ _meta:function(){var p=location.pathname.split('/').filter(Boolean),f=decodeURIComponent(p[p.length-1]||''),d=decodeURIComponent(p[p.length-2]||'');
+  var c=(f.match(/^(\d+)/)||[])[1]||d.replace(/[^0-9]/g,''),q=function(n){var m=document.querySelector('meta[name="'+n+'"]');return m?m.content:'';};
+  return{sim:f,path:(/^ch\d\d$/.test(d)?d+'/':'')+f,chapter:c?+c:null,level:(new URLSearchParams(location.search)).get('level')||'standard',
+   standard:q('curriculum-2022'),engine:q('engine-class'),title:document.title};},
+ autoInit:function(){var done=false,m=GC._meta();up({type:'genchem:hello',v:1,sim:m.path});
+  var iv=setInterval(function(){var s=window.__sim,st=s&&s.ST;if(!st||!st.passed||done)return;done=true;var k=null;
+   try{k=typeof s.key==='function'?s.key('pred'):null;}catch(e){}
+   GC.save({ts:new Date().toISOString(),sim:m.sim,path:m.path,title:m.title,chapter:m.chapter,standard:m.standard,engine:m.engine,level:m.level,
+    predicted:st.prediction||null,predict_correct:(k==null||st.prediction==null)?null:String(st.prediction)===String(k),check:st.checks||{},completed:true});},1000);
+  setTimeout(function(){clearInterval(iv);},1800000);}
+};
+window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='genchem:restore'||!OK.test(e.origin)||!Array.isArray(d.history))return;
+ up({type:'genchem:restored',v:1,added:merge(d.history)});});
+window.GCRecord=GC;
+if(document.readyState!=='loading')GC.autoInit();else document.addEventListener('DOMContentLoaded',GC.autoInit);
+})();
+</script>
+<script id="lgc-inject">
+(function(){
+  "use strict";
+  if(document.getElementById('lgcPanel')) return;
+  var KEY='genchem.en.lgc';
+  function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function simId(){ return decodeURIComponent(location.pathname.split('/').pop()||''); }
+  function loadAll(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+  function saveAll(o){ try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){} }
+
+  var id=simId(), all=loadAll(), data=all[id]||{reason:'',cloze:'',problem:''};
+  window.__sim = window.__sim || {};
+  window.__sim.LGC = { data:data, save:function(){ all[id]=data; saveAll(all); } };
+
+  var stl=document.createElement('style');
+  stl.textContent='#lgcPanel{margin:22px auto;max-width:980px;border:1px solid rgba(127,127,127,.35);border-radius:12px;padding:16px 18px;font-family:inherit;line-height:1.6}'
+    +'#lgcPanel h3{font-size:16px;margin:0 0 4px}'
+    +'#lgcPanel .lgc-sub{font-size:12px;opacity:.7;margin-bottom:10px}'
+    +'#lgcPanel label{display:block;font-size:13px;font-weight:600;margin:12px 0 4px}'
+    +'#lgcPanel textarea{width:100%;min-height:54px;border:1px solid rgba(127,127,127,.4);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;background:transparent;color:inherit;resize:vertical}'
+    +'#lgcPanel .lgc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}'
+    +'#lgcPanel button{font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid rgba(127,127,127,.5);background:transparent;color:inherit;cursor:pointer}'
+    +'#lgcPanel button:hover{border-color:currentColor}'
+    +'#lgcPanel .lgc-out{margin-top:10px;font-size:13px;white-space:pre-wrap;opacity:.92}'
+    +'#lgcPanel .lgc-shared{margin-top:12px;border-top:1px dashed rgba(127,127,127,.4);padding-top:10px;font-size:13px}'
+    +'@media print{#lgcPanel{display:none}}';
+  document.head.appendChild(stl);
+
+  var sec=document.createElement('section');
+  sec.id='lgcPanel'; sec.setAttribute('aria-label','My own notes and questions');
+  sec.innerHTML=''
+    +'<h3>My own notes and questions <span style="font-weight:400;font-size:12px">(learner-generated · not graded)</span></h3>'
+    +'<div class="lgc-sub">Explain in your own words, make your own fill-in-the-blank question, and write a question for a classmate. This space is for deeper understanding.</div>'
+    +'<label for="lgcReason">1. Explain my prediction and conclusion in my own words (with reasons)</label>'
+    +'<textarea id="lgcReason"></textarea>'
+    +'<label for="lgcCloze">2. Hide key words in my explanation with [square brackets] to make a fill-in-the-blank question</label>'
+    +'<textarea id="lgcCloze" placeholder="e.g. As the concentration of [H⁺] increases, the [pH] decreases."></textarea>'
+    +'<div class="lgc-btns"><button type="button" id="lgcClozePrev">Preview my question</button></div>'
+    +'<div class="lgc-out" id="lgcClozeOut" aria-live="polite"></div>'
+    +'<label for="lgcProblem">3. A question for a classmate (include the answer)</label>'
+    +'<textarea id="lgcProblem"></textarea>'
+    +'<div class="lgc-btns">'
+    +'<button type="button" id="lgcExport">Save my notes (JSON file)</button>'
+    +'<button type="button" id="lgcShare">Copy share link</button>'
+    +'</div>'
+    +'<div class="lgc-shared" id="lgcShared" style="display:none"></div>';
+  var anchor=document.querySelector('footer');
+  if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(sec,anchor);
+  else document.body.appendChild(sec);
+
+  var $=function(i){return document.getElementById(i);};
+  $('lgcReason').value=data.reason||''; $('lgcCloze').value=data.cloze||''; $('lgcProblem').value=data.problem||'';
+  function persist(){ data.reason=$('lgcReason').value; data.cloze=$('lgcCloze').value; data.problem=$('lgcProblem').value; window.__sim.LGC.save(); }
+  $('lgcReason').addEventListener('input',persist);
+  $('lgcCloze').addEventListener('input',persist);
+  $('lgcProblem').addEventListener('input',persist);
+
+  $('lgcClozePrev').addEventListener('click',function(){
+    var t=$('lgcCloze').value||'', n=0, ans=[];
+    var q=t.replace(/\[([^\]]+)\]/g,function(m,w){ n++; ans.push(w); return '____('+n+')'; });
+    $('lgcClozeOut').textContent = n ? ('Question: '+q+'\nAnswer: '+ans.join(', ')) : 'Put key words in [square brackets] to turn them into blanks.';
+  });
+
+  function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(s){ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+
+  $('lgcExport').addEventListener('click',function(){
+    persist();
+    var payload={app:'genchem',kind:'lgc',sim:id,exported:new Date().toISOString(),lgc:data};
+    var b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u; a.download='genchem_lgc_'+id.replace(/\.html$/,'')+'.json'; a.click(); URL.revokeObjectURL(u);
+  });
+  $('lgcShare').addEventListener('click',function(){
+    persist();
+    var link=location.origin+location.pathname+location.search+'#share='+enc({sim:id,lgc:data});
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link).then(function(){ alert('Share link copied. Send it to a classmate.'); },
+        function(){ prompt('Copy the link below:', link); });
+    } else prompt('Copy the link below:', link);
+  });
+
+  (function(){
+    var m=(location.hash||'').match(/share=([^&]+)/); if(!m) return;
+    try{
+      var o=dec(m[1]), L=o.lgc||{}, html='<b>Shared by a classmate</b>';
+      if(L.reason)  html+='<div>· Explanation: '+esc(L.reason)+'</div>';
+      if(L.cloze)   html+='<div>· Fill-in-the-blank text: '+esc(L.cloze)+'</div>';
+      if(L.problem) html+='<div>· Question: '+esc(L.problem)+'</div>';
+      var sh=$('lgcShared'); sh.innerHTML=html; sh.style.display='block';
+    }catch(e){}
+  })();
+})();
+</script>
+<script>
+(function(){var v=document.getElementById('verdict');if(!v)return;
+  function sync(){var l=v.classList.contains('locked');if(l){v.setAttribute('aria-hidden','true');v.setAttribute('inert','');}else{v.removeAttribute('aria-hidden');v.removeAttribute('inert');}}
+  sync();new MutationObserver(sync).observe(v,{attributes:true,attributeFilter:['class']});})();
+</script>
+<script>
+(function(){var K="1. Its pH is below about 8.2 (it may be acidic, neutral or weakly basic). 2. Methyl red: red / 4.5–6.0 / yellow · Bromthymol blue: yellow / 6.0–7.6 / blue · Phenolphthalein: colorless / 8.2–10.0 / pink. 3. 6.0 ≤ pH ≤ 8.2. 4. 2 pH units. 5. Colorless means the pH is below the transition range (about 8.2). Neutral and weakly basic solutions with pH 7–8.2 are also colorless.",done=false;
+  var t=setInterval(function(){if(done)return;var S=window.__sim&&window.__sim.ST;if(S&&S.passed){done=true;clearInterval(t);
+    var b=document.getElementById('selfKey');if(!b)return;b.innerHTML=K;b.hidden=false;var l=document.getElementById('selfKeyLock');if(l)l.textContent='You have finished. Compare these answers with your worksheet answers.';}},400);})();
+</script>
+<script id="gc-reflectguard">
+(function(){"use strict";
+function go(){var ta=document.getElementById('selfExplain'),b=document.getElementById('reflectBtn');if(!ta||!b)return;
+var ex=(ta.getAttribute('placeholder')||'').replace(/^(?:e\.g\.|example)\s*[:：]?\s*/i,''),fb=document.getElementById('fbReflect')||document.getElementById('fb2');if(!fb)return;
+ta.setAttribute('placeholder','In your own words: "I observed (what), and because (principle), (result)."');
+var n=0,last='',nm=function(x){return x.replace(/[\s.…,·"'()]/g,'');};
+b.addEventListener('click',function(e){var t=nm(ta.value),x=nm(ex);
+ if(x.length>8&&t.length>=8&&(x.indexOf(t)>=0||t.indexOf(x.slice(0,Math.ceil(x.length*.8)))>=0)){e.stopImmediatePropagation();
+  fb.textContent='This looks copied from the example. Recall what you observed and write it again in your own words.';fb.className='fb hint';last=fb.textContent;}},true);
+new MutationObserver(function(){var c=fb.className,t=fb.textContent;if(t===last)return;
+ if(/hint/.test(c)&&/^Not quite/.test(t)){n++;fb.textContent=n<2?'Not quite — write one sentence (40+ characters) that says what you observed and why, e.g. "Because …, …". If it is still not enough, you will get a clue.':t.replace(/^Not quite\s*—\s*/,'Clue: ');}
+ else if(/ok/.test(c)&&ex&&t.indexOf('Compare it with')<0)fb.textContent=t+' Compare it with the example explanation: '+ex;
+ last=fb.textContent;}).observe(fb,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});}
+if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);})();
+</script>
+</body>
+</html>
